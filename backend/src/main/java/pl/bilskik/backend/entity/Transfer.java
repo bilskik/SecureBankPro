@@ -12,10 +12,10 @@ public class Transfer {
     @Id
     @Column(name = "transfer_id")
     private Long transferId;
-    @Column(name = "title")
+    @Column(name = "transfer_title")
     private String transferTitle;
-    @Column(name = "title")
-    private String tran;
+    @Column(name = "receiver_name")
+    private String receiverName;
     @Column(name = "amount")
     private Long amount;
     @ManyToOne
@@ -23,7 +23,17 @@ public class Transfer {
     @ManyToOne
     private User toUser;
 
-    public Transfer() {}
+    public Transfer() {
 
+    }
+
+    public Transfer(Long transferId, String transferTitle, String receiverName, Long amount, User fromUser, User toUser) {
+        this.transferId = transferId;
+        this.transferTitle = transferTitle;
+        this.receiverName = receiverName;
+        this.amount = amount;
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+    }
 }
 
