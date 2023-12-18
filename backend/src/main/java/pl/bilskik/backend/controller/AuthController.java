@@ -1,17 +1,29 @@
 package pl.bilskik.backend.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import pl.bilskik.backend.service.AuthService;
+
 
 @RestController
-@RequestMapping(value = "/test")
 @CrossOrigin
 public class AuthController {
 
-    @GetMapping()
-    public String test() {
-        return  "DZIALA?";
+    private Logger logger = LoggerFactory.getLogger(AuthController.class);
+
+    private AuthService authService;
+
+    @Autowired
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/attemptLogin")
+    public ResponseEntity<String> attemptLogin(@RequestBody String username) {
+        authService.login(username);
+        return ResponseEntity.ok("OK");
     }
 }
