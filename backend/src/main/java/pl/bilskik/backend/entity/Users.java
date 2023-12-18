@@ -25,16 +25,16 @@ public class Users {
     private String password;
     @Column(name = "pesel",
             unique = true)
-    private int pesel;
+    private String pesel;
     @Column(name = "credit_cardno")
     private String creditCardNo;
     @Column(name = "accountno",
             unique = true)
-    private int accountNo;
+    private String accountNo;
     @Column(name = "balance")
-    private Long balance;
-    @Embedded
-    private Address address;
+    private int balance;
+//    @Embedded
+//    private Address address;
     @ManyToMany
     @JoinTable(
             name = "user_transfer_tbl",

@@ -27,7 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.2.0'
     implementation group: 'org.springframework.session', name: 'spring-session-data-redis', version: '3.2.0'
-//    implementation group: 'org.springframework.session', name: 'spring-session-core', version: '3.2.0'
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.0'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
