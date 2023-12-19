@@ -1,4 +1,4 @@
-package pl.bilskik.backend.service.exception;
+package pl.bilskik.backend.service.validator.exception;
 
 import pl.bilskik.backend.dto.UserRegisterDTO;
 

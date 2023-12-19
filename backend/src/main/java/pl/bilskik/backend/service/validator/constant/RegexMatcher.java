@@ -1,6 +1,6 @@
 package pl.bilskik.backend.service.validator.constant;
 
-import pl.bilskik.backend.service.exception.PasswordException;
+import pl.bilskik.backend.service.validator.exception.PasswordException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
