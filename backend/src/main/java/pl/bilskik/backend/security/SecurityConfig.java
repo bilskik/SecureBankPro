@@ -46,9 +46,7 @@ public class SecurityConfig {
 //                .addFilterBefore(usernameFilter, UserPassAuthFilter.class)
                 .addFilterBefore(userPassAuthFilter, UsernamePasswordAuthenticationFilter.class)
 //                .authenticationManager()
-                .sessionManagement((session) -> {
-                    session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-                })
+
                 .authorizeHttpRequests((auth) -> {
                     auth
                             .requestMatchers("/login", "/register")
@@ -56,7 +54,9 @@ public class SecurityConfig {
                             .anyRequest()
                             .authenticated();
                 })
-
+//                .sessionManagement((session) -> {
+//                    session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+//                })
                 .build();
     }
 //    @Bean

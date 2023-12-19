@@ -23,10 +23,12 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRegisterDTO userRegisterDTO) {
-        authService.register(userRegisterDTO);
-        return ResponseEntity.ok("");
+    @GetMapping("/register")
+    public ResponseEntity<String> register() {
+//        System.out.println(userRegisterDTO.getPassword());
+//        authService.register(userRegisterDTO);
+        logger.error("DZIALASZ!!!!>>??S?SA?D?ASD?AS?D?ASD?");
+        return ResponseEntity.ok("Jest fine");
     }
 
     @PostMapping("/attemptLogin")

@@ -22,4 +22,9 @@ public class UserRegisterDTO {
         this.pesel = pesel;
         this.creditCardNo = creditCardNo;
     }
+
+    @Override
+    public String toString() {
+        return getUsername() + " " + getPassword() + " " + getPesel() + " " + getCreditCardNo();
+    }
 }

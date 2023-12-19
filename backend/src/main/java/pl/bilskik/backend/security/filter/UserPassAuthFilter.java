@@ -44,10 +44,14 @@ public class UserPassAuthFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(
                     new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getUsername(), null)
             );
-        }
             SecurityContextHolder.getContext().setAuthentication(
                     new UsernamePasswordAuthenticationToken(request.getCookies()[0].getValue(), null, null)
             );
+        }
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(request.getCookies()[0].getValue(), null, null)
+        );
+
 //            HttpSession httpSession = request.getSession(true);
 //            httpSession.setAttribute("SESSION_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 //            new HttpSessionSecurityContextRepository().saveContext(SecurityContextHolder.getContext(), request, response);
