@@ -18,8 +18,11 @@ public class Password {
     private String ranges;
     @Column(name = "password")
     private String password;
-    @Column(name = "salted")
-    private String salt;
     @ManyToOne
     private Users user;
+
+    public Password(String ranges, String password) {
+        this.ranges = ranges;
+        this.password = password;
+    }
 }

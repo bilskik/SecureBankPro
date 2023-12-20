@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.bilskik.backend.security.filter.UserPassAuthFilter;
 import pl.bilskik.backend.security.manager.AuthManager;
 
@@ -29,7 +30,7 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)        //to change later -> its so insecure
 //                .addFilterBefore(usernameFilter, UserPassAuthFilter.class)
-//                .addFilterBefore(userPassAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(userPassAuthFilter, UsernamePasswordAuthenticationFilter.class)
 //                .authenticationManager()
 
                 .authorizeHttpRequests((auth) -> {

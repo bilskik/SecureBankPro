@@ -1,4 +1,4 @@
-package pl.bilskik.backend.service.validator.enumeration;
+package pl.bilskik.backend.service.auth.validator.enumeration;
 
 public enum Entropy {
     TERRIBLE,

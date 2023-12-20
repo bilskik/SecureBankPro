@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.bilskik.backend.dto.UserRegisterDTO;
 import pl.bilskik.backend.security.AuthRequest;
 import pl.bilskik.backend.service.AuthService;
-import pl.bilskik.backend.service.AuthServiceImpl;
+import pl.bilskik.backend.service.auth.AuthServiceImpl;
 
 
 @RestController

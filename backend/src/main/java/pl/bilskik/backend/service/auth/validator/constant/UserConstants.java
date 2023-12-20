@@ -1,4 +1,4 @@
-package pl.bilskik.backend.service.validator.constant;
+package pl.bilskik.backend.service.auth.validator.constant;
 import org.springframework.stereotype.Component;
 
 @Component

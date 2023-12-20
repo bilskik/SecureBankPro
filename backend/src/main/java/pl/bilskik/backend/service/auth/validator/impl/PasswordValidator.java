@@ -1,17 +1,13 @@
-package pl.bilskik.backend.service.validator.impl;
+package pl.bilskik.backend.service.auth.validator.impl;
 
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.resources.*;
 import me.gosimple.nbvcxz.scoring.Result;
 import org.springframework.stereotype.Component;
-import pl.bilskik.backend.dto.UserRegisterDTO;
-import pl.bilskik.backend.service.validator.exception.PasswordException;
-import pl.bilskik.backend.service.validator.constant.RegexMatcher;
-import pl.bilskik.backend.service.validator.enumeration.Entropy;
+import pl.bilskik.backend.service.auth.validator.enumeration.Entropy;
+import pl.bilskik.backend.service.auth.validator.exception.PasswordException;
 
 import java.util.List;
-
-import static pl.bilskik.backend.service.validator.enumeration.Entropy.*;
 
 @Component
 public class PasswordValidator {
@@ -23,7 +19,7 @@ public class PasswordValidator {
         Nbvcxz nbvcxz = new Nbvcxz(configuration(List.of(username)));
         Result result = nbvcxz.estimate(password);
         Entropy entropy = getEntropy(result.getBasicScore());
-        if(entropy == GOOD && result.isMinimumEntropyMet()) {
+        if(entropy == Entropy.GOOD && result.isMinimumEntropyMet()) {
             return true;
         } else {
             throw new PasswordException("Password is too weak!");
@@ -37,18 +33,18 @@ public class PasswordValidator {
     }
     private Entropy getEntropy(int result) {
         if(result == 4) {
-            return GOOD;
+            return Entropy.GOOD;
         }
         else if(result == 3) {
-            return REASONABLE;
+            return Entropy.REASONABLE;
         } else if(result == 2) {
-            return POOR;
+            return Entropy.POOR;
         }
         else if(result == 1){
-            return WEAK;
+            return Entropy.WEAK;
         }
         else if(result == 0) {
-            return TERRIBLE;
+            return Entropy.TERRIBLE;
         } else {
             throw new PasswordException("Cannot get Entropy!");
         }
@@ -76,15 +72,15 @@ public class PasswordValidator {
         double entropyValue = password.length()*log2(letterRange);
         //checking dictionary
         if(entropyValue > 75) {
-            return GOOD;
+            return Entropy.GOOD;
         }
         else if(entropyValue > 50 && entropyValue < 75) {
-            return REASONABLE;
+            return Entropy.REASONABLE;
         } else if(entropyValue < 50 && entropyValue > 25) {
-            return POOR;
+            return Entropy.POOR;
         }
         else if(entropyValue < 25 && entropyValue > 0){
-            return WEAK;
+            return Entropy.WEAK;
         } else {
             throw new PasswordException("Cannot count valid entropy value!");
         }

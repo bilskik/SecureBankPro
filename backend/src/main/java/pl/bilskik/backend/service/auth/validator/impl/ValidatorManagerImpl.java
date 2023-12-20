@@ -1,12 +1,10 @@
-package pl.bilskik.backend.service.validator.impl;
+package pl.bilskik.backend.service.auth.validator.impl;
 import org.springframework.stereotype.Component;
 import pl.bilskik.backend.dto.UserRegisterDTO;
-import pl.bilskik.backend.service.validator.exception.UserException;
-import pl.bilskik.backend.service.validator.ValidatorManager;
-import pl.bilskik.backend.service.validator.enumeration.Entropy;
-
-import static pl.bilskik.backend.service.validator.constant.UserConstants.CREDIT_CARD_NO_LENGTH;
-import static pl.bilskik.backend.service.validator.constant.UserConstants.PESEL_LENGTH;
+import pl.bilskik.backend.service.auth.validator.constant.UserConstants;
+import pl.bilskik.backend.service.auth.validator.enumeration.Entropy;
+import pl.bilskik.backend.service.auth.validator.exception.UserException;
+import pl.bilskik.backend.service.auth.validator.ValidatorManager;
 
 @Component
 public class ValidatorManagerImpl implements ValidatorManager {
@@ -43,13 +41,13 @@ public class ValidatorManagerImpl implements ValidatorManager {
         if(pesel == null || pesel.equals("")) {
             throw new UserException("Pesel is inValid! { Null or Empty }");
         }
-        return pesel.length() == PESEL_LENGTH;
+        return pesel.length() == UserConstants.PESEL_LENGTH;
     }
 
     private boolean validateCreditCardNo(String creditCardNo) {
         if(creditCardNo == null || creditCardNo.equals("")) {
             throw new UserException("Pesel is inValid! { Null or Empty }");
         }
-        return creditCardNo.length() == CREDIT_CARD_NO_LENGTH;
+        return creditCardNo.length() == UserConstants.CREDIT_CARD_NO_LENGTH;
     }
 }

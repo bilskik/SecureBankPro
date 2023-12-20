@@ -1,7 +1,7 @@
-package pl.bilskik.backend.service.validator;
+package pl.bilskik.backend.service.auth.validator;
 
 import pl.bilskik.backend.dto.UserRegisterDTO;
-import pl.bilskik.backend.service.validator.enumeration.Entropy;
+import pl.bilskik.backend.service.auth.validator.enumeration.Entropy;
 
 public interface ValidatorManager {
     boolean isValidUser(UserRegisterDTO userRegisterDTO);
