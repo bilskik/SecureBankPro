@@ -1,10 +1,8 @@
 package pl.bilskik.backend.security.userconfig;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.bilskik.backend.dto.UserDTO;
-import pl.bilskik.backend.entity.User;
 
 import java.util.Collection;
 

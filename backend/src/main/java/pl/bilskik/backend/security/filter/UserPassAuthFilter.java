@@ -49,7 +49,7 @@ public class UserPassAuthFilter extends OncePerRequestFilter {
             );
         }
         SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(request.getCookies()[0].getValue(), null, null)
+                new UsernamePasswordAuthenticationToken(null, null, null)
         );
 
 //            HttpSession httpSession = request.getSession(true);

@@ -1,13 +1,14 @@
 package pl.bilskik.backend.controller;
 
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.bilskik.backend.dto.UserRegisterDTO;
+import pl.bilskik.backend.security.AuthRequest;
 import pl.bilskik.backend.service.AuthService;
+import pl.bilskik.backend.service.AuthServiceImpl;
 
 
 @RestController
@@ -19,16 +20,14 @@ public class AuthController {
     private AuthService authService;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthServiceImpl authService) {
         this.authService = authService;
     }
 
-    @GetMapping("/register")
-    public ResponseEntity<String> register() {
-//        System.out.println(userRegisterDTO.getPassword());
-//        authService.register(userRegisterDTO);
-        logger.error("DZIALASZ!!!!>>??S?SA?D?ASD?AS?D?ASD?");
-        return ResponseEntity.ok("Jest fine");
+    @PostMapping("/register")
+    public ResponseEntity<AuthRequest> register(@RequestBody UserRegisterDTO userRegisterDTO) {
+        authService.register(userRegisterDTO);
+        return ResponseEntity.ok(new AuthRequest("username", "password"));
     }
 
     @PostMapping("/attemptLogin")
