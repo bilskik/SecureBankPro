@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import axios from '../axios/axios';
+import axios from '../api/axios/axios';
+import { Button, Form } from 'react-bootstrap';
+import { AUTH_PATH, LOGIN_BEGIN_PATH, REGISTER_PATH } from '../api/url/urlMapper';
+import PasswordGroup from '../component/password/PasswordGroup';
 
 const Login = () => {
     const [login, setLogin] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-
+    const [range, setRange] = useState<string>('');
     const onHandleSubmit = () => {
         const data = {
             login : login, 
@@ -27,27 +30,42 @@ const Login = () => {
 
             })
     }
+
+    const handleNext = () => {
+        const loginBeginData = {
+            username : login
+        }
+        axios.post(AUTH_PATH + LOGIN_BEGIN_PATH, loginBeginData)
+            .then((res) => {
+                if(res.data?.range) {
+                    setRange(res.data.range);
+                }
+            }).catch(() => {
+
+            })
+    }
     return (
-        <div>
-            <form>
-                <label id='login-label'>Login</label>
-                <input 
-                    type='text'
-                    placeholder='login'
-                    id='login-label'
+        <Form>
+            <h2>Login</h2>
+            <Form.Group>
+                <Form.Label>Username</Form.Label>
+                <Form.Control 
+                    type='text' 
+                    placeholder='username'
+                    value={login}
                     onChange={(e) => setLogin(e.target.value)}
                 />
-                <label id='password-label'>Password</label>
-                <input 
-                    type='password'
-                    id='password-label' 
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </form>
-            <button onClick={onHandleSubmit}>Submit</button>
+            </Form.Group>
 
-            <button onClick={onHandleTest}>Test</button>
-        </div>
+            {
+                range ? <PasswordGroup ranges='1:2:4'/> : 
+                <Button variant='primary' onClick={handleNext}>
+                    Next
+                </Button>
+            }
+            
+        </Form>
+
     )
 }
 
