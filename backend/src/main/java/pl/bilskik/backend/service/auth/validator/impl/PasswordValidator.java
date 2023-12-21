@@ -5,7 +5,7 @@ import me.gosimple.nbvcxz.resources.*;
 import me.gosimple.nbvcxz.scoring.Result;
 import org.springframework.stereotype.Component;
 import pl.bilskik.backend.service.auth.validator.enumeration.Entropy;
-import pl.bilskik.backend.service.auth.validator.exception.PasswordException;
+import pl.bilskik.backend.service.auth.exception.PasswordException;
 
 import java.util.List;
 
@@ -62,7 +62,7 @@ public class PasswordValidator {
     private Configuration configuration(List<String> excludedWords) {
         List<Dictionary> dictionaries = buildExcludedDictionary(excludedWords);
         Configuration configuration = new ConfigurationBuilder()
-                .setMinimumEntropy(80D)
+                .setMinimumEntropy(45D)
                 .setDictionaries(dictionaries)
                 .createConfiguration();
         return configuration;

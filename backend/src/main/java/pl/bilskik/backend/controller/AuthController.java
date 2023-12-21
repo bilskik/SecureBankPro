@@ -5,17 +5,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.bilskik.backend.dto.UserRegisterDTO;
-import pl.bilskik.backend.security.AuthRequest;
+import pl.bilskik.backend.data.dto.UserRegisterDTO;
+import pl.bilskik.backend.data.request.FirstLoginRequest;
+import pl.bilskik.backend.data.request.LoginRequest;
+import pl.bilskik.backend.data.response.AuthResponse;
+import pl.bilskik.backend.data.response.FirstLoginResponse;
 import pl.bilskik.backend.service.AuthService;
 import pl.bilskik.backend.service.auth.AuthServiceImpl;
+
+import static pl.bilskik.backend.controller.mapping.RequestPath.*;
 
 
 @RestController
 @CrossOrigin
+@RequestMapping(value = AUTH_PATH)
 public class AuthController {
-
-    private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private AuthService authService;
 
@@ -24,16 +28,23 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthRequest> register(@RequestBody UserRegisterDTO userRegisterDTO) {
-        authService.register(userRegisterDTO);
-        return ResponseEntity.ok(new AuthRequest("username", "password"));
+    @PostMapping(value = REGISTER_PATH)
+    public ResponseEntity<AuthResponse> register(@RequestBody UserRegisterDTO userRegisterDTO) {
+        return ResponseEntity.ok(new AuthResponse(authService.register(userRegisterDTO)));
     }
 
-    @PostMapping("/attemptLogin")
-    public ResponseEntity<String> attemptLogin(@RequestBody String username) {
-        authService.login(username);
-        return ResponseEntity.ok("OK");
+    @PostMapping(value = LOGIN_BEGIN_PATH)
+    public ResponseEntity<FirstLoginResponse> beginLogin(@RequestBody FirstLoginRequest request) {
+        return ResponseEntity.ok(new FirstLoginResponse(authService.beginLogin(request.getUsername())));
+    }
+    @PostMapping(value = LOGIN_FINISH_PATH)
+    public ResponseEntity<FirstLoginResponse> finishLogin(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(new FirstLoginResponse(authService.finishLogin(loginRequest.getUsername(),
+                loginRequest.getPassword())));
+    }
+    @PostMapping(value = RESET_PASSWORD_PATH)
+    public String resetPassword() {
+        return "TO DO";
     }
 
 

@@ -1,10 +1,11 @@
 package pl.bilskik.backend.service;
 
 
-import pl.bilskik.backend.dto.UserRegisterDTO;
+import pl.bilskik.backend.data.dto.UserRegisterDTO;
 
 public interface AuthService {
-    void register(UserRegisterDTO userRegisterDTO);
-    void login(String username);
-    void changePassword();
+    String register(UserRegisterDTO userRegisterDTO);
+    String beginLogin(String username);
+    String finishLogin(String username, String password);
+    String changePassword();
 }

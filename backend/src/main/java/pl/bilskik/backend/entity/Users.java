@@ -42,7 +42,10 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "transfer_id")
     )
     private List<Transfer> transferList;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
     private List<Password> passwordList;
 
     public Users() {}

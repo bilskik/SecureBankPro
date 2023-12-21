@@ -1,6 +1,6 @@
 package pl.bilskik.backend.service.auth.validator;
 
-import pl.bilskik.backend.dto.UserRegisterDTO;
+import pl.bilskik.backend.data.dto.UserRegisterDTO;
 import pl.bilskik.backend.service.auth.validator.enumeration.Entropy;
 
 public interface ValidatorManager {

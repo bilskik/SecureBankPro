@@ -1,4 +1,4 @@
-package pl.bilskik.backend.dto;
+package pl.bilskik.backend.data.dto;
 
 import jakarta.annotation.Nullable;
 import lombok.Getter;

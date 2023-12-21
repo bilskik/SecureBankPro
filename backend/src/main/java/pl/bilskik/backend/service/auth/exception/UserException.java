@@ -1,6 +1,4 @@
-package pl.bilskik.backend.service.auth.validator.exception;
-
-import pl.bilskik.backend.dto.UserRegisterDTO;
+package pl.bilskik.backend.service.auth.exception;
 
 public class UserException extends RuntimeException {
     public UserException(String message) {

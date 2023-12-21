@@ -1,9 +1,9 @@
 package pl.bilskik.backend.service.auth.validator.impl;
 import org.springframework.stereotype.Component;
-import pl.bilskik.backend.dto.UserRegisterDTO;
+import pl.bilskik.backend.data.dto.UserRegisterDTO;
 import pl.bilskik.backend.service.auth.validator.constant.UserConstants;
 import pl.bilskik.backend.service.auth.validator.enumeration.Entropy;
-import pl.bilskik.backend.service.auth.validator.exception.UserException;
+import pl.bilskik.backend.service.auth.exception.UserException;
 import pl.bilskik.backend.service.auth.validator.ValidatorManager;
 
 @Component

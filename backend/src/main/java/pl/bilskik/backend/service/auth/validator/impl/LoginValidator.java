@@ -1,7 +1,7 @@
 package pl.bilskik.backend.service.auth.validator.impl;
 
 import org.springframework.stereotype.Component;
-import pl.bilskik.backend.service.auth.validator.exception.UsernameException;
+import pl.bilskik.backend.service.auth.exception.UsernameException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
