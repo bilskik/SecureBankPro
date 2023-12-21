@@ -25,4 +25,5 @@ public class Password {
         this.ranges = ranges;
         this.password = password;
     }
+    public Password() {}
 }

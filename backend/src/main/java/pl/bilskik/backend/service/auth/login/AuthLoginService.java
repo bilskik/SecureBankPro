@@ -1,8 +1,13 @@
 package pl.bilskik.backend.service.auth.login;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.bilskik.backend.entity.Password;
+import pl.bilskik.backend.entity.Users;
+import pl.bilskik.backend.repository.PasswordRepository;
 import pl.bilskik.backend.repository.UserRepository;
 import pl.bilskik.backend.service.auth.creator.PasswordCreator;
+import pl.bilskik.backend.service.auth.exception.PasswordException;
 import pl.bilskik.backend.service.auth.exception.UsernameException;
 
 import java.util.*;
@@ -11,13 +16,19 @@ import java.util.*;
 public class AuthLoginService {
 
     private final UserRepository userRepository;
+    private final PasswordRepository passwordRepository;
     private final PasswordCreator passwordCreator;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthLoginService(UserRepository userRepository,
-                            PasswordCreator passwordCreator
+                            PasswordCreator passwordCreator,
+                            PasswordRepository passwordRepository,
+                            PasswordEncoder passwordEncoder
                             ) {
         this.userRepository = userRepository;
         this.passwordCreator = passwordCreator;
+        this.passwordRepository = passwordRepository;
+        this.passwordEncoder = passwordEncoder;
     }
     public String beginLogin(String username) {
         if(username == null || username.equals("")) {
@@ -33,6 +44,36 @@ public class AuthLoginService {
         return range;
     }
 
+    public String finishLogin(String username, String password) {
+        if(username == null || username.equals("")) {
+            throw new UsernameException("Username cannot be empty!");
+        }
+        if(password == null || password.equals("")) {
+            throw new PasswordException("Password cannot be empty!");
+        }
+        Optional<Users> user = userRepository.findByUsername(username);
+        if(user.isEmpty()) {
+            throw new UsernameException("Invalid identities!");
+        }
+        List<Password> passwordList = passwordRepository.findPasswordByUser(user.get());
+        if(passwordList == null || passwordList.isEmpty()) {
+            throw new UsernameException("Invalid identities");
+        }
+        String hashedPassword = passwordEncoder.encode(password);
+        boolean isFoundMatching = false;
+        for(var pass : passwordList) {
+            if (hashedPassword.equals(pass.getPassword())) {
+                isFoundMatching = true;
+                break;
+            }
+        }
+        if(!isFoundMatching) {
+            throw new UsernameException("Invalid identities!");
+        }
+        return "Logged in";
+     }
+
+
     private String chooseRange(List<String> ranges) {
         Random random = new Random();
         int passwordSelected = random.nextInt(ranges.size());
@@ -47,4 +88,6 @@ public class AuthLoginService {
         int partPassLen = random.nextInt(maxPartLen - minPartLen + 1) + minPartLen;
         return passwordCreator.generateDummyRange(dummyPassLen, partPassLen);
     }
+
+
 }

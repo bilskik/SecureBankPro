@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
     }
     @Override
     public String finishLogin(String username, String password) {
-        return "";
+        return loginService.finishLogin(username, password);
     }
 
     @Override
