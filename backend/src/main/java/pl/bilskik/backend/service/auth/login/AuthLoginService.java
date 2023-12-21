@@ -1,5 +1,6 @@
 package pl.bilskik.backend.service.auth.login;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.bilskik.backend.entity.Password;
@@ -13,6 +14,7 @@ import pl.bilskik.backend.service.auth.exception.UsernameException;
 import java.util.*;
 
 @Service
+@Slf4j
 public class AuthLoginService {
 
     private final UserRepository userRepository;
@@ -59,10 +61,9 @@ public class AuthLoginService {
         if(passwordList == null || passwordList.isEmpty()) {
             throw new UsernameException("Invalid identities");
         }
-        String hashedPassword = passwordEncoder.encode(password);
         boolean isFoundMatching = false;
         for(var pass : passwordList) {
-            if (hashedPassword.equals(pass.getPassword())) {
+            if (passwordEncoder.matches(password, pass.getPassword())) {
                 isFoundMatching = true;
                 break;
             }
