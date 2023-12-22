@@ -29,7 +29,7 @@ Explanation of less-known libraries:
 
 ## Architecture
 
-<img src=" documentation/Architecture.drawio.svg" >
+<img src="documentation/Architecture.drawio.svg"/>
 
 Explanation
 
