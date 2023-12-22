@@ -19,20 +19,7 @@ public class SecurityUser implements UserDetails {
         passwordIterator = 0;
     }
 
-    private String getNextPassword() {
-        List<String> passwords = user.getPasswords();
-        if(passwords == null || passwords.isEmpty()) {
-            throw new PasswordException("PasswordList are null or empty!");
-        }
-        if(passwordIterator < passwords.size()) {
-            String currPassword = user.getPasswords().get(passwordIterator);
-            passwordIterator++;
-            return currPassword;
-        } else {
-            passwordIterator = 0;
-            return user.getPasswords().get(passwordIterator);
-        }
-    }
+
     public int passwordsLength() {
         return user.getPasswords().size();
     }
@@ -69,5 +56,19 @@ public class SecurityUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+    private String getNextPassword() {
+        List<String> passwords = user.getPasswords();
+        if(passwords == null || passwords.isEmpty()) {
+            throw new PasswordException("PasswordList are null or empty!");
+        }
+        if(passwordIterator < passwords.size()) {
+            String currPassword = user.getPasswords().get(passwordIterator);
+            passwordIterator++;
+            return currPassword;
+        } else {
+            passwordIterator = 0;
+            return user.getPasswords().get(passwordIterator);
+        }
     }
 }

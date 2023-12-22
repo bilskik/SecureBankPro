@@ -60,6 +60,11 @@ public class CustomAuthProvider implements AuthenticationProvider {
         }
     }
 
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return UsernamePasswordAuthenticationToken.class.equals(authentication);
+    }
+
     private boolean matchPassword(String credentials, SecurityUser loadedUser) {
         for(int i=0; i<loadedUser.passwordsLength(); i++) {
             if(passwordEncoder.matches(credentials, loadedUser.getPassword())) {
@@ -67,11 +72,6 @@ public class CustomAuthProvider implements AuthenticationProvider {
             }
         }
         return false;
-    }
-
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.equals(authentication);
     }
 
     private void mitigateAgainstTimingAttack(String credentials) {
