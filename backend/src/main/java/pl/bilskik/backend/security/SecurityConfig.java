@@ -9,19 +9,20 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pl.bilskik.backend.security.filter.UserPassAuthFilter;
+import pl.bilskik.backend.security.filter.AuthFilter;
 import pl.bilskik.backend.security.manager.AuthManager;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserPassAuthFilter userPassAuthFilter;
+    private final AuthFilter authFilter;
     private final AuthManager authenticationManager;
     @Autowired
-    public SecurityConfig(UserPassAuthFilter userPassAuthFilter,
+    public SecurityConfig(AuthFilter authFilter,
                           AuthManager authenticationManager) {
-        this.userPassAuthFilter = userPassAuthFilter;
+        this.authFilter = authFilter;
         this.authenticationManager = authenticationManager;
     }
     @Bean
@@ -29,12 +30,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)        //to change later -> its so insecure
-//                .addFilterBefore(usernameFilter, UserPassAuthFilter.class)
-                .addFilterBefore(userPassAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .authenticationManager()
+                .addFilterAt(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((auth) -> {
                     auth
-                            .requestMatchers("/auth/**")
+                            .requestMatchers("/auth/register/**", "/auth/login/begin")
                             .permitAll()
                             .anyRequest()
                             .authenticated();

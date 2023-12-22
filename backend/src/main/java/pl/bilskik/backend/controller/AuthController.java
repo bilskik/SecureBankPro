@@ -38,9 +38,11 @@ public class AuthController {
         return ResponseEntity.ok(new FirstLoginResponse(authService.beginLogin(request.getUsername())));
     }
     @PostMapping(value = LOGIN_FINISH_PATH)
-    public ResponseEntity<FirstLoginResponse> finishLogin(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(new FirstLoginResponse(authService.finishLogin(loginRequest.getUsername(),
-                loginRequest.getPassword())));
+    public ResponseEntity<String> finishLogin() {
+//        System.out.println(loginRequest.getPassword());
+//        System.out.println(loginRequest.getUsername());
+
+        return ResponseEntity.ok("OK");
     }
     @PostMapping(value = RESET_PASSWORD_PATH)
     public String resetPassword() {
