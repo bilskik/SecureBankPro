@@ -15,7 +15,7 @@ type PasswordStoreType = {
 const PasswordGroup = ({ ranges, onHandleSubmit } :  PasswordGroupType) => {
     const [password,setPassword] = useState<string>('');
     const [passArr, setPassArr] = useState<PasswordStoreType[]>([{ value : "-1", index : "-1" }]);
-    const arrayLengthPass = Array.from({ length : 20 }, (_, i) => String(i))
+    const arrayLengthPass = Array.from({ length : PASS_INPUT_LEN }, (_, i) => String(i))
 
     useEffect(() => {
         if(ranges) {
