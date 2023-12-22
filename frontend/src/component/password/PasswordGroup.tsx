@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react'
-import { Form, Stack } from 'react-bootstrap'
+import { Button, Form, Stack } from 'react-bootstrap'
 import { useState } from 'react'
 import PasswordItem from './PasswordItem'
 import { PASS_INPUT_LEN } from './constant/constant'
 
 type PasswordGroupType = {
     ranges : string
+    onHandleSubmit : (password: string) => void
 }
 type PasswordStoreType = {
     index : string,
     value : string
 }
-const PasswordGroup = ({ ranges } :  PasswordGroupType) => {
+const PasswordGroup = ({ ranges, onHandleSubmit } :  PasswordGroupType) => {
     const [password,setPassword] = useState<string>('');
     const [passArr, setPassArr] = useState<PasswordStoreType[]>([{ value : "-1", index : "-1" }]);
     const arrayLengthPass = Array.from({ length : 20 }, (_, i) => String(i))
@@ -35,7 +36,12 @@ const PasswordGroup = ({ ranges } :  PasswordGroupType) => {
         })
         setPassArr(updatedPassArr)
     }
-    console.log(passArr)
+    const onSubmit = () => {
+        const password = passArr.map((el : PasswordStoreType) => {
+            return el.value
+        })
+        onHandleSubmit(password.join(''))
+    }
     return (
         <>
             <Form.Label>Password</Form.Label>
@@ -46,15 +52,11 @@ const PasswordGroup = ({ ranges } :  PasswordGroupType) => {
                             passArr.some((el) => el.index === item) ? 
                                 <PasswordItem 
                                     isDisabled={false}
-                                    // setPassword={setPassword}
-                                    // value=""
                                     onValue={handlePassChange}
                                     index={item}
                                 /> :
                                 <PasswordItem 
                                     isDisabled={true}
-                                    // setPassword={setPassword}
-                                    // value=''
                                     onValue={handlePassChange}
                                     index={item}
                                 />
@@ -62,6 +64,9 @@ const PasswordGroup = ({ ranges } :  PasswordGroupType) => {
 
                 }
             </Stack>
+            <Button variant='primary' onClick={onSubmit}>
+                Submit
+            </Button>
         </>
     )
 }

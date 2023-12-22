@@ -32,10 +32,9 @@ public class SecurityConfig {
 //                .addFilterBefore(usernameFilter, UserPassAuthFilter.class)
                 .addFilterBefore(userPassAuthFilter, UsernamePasswordAuthenticationFilter.class)
 //                .authenticationManager()
-
                 .authorizeHttpRequests((auth) -> {
                     auth
-                            .requestMatchers("/login", "/register")
+                            .requestMatchers("/auth/**")
                             .permitAll()
                             .anyRequest()
                             .authenticated();

@@ -57,6 +57,7 @@ public class PasswordCreator {
     private List<Password> mapToPasswordObj(Set<String> partialPasswordList, Set<String> indiciesList) {
         List<String> convertedPartialPasswordList = partialPasswordList.stream().toList();
         List<String> convertedIndiciesList = indiciesList.stream().toList();
+
         if(partialPasswordList.size() != indiciesList.size()) {
             throw new IllegalArgumentException("There is an error in creating passwords!");
         }
@@ -64,17 +65,17 @@ public class PasswordCreator {
         for(int i=0; i<partialPasswordList.size(); i++) {
             passwordList.add(new Password(convertedIndiciesList.get(i),
                     passwordEncoder.encode(convertedPartialPasswordList.get(i))));
-            log.info(passwordList.get(i).getPassword());
-            log.warn(passwordList.get(i).getRanges());
-
         }
         return passwordList;
     }
+
     private String mapIndicies(SortedSet<Integer> indexTs) {
         StringBuilder container = new StringBuilder();
         for(var i : indexTs) {
             container.append(i);
+            container.append(":");
         }
+        container.deleteCharAt(container.length() - 1);
         return container.toString();
     }
 
