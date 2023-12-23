@@ -17,24 +17,17 @@ public class Transfer {
     private int transferId;
     @Column(name = "transfer_title")
     private String transferTitle;
-    @Column(name = "receiver_name")
-    private String receiverName;
     @Column(name = "amount")
-    private Long amount;
+    private long amount;
     @ManyToMany(mappedBy = "transferList")
     private List<Users> user; //0 fromUser //1 toUser
 
-    public Transfer() {
-
+    public Transfer() {}
+    public Transfer(int transferId, String transferTitle, long amount, List<Users> user) {
+        this.transferId = transferId;
+        this.transferTitle = transferTitle;
+        this.amount = amount;
+        this.user = user;
     }
-
-//    public Transfer(Long transferId, String transferTitle, String receiverName, Long amount, User fromUser, User toUser) {
-//        this.transferId = transferId;
-//        this.transferTitle = transferTitle;
-//        this.receiverName = receiverName;
-//        this.amount = amount;
-//        this.fromUser = fromUser;
-//        this.toUser = toUser;
-//    }
 }
 

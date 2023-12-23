@@ -11,9 +11,11 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<Users,Integer> {
 
+    Optional<Users> findByAccountNo(String accountNo);
+
     Optional<Users> findByUsername(String username);
 
-    @Query("SELECT p.ranges from Users u JOIN u.passwordList p where u.username = ?1")
+    @Query("SELECT p.ranges FROM Users u JOIN u.passwordList p WHERE u.username = ?1")
     List<String> findPasswordRangeByUsername(String username);
 
 }
