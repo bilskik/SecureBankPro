@@ -17,5 +17,4 @@ public interface UserRepository extends JpaRepository<Users,Integer> {
 
     @Query("SELECT p.ranges FROM Users u JOIN u.passwordList p WHERE u.username = ?1")
     List<String> findPasswordRangeByUsername(String username);
-
 }

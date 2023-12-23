@@ -17,16 +17,19 @@ public class Transfer {
     private int transferId;
     @Column(name = "transfer_title")
     private String transferTitle;
-    @Column(name = "amount")
-    private long amount;
-    @ManyToMany(mappedBy = "transferList")
+    @Column(name = "balance")
+    private long balance;
+    @ManyToMany(
+            mappedBy = "transferList",
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE }
+    )
     private List<Users> user; //0 fromUser //1 toUser
 
     public Transfer() {}
-    public Transfer(int transferId, String transferTitle, long amount, List<Users> user) {
+    public Transfer(int transferId, String transferTitle, long balance, List<Users> user) {
         this.transferId = transferId;
         this.transferTitle = transferTitle;
-        this.amount = amount;
+        this.balance = balance;
         this.user = user;
     }
 }

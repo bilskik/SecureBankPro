@@ -3,10 +3,7 @@ package pl.bilskik.backend.controller;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.bilskik.backend.data.dto.TransferDTO;
 import pl.bilskik.backend.entity.Transfer;
 import pl.bilskik.backend.service.TransferService;
@@ -33,7 +30,7 @@ public class TransferController {
         return ResponseEntity.ok(transferService.getTransferHistory(principal.getName()));
     }
     @PostMapping(value = PAYMENT_PATH)
-    public ResponseEntity<String> sendTransfer(@Valid TransferDTO transfer) {
+    public ResponseEntity<String> sendTransfer(@RequestBody @Valid TransferDTO transfer) {
         transferService.sendTransfer(transfer);
         return ResponseEntity.ok("OK");
     }

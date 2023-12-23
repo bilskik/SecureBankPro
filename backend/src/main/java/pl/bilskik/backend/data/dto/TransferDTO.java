@@ -20,21 +20,21 @@ public class TransferDTO {
     private String receiverName;
     @Size(min = 20, max = 20,  message = "Account number size must be equals to 20!")
     private String receiverAccNo;
-    @Min(value = 1, message = "Amount of money to send must be at least 1!")
-    private long amount;
+    @Min(value = 1, message = "Balance of money to send must be at least 1!")
+    private long balance;
 
     public TransferDTO(String transferTitle,
                        String senderName,
                        String senderAccNo,
                        String receiverName,
                        String receiverAccNo,
-                       long amount) {
+                       long balance) {
         this.transferTitle = transferTitle;
         this.senderName = senderName;
         this.senderAccNo = senderAccNo;
         this.receiverName = receiverName;
         this.receiverAccNo = receiverAccNo;
-        this.amount = amount;
+        this.balance = balance;
     }
 
     public TransferDTO() {}

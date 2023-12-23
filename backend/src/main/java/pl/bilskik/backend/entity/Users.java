@@ -7,6 +7,7 @@ import pl.bilskik.backend.entity.Password;
 import pl.bilskik.backend.entity.Transfer;
 import pl.bilskik.backend.entity.embeded.Address;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,13 +33,11 @@ public class Users {
             unique = true)
     private String accountNo;
     @Column(name = "balance")
-    private int balance;
-//    @Embedded
-//    private Address address;
+    private long balance;
     @ManyToMany
     @JoinTable(
             name = "user_transfer_tbl",
-            joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "transfer_id")
     )
     private List<Transfer> transferList;
@@ -50,24 +49,11 @@ public class Users {
 
     public Users() {}
 
-//    public Users(Long userId,
-//                String username,
-//                String password,
-//                int pesel,
-//                String creditCardNo,
-//                int accountNo,
-//                Long balance,
-//                Address address,
-//                List<Transfer> transferList
-//    ) {
-//        this.userId = userId;
-//        this.username = username;
-//        this.password = password;
-//        this.pesel = pesel;
-//        this.creditCardNo = creditCardNo;
-//        this.accountNo = accountNo;
-//        this.balance = balance;
-//        this.address = address;
-//        this.transferList = transferList;
-//    }
+    public void addTransfer(Transfer transfer) {
+        if(transferList == null) {
+            transferList = new ArrayList<>();
+        }
+        transferList.add(transfer);
+    }
+
 }

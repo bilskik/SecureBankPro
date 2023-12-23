@@ -53,6 +53,9 @@ public class PasswordCreator {
         Random random = new Random();
         return random.nextInt(maxPartPassLen - minPartPassLen + 1) + minPartPassLen;
     }
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
 
     private List<Password> mapToPasswordObj(Set<String> partialPasswordList, Set<String> indiciesList) {
         List<String> convertedPartialPasswordList = partialPasswordList.stream().toList();

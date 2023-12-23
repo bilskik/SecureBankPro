@@ -2,6 +2,7 @@ package pl.bilskik.backend.service.transfer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import pl.bilskik.backend.data.dto.TransferDTO;
@@ -24,6 +25,7 @@ public class TransferServiceImpl implements TransferService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public TransferServiceImpl(
             TransferRepository transferRepository,
             ModelMapper modelMapper,
@@ -39,11 +41,23 @@ public class TransferServiceImpl implements TransferService {
         if(username == null) {
             throw new UsernameException("Error! Principal is null!");
         }
-        List<Transfer> transferList = transferRepository.findAllUsersTransfersByUsername(username);
-        if(transferList == null || transferList.isEmpty()) {
-            return null;
+        Optional<Users> user = userRepository.findByUsername(username);
+        if(user.isEmpty()) {
+            throw new UserException("User not found!");
         }
-        return mapTransferToDTO(transferList);
+        return mapToTransferDTO(user.get());
+    }
+
+    private List<TransferDTO> mapToTransferDTO(Users user) {
+        List<Transfer> transferList = user.getTransferList();
+        List<TransferDTO> transferDTOList = new ArrayList<>();
+        for(var transfer : transferList) {
+            TransferDTO currTransfer = modelMapper.map(transfer, TransferDTO.class);
+            currTransfer.setSenderName(user.getUsername());
+            currTransfer.setSenderAccNo(user.getAccountNo());
+            transferDTOList.add(currTransfer);
+        }
+        return transferDTOList;
     }
 
     @Override
@@ -61,19 +75,30 @@ public class TransferServiceImpl implements TransferService {
         return "GIT";
     }
 
-    private List<TransferDTO> mapTransferToDTO(List<Transfer> transferList) {
-        List<TransferDTO> transferDTOList = new ArrayList<>();
-        for(var transfer : transferList) {
-            transferDTOList.add(modelMapper.map(transfer, TransferDTO.class));
-        }
-        return transferDTOList;
-    }
-
     private Transfer mapToTransferObj(TransferDTO transferDTO,
                                       Users senderUser,
                                       Users receiverUser) {
+
         Transfer transfer = modelMapper.map(transferDTO, Transfer.class);
         transfer.setUser(List.of(senderUser, receiverUser));
+
+        updateBalance(transfer.getBalance(), senderUser, receiverUser);
+
+        senderUser.addTransfer(transfer);
+        receiverUser.addTransfer(transfer);
+
         return transfer;
+    }
+
+    private void updateBalance(long balance,
+                               Users senderUser,
+                               Users receiverUser) {
+        long currSenderUserBalance = senderUser.getBalance();
+        long currReceiverUserBalance = receiverUser.getBalance();
+//        if(currSenderUserBalance < balance) {
+//            throw new UserException("Cannot perform transfer -> sender doesnt have enoguh money!");
+//        }
+        senderUser.setBalance(currSenderUserBalance - balance);
+        receiverUser.setBalance(currReceiverUserBalance + balance);
     }
 }
