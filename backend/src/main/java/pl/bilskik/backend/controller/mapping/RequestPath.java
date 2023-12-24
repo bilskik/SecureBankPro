@@ -8,8 +8,7 @@ public class RequestPath {
     public final static String LOGIN_BEGIN_PATH = "/login/begin";
     public final static String PAYMENT_PATH = "/payment";
     public final static String TRANSFER_PATH = "/transfer";
-    public final static String LOGIN_PATH = "/auth/login/";
-
-
-
+    public final static String LOGIN_PATH = "/auth/login";
+    public final static String USER_PATH = "/user";
+    public final static String USER_DETAILS_PATH = "/details";
 }

@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pl.bilskik.backend.data.dto.UserDTO;
+import pl.bilskik.backend.data.request.LoginRequest;
 import pl.bilskik.backend.security.manager.AuthManager;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class AuthFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
         if(request.getMethod().equals("POST") && request.getServletPath().equals(AUTH_PATH + LOGIN_FINISH_PATH)) {
             try {
-                UserDTO userDTO = mapToUserDTO(request);
+                LoginRequest userDTO = mapToUserDTO(request);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getUsername(),
                         userDTO.getPassword());
                 Authentication resultAuthentication = authManager.authenticate(authentication);
@@ -48,8 +49,8 @@ public class AuthFilter extends OncePerRequestFilter {
         }
     }
 
-    private UserDTO mapToUserDTO(HttpServletRequest request) throws IOException {
+    private LoginRequest mapToUserDTO(HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(request.getInputStream(), UserDTO.class);
+        return objectMapper.readValue(request.getInputStream(), LoginRequest.class);
     }
 }
