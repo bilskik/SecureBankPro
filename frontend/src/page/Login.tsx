@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import axios from '../api/axios/axios';
+import axios from '../common/axios/axios';
 import { Button, Form } from 'react-bootstrap';
-import { AUTH_PATH, LOGIN_BEGIN_PATH, LOGIN_FINISH_PATH, REGISTER_PATH } from '../api/url/urlMapper';
+import { AUTH_PATH, LOGIN_BEGIN_PATH, LOGIN_FINISH_PATH, REGISTER_PATH } from '../common/url/urlMapper';
 import PasswordGroup from '../component/password/PasswordGroup';
 
 const Login = () => {

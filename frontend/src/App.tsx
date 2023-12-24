@@ -1,17 +1,20 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./page/Login";
-import Home from "./page/Home";
+import Dashboard from "./page/Dashboard";
+import { dashboardUserLoader } from "./util/dashboardUserLoader";
+
 
 function App() {
 
   const routes = createBrowserRouter([
     {
-      path : "/",
+      path : "/login",
       element : <Login/>
     },
     {
-      path : "/bank",
-      element : <Home/>
+      path : "/",
+      loader : dashboardUserLoader,
+      element : <Dashboard/>
     }
   ])
 
