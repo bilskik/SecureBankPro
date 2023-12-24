@@ -1,5 +1,6 @@
 package pl.bilskik.backend.service.transfer;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +54,13 @@ public class TransferServiceImpl implements TransferService {
         List<TransferDTO> transferDTOList = new ArrayList<>();
         for(var transfer : transferList) {
             TransferDTO currTransfer = modelMapper.map(transfer, TransferDTO.class);
-            currTransfer.setSenderName(user.getUsername());
-            currTransfer.setSenderAccNo(user.getAccountNo());
             transferDTOList.add(currTransfer);
         }
         return transferDTOList;
     }
 
     @Override
+    @Transactional
     public String sendTransfer(TransferDTO transferDTO) {
         Optional<Users> senderUser = userRepository.findByAccountNo(transferDTO.getSenderAccNo());
         Optional<Users> receiverUser = userRepository.findByAccountNo(transferDTO.getReceiverAccNo());
@@ -72,7 +72,7 @@ public class TransferServiceImpl implements TransferService {
         }
         Transfer transfer = mapToTransferObj(transferDTO, senderUser.get(), receiverUser.get());
         transferRepository.save(transfer);
-        return "GIT";
+        return "Transfer has been sended!";
     }
 
     private Transfer mapToTransferObj(TransferDTO transferDTO,

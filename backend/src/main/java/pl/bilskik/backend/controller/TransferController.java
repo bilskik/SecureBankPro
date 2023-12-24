@@ -16,7 +16,6 @@ import static pl.bilskik.backend.controller.mapping.RequestPath.TRANSFER_PATH;
 
 @RestController
 @RequestMapping(value = TRANSFER_PATH)
-@Slf4j
 public class TransferController {
 
     private final TransferService transferService;
@@ -31,7 +30,7 @@ public class TransferController {
     }
     @PostMapping(value = PAYMENT_PATH)
     public ResponseEntity<String> sendTransfer(@RequestBody @Valid TransferDTO transfer) {
-        transferService.sendTransfer(transfer);
-        return ResponseEntity.ok("OK");
+
+        return ResponseEntity.ok(transferService.sendTransfer(transfer));
     }
 }
