@@ -1,24 +1,23 @@
 package pl.bilskik.backend.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.bilskik.backend.data.dto.UserRegisterDTO;
+import pl.bilskik.backend.data.request.UserRegisterRequest;
 import pl.bilskik.backend.data.request.FirstLoginRequest;
-import pl.bilskik.backend.data.request.LoginRequest;
-import pl.bilskik.backend.data.response.AuthResponse;
 import pl.bilskik.backend.data.response.FirstLoginResponse;
+import pl.bilskik.backend.data.response.ResponseMessage;
 import pl.bilskik.backend.service.AuthService;
 import pl.bilskik.backend.service.auth.AuthServiceImpl;
 
-import static pl.bilskik.backend.controller.mapping.RequestPath.*;
+import static pl.bilskik.backend.controller.mapping.UrlMapping.*;
 
 
 @RestController
-@CrossOrigin
 @RequestMapping(value = AUTH_PATH)
+@CrossOrigin
 public class AuthController {
 
     private AuthService authService;
@@ -29,22 +28,30 @@ public class AuthController {
     }
 
     @PostMapping(value = REGISTER_PATH)
-    public ResponseEntity<AuthResponse> register(@RequestBody UserRegisterDTO userRegisterDTO) {
-        return ResponseEntity.ok(new AuthResponse(authService.register(userRegisterDTO)));
+    public ResponseEntity<ResponseMessage> register(
+            @RequestBody @Valid UserRegisterRequest userRegisterRequest
+    ) {
+        return new ResponseEntity<>(
+                new ResponseMessage(authService.register(userRegisterRequest)),
+                HttpStatus.CREATED
+        );
     }
 
     @PostMapping(value = LOGIN_BEGIN_PATH)
-    public ResponseEntity<FirstLoginResponse> beginLogin(@RequestBody FirstLoginRequest request) {
+    public ResponseEntity<FirstLoginResponse> beginLogin(
+            @RequestBody FirstLoginRequest request
+    ) {
         return ResponseEntity.ok(new FirstLoginResponse(authService.beginLogin(request.getUsername())));
     }
+
     @PostMapping(value = LOGIN_FINISH_PATH)
-    public ResponseEntity<AuthResponse> finishLogin() {
-        return ResponseEntity.ok(new AuthResponse("Authenticated!"));
+    public ResponseEntity<ResponseMessage> finishLogin() {
+        return ResponseEntity.ok(new ResponseMessage("Authenticated!"));
     }
+
     @PostMapping(value = RESET_PASSWORD_PATH)
     public String resetPassword() {
         return "TO DO";
     }
-
 
 }

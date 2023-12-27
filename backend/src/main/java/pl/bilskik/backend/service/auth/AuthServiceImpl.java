@@ -3,7 +3,7 @@ package pl.bilskik.backend.service.auth;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.bilskik.backend.data.dto.UserRegisterDTO;
+import pl.bilskik.backend.data.request.UserRegisterRequest;
 import pl.bilskik.backend.service.AuthService;
 import pl.bilskik.backend.service.auth.login.AuthLoginService;
 import pl.bilskik.backend.service.auth.passchanger.AuthPasswordChangeService;
@@ -28,17 +28,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String register(UserRegisterDTO userRegisterDTO) {
-        return registerService.register(userRegisterDTO);
+    public String register(UserRegisterRequest userRegisterRequest) {
+        return registerService.register(userRegisterRequest);
     }
 
     @Override
     public String beginLogin(String username) {
        return loginService.beginLogin(username);
-    }
-    @Override
-    public String finishLogin(String username, String password) {
-        return loginService.finishLogin(username, password);
     }
 
     @Override

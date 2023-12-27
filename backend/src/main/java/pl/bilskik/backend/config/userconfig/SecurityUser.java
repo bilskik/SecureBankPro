@@ -1,8 +1,7 @@
-package pl.bilskik.backend.security.userconfig;
+package pl.bilskik.backend.config.userconfig;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.bilskik.backend.data.dto.UserDTO;
 import pl.bilskik.backend.data.dto.UserLoginDTO;
 import pl.bilskik.backend.service.auth.exception.PasswordException;
 

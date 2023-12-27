@@ -1,11 +1,10 @@
 package pl.bilskik.backend.service;
 
-import org.springframework.stereotype.Service;
-import pl.bilskik.backend.data.dto.UserDTO;
-import pl.bilskik.backend.data.dto.UserDetailsDTO;
+import pl.bilskik.backend.data.response.UserResponse;
+import pl.bilskik.backend.data.response.UserDetailsResponse;
 
 public interface UserService {
-    UserDTO getUser(String username);
+    UserResponse getUser(String username);
 
-    UserDetailsDTO getUserDetails(String username);
+    UserDetailsResponse getUserDetails(String username);
 }

@@ -1,16 +1,11 @@
-package pl.bilskik.backend.security.manager;
+package pl.bilskik.backend.config.manager;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
-import pl.bilskik.backend.security.provider.CustomAuthProvider;
-
-import java.security.AuthProvider;
+import pl.bilskik.backend.config.provider.CustomAuthProvider;
 
 @Component
 public class AuthManager implements AuthenticationManager {

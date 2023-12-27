@@ -1,4 +1,4 @@
-package pl.bilskik.backend.session;
+package pl.bilskik.backend.config.session;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

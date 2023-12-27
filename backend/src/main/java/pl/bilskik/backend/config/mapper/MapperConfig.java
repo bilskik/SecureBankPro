@@ -1,4 +1,4 @@
-package pl.bilskik.backend.mapper;
+package pl.bilskik.backend.config.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

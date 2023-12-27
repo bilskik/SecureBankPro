@@ -1,4 +1,4 @@
-package pl.bilskik.backend.security.userconfig;
+package pl.bilskik.backend.config.userconfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

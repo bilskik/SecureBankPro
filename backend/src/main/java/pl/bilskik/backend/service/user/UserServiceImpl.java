@@ -2,12 +2,9 @@ package pl.bilskik.backend.service.user;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
-import pl.bilskik.backend.data.dto.UserDTO;
-import pl.bilskik.backend.data.dto.UserDetailsDTO;
+import pl.bilskik.backend.data.response.UserResponse;
+import pl.bilskik.backend.data.response.UserDetailsResponse;
 import pl.bilskik.backend.entity.Users;
 import pl.bilskik.backend.repository.UserRepository;
 import pl.bilskik.backend.service.UserService;
@@ -29,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUser(String username) {
+    public UserResponse getUser(String username) {
         if(username == null || username.isBlank()) {
             throw new UsernameException("Username is null!");
         }
@@ -37,12 +34,12 @@ public class UserServiceImpl implements UserService {
         if(user.isEmpty()) {
             throw new UserException("User is empty!");
         }
-        return mapper.map(user.get(), UserDTO.class);
+        return mapper.map(user.get(), UserResponse.class);
 
     }
 
     @Override
-    public UserDetailsDTO getUserDetails(String username) {
+    public UserDetailsResponse getUserDetails(String username) {
         if(username == null || username.isBlank()) {
             throw new UsernameException("Username is null!");
         }
@@ -50,6 +47,6 @@ public class UserServiceImpl implements UserService {
         if(user.isEmpty()) {
             throw new UserException("User is empty!");
         }
-        return mapper.map(user.get(), UserDetailsDTO.class);
+        return mapper.map(user.get(), UserDetailsResponse.class);
     }
 }

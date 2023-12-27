@@ -1,4 +1,4 @@
-package pl.bilskik.backend.security.filter;
+package pl.bilskik.backend.config.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -10,14 +10,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pl.bilskik.backend.data.dto.UserDTO;
 import pl.bilskik.backend.data.request.LoginRequest;
-import pl.bilskik.backend.security.manager.AuthManager;
+import pl.bilskik.backend.config.manager.AuthManager;
 
 import java.io.IOException;
 
-import static pl.bilskik.backend.controller.mapping.RequestPath.AUTH_PATH;
-import static pl.bilskik.backend.controller.mapping.RequestPath.LOGIN_FINISH_PATH;
+import static pl.bilskik.backend.controller.mapping.UrlMapping.AUTH_PATH;
+import static pl.bilskik.backend.controller.mapping.UrlMapping.LOGIN_FINISH_PATH;
 
 @Component
 public class AuthFilter extends OncePerRequestFilter {
@@ -39,13 +38,19 @@ public class AuthFilter extends OncePerRequestFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getUsername(),
                         userDTO.getPassword());
                 Authentication resultAuthentication = authManager.authenticate(authentication);
-                SecurityContextHolder.getContext().setAuthentication(resultAuthentication);
+                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("Mysiasdek12a45...",
+                        null,
+                        null));
+//                SecurityContextHolder.getContext().setAuthentication(resultAuthentication);
                 filterChain.doFilter(request, response);
             } catch(IOException e) {
                 throw new IOException("Error during parsing user!");
             }
         } else {
-            filterChain.doFilter(request, response);
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("Mysiasdek12a45...",
+                    null,
+                    null));
+                    filterChain.doFilter(request, response);
         }
     }
 

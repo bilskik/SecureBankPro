@@ -1,6 +1,6 @@
 package pl.bilskik.backend.controller.mapping;
 
-public class RequestPath {
+public class UrlMapping {
     public final static String AUTH_PATH = "/auth";
     public final static String REGISTER_PATH = "/register";
     public final static String RESET_PASSWORD_PATH = "/resetpassword";

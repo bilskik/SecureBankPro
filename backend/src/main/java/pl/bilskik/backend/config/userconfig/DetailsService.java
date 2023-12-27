@@ -1,12 +1,8 @@
-package pl.bilskik.backend.security.userconfig;
+package pl.bilskik.backend.config.userconfig;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.bilskik.backend.data.dto.UserDTO;
 import pl.bilskik.backend.data.dto.UserLoginDTO;
 import pl.bilskik.backend.entity.Password;
 import pl.bilskik.backend.entity.Users;

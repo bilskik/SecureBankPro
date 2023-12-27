@@ -72,7 +72,7 @@ public class TransferServiceImpl implements TransferService {
         }
         Transfer transfer = mapToTransferObj(transferDTO, senderUser.get(), receiverUser.get());
         transferRepository.save(transfer);
-        return "Transfer has been sended!";
+        return "Completed!";
     }
 
     private Transfer mapToTransferObj(TransferDTO transferDTO,

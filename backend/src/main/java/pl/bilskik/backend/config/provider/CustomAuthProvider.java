@@ -1,4 +1,4 @@
-package pl.bilskik.backend.security.provider;
+package pl.bilskik.backend.config.provider;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -7,8 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.bilskik.backend.security.userconfig.DetailsService;
-import pl.bilskik.backend.security.userconfig.SecurityUser;
+import pl.bilskik.backend.config.userconfig.DetailsService;
+import pl.bilskik.backend.config.userconfig.SecurityUser;
 
 import java.util.Random;
 

@@ -19,18 +19,17 @@ public class Users {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "users_id")
     private int userId;
-    @Column(name = "username",
-            unique = true)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "pesel",
-            unique = true)
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
+    @Column(name = "pesel", unique = true, nullable = false)
     private String pesel;
-    @Column(name = "credit_cardno")
+    @Column(name = "credit_cardno", unique = true, nullable = false)
     private String creditCardNo;
-    @Column(name = "accountno",
-            unique = true)
+    @Column(name = "accountno", unique = true, nullable = false)
     private String accountNo;
     @Column(name = "balance")
     private long balance;

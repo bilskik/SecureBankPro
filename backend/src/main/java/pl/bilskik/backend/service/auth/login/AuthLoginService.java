@@ -33,9 +33,6 @@ public class AuthLoginService {
         this.passwordEncoder = passwordEncoder;
     }
     public String beginLogin(String username) {
-        if(username == null || username.equals("")) {
-            throw new UsernameException("Username cannot be null!");
-        }
         List<String> ranges = userRepository.findPasswordRangeByUsername(username);
         String range = "";
         if(ranges == null || ranges.isEmpty()) {
@@ -45,36 +42,7 @@ public class AuthLoginService {
         }
         return range;
     }
-
-    public String finishLogin(String username, String password) {
-        if(username == null || username.equals("")) {
-            throw new UsernameException("Username cannot be empty!");
-        }
-        if(password == null || password.equals("")) {
-            throw new PasswordException("Password cannot be empty!");
-        }
-        Optional<Users> user = userRepository.findByUsername(username);
-        if(user.isEmpty()) {
-            throw new UsernameException("Invalid identities!");
-        }
-        List<Password> passwordList = passwordRepository.findPasswordByUser(user.get());
-        if(passwordList == null || passwordList.isEmpty()) {
-            throw new UsernameException("Invalid identities");
-        }
-        boolean isFoundMatching = false;
-        for(var pass : passwordList) {
-            if (passwordEncoder.matches(password, pass.getPassword())) {
-                isFoundMatching = true;
-                break;
-            }
-        }
-        if(!isFoundMatching) {
-            throw new UsernameException("Invalid identities!");
-        }
-        return "Logged in";
-     }
-
-
+    
     private String chooseRange(List<String> ranges) {
         Random random = new Random();
         int passwordSelected = random.nextInt(ranges.size());
@@ -89,6 +57,4 @@ public class AuthLoginService {
         int partPassLen = random.nextInt(maxPartLen - minPartLen + 1) + minPartLen;
         return passwordCreator.generateDummyRange(dummyPassLen, partPassLen);
     }
-
-
 }

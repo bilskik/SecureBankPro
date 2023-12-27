@@ -1,41 +1,31 @@
 package pl.bilskik.backend.data.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TransferDTO {
 
     @NotBlank(message = "Invalid transferTitle!")
     private String transferTitle;
     @NotBlank(message = "Invalid sender name!")
     private String senderName;
-    @Size(min = 20, max = 20, message = "Account number size must be equals to 20!")
+    @Pattern(regexp = "^\\d+${26}", message = "Sender account number is invalid!")
     private String senderAccNo;
     @NotBlank(message = "Invalid receiver name!")
     private String receiverName;
-    @Size(min = 20, max = 20,  message = "Account number size must be equals to 20!")
+    @Pattern(regexp = "^\\d+${26}", message = "Sender account number is invalid!")
     private String receiverAccNo;
     @Min(value = 1, message = "Balance of money to send must be at least 1!")
     private long balance;
 
-    public TransferDTO(String transferTitle,
-                       String senderName,
-                       String senderAccNo,
-                       String receiverName,
-                       String receiverAccNo,
-                       long balance) {
-        this.transferTitle = transferTitle;
-        this.senderName = senderName;
-        this.senderAccNo = senderAccNo;
-        this.receiverName = receiverName;
-        this.receiverAccNo = receiverAccNo;
-        this.balance = balance;
-    }
-
-    public TransferDTO() {}
 }
