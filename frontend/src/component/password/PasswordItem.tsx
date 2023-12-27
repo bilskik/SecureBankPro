@@ -18,6 +18,7 @@ const PasswordItem = ({ isDisabled, onValue, index }  : PasswordItemType ) => {
                 maxLength={maxL}
                 disabled={isDisabled}
                 onChange={(e) => onValue({ index, value : e.target.value})}
+                key={index}
             />
 
         )

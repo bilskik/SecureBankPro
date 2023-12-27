@@ -5,7 +5,7 @@ import { dashboardUserLoader } from "./util/loader/dashboardUserLoader";
 import Transfer from "./page/Transfer";
 import UserDetails from "./page/UserDetails";
 import { userDetailsLoader } from "./util/loader/userDetailsLoader";
-
+import "./app.css"
 
 function App() {
 

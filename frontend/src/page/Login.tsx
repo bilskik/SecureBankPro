@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import axios from '../common/axios/axios';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Container, Form, Image, Col, Row } from 'react-bootstrap';
 import { AUTH_PATH, LOGIN_BEGIN_PATH, LOGIN_FINISH_PATH, REGISTER_PATH } from '../common/url/urlMapper';
 import PasswordGroup from '../component/password/PasswordGroup';
+import { Person } from 'react-bootstrap-icons';
 
 const Login = () => {
     const [login, setLogin] = useState<string>("");
@@ -35,27 +36,31 @@ const Login = () => {
             })
     }
     return (
-        <Form>
-            <h2>Login</h2>
-            <Form.Group>
-                <Form.Label>Username</Form.Label>
-                <Form.Control 
-                    type='text' 
-                    placeholder='username'
-                    value={login}
-                    onChange={(e) => setLogin(e.target.value)}
-                />
-            </Form.Group>
+        <Container style={{ position : "absolute", transform : "translate(-50%, -50%)", left : "50%", top : "30%"  }}>
+            <Form className='mt-3 d-flex flex-column justify-content-center'>
+                <Row>
+                    <Person color='green' size={30}/>
+                </Row>
+                <h2 style={{textAlign : "center"}}>Login</h2>
+                <Form.Group>
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control 
+                        type='text' 
+                        placeholder='username'
+                        value={login}
+                        onChange={(e) => setLogin(e.target.value)}
+                    />
+                </Form.Group>
 
-            {
-                range ? <PasswordGroup ranges={range} onHandleSubmit={onHandleSubmit}/> : 
-                <Button variant='primary' onClick={handleNext}>
-                    Next
-                </Button>
-            }
-            
-        </Form>
-
+                {
+                    range ? <PasswordGroup ranges={range} onHandleSubmit={onHandleSubmit}/> : 
+                    <Button variant='success' onClick={handleNext}>
+                        Next
+                    </Button>
+                }
+                
+            </Form>
+        </Container>
     )
 }
 
