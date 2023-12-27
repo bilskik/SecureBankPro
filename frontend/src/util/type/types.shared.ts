@@ -10,3 +10,7 @@ export type TransferType = {
     receiverAccNo : string,
     amount : number,
 }
+export type UserDetailsType = {
+    creditCardNo : string,
+    pesel : string
+}

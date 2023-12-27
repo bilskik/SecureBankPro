@@ -1,9 +1,10 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { Button, FloatingLabel, FormControl, FormGroup, Container, Form } from 'react-bootstrap'
-import { initTransferData } from '../../util/init/init'
-import { TransferType } from '../../util/type/types.shared'
-import { usePost } from '../../common/api/apiCall'
+import { initTransferData } from '../util/init/init'
+import { TransferType } from '../util/type/types.shared'
+import { usePost } from '../common/api/apiCall'
 import { useNavigate } from 'react-router-dom'
+import NavComp from '../component/navbar/NavComp'
 
 enum TransferKind {
   SENDER_NAME = "SENDER_NAME",
@@ -55,11 +56,10 @@ const Transfer = () => {
     const nav = useNavigate();
 
     const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
       const form = event.currentTarget;
-      const fromAccRegex = /^\d{24}$/;
+      const fromAccRegex = /^\d{20}$/;
+      event.preventDefault();
       if (form.checkValidity() === false || fromAccRegex.test(transferData.receiverAccNo) || transferData.amount > 0) {
-        event.preventDefault();
         event.stopPropagation();
         setValidated(true);
       } else {
@@ -71,6 +71,7 @@ const Transfer = () => {
 
     return (
       <Container>
+        <NavComp/>
         <Form noValidate validated={validated} onSubmit={(e) => handleSubmit(e)}>
             <h2>Transfer</h2>
             <FloatingLabel

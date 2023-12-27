@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Container, Row, Spinner, Stack } from 'react-bootstrap';
 import { Outlet, useLoaderData, useNavigate } from 'react-router-dom'
 import { getData, useFetch } from '../common/api/apiCall';
-import { TRANSFER_HISTORY_PATH, USER_DETAILS_DATA } from '../common/url/urlMapper';
+import { TRANSFER_HISTORY_PATH } from '../common/url/urlMapper';
 import { TransferType, UserDataType } from '../util/type/types.shared';
 import TransferHistory from '../component/transfer/TransferHistory';
 import NavComp from '../component/navbar/NavComp';
