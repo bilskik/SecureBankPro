@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import axios from "../axios/axios"
 
 type getDataType = {
@@ -10,7 +11,7 @@ type postDataType = {
     headers : object
 }
 const getData = async ({ URL, headers } : getDataType) => {
-    const res = await axios.get(URL, headers)
+    const res : any= await axios.get(URL, headers)
         .then((res : any) => {
             return res.data
         })
@@ -30,4 +31,25 @@ const postData = async({ URL, data, headers } : postDataType) => {
     return res;
 }
 
-export { getData, postData }
+const useFetch = ({ URL, headers } : getDataType) => {
+    const [data, setData] = useState<any>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [err, setErr] = useState<any>();
+
+    const getData = async() => {
+        setIsLoading(true)
+        const res = await axios.get(URL, headers)
+            .then((res) => {
+                setIsLoading(false)
+                res.data && setData(res.data)
+            })
+            .catch((err) => {
+                setIsLoading(false)
+                setErr(err)
+            })
+    }
+    
+    return { data, isLoading, err, getData };
+}
+
+export { getData, postData, useFetch }

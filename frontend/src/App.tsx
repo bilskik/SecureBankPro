@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./page/Login";
 import Dashboard from "./page/Dashboard";
-import { dashboardUserLoader } from "./util/dashboardUserLoader";
+import { dashboardUserLoader } from "./util/loader/dashboardUserLoader";
 
 
 function App() {

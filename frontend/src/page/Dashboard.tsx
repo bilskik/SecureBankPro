@@ -1,24 +1,58 @@
-import React, { useState } from 'react'
-import { Button, Container, Row } from 'react-bootstrap';
-import { useLoaderData, useSearchParams } from 'react-router-dom'
-import { getData } from '../common/api/apiCall';
-import { USER_DETAILS_DATA } from '../common/url/urlMapper';
+import React, { useEffect, useState } from 'react'
+import { Button, Container, Row, Spinner, Stack } from 'react-bootstrap';
+import { useLoaderData, useNavigate } from 'react-router-dom'
+import { getData, useFetch } from '../common/api/apiCall';
+import { TRANSFER_HISTORY_PATH, USER_DETAILS_DATA } from '../common/url/urlMapper';
+import { TransferHistoryType, UserDataType } from '../util/type/types.shared';
+import TransferHistory from '../component/transfer/TransferHistory';
+import Navbar from '../component/navbar/Navbar';
 
 const Dashboard = () => {
-    const [transferHistory, setTransferhistory] = useState<any>();
-    const user :any= useLoaderData();
+    const { data, isLoading, err, getData} = useFetch({ URL : TRANSFER_HISTORY_PATH, headers : undefined})
+    const [transferHistory, setTransferhistory] = useState<TransferHistoryType[] | undefined>(data);
+    const user = useLoaderData() as UserDataType;
+    const nav = useNavigate();
+    
+    useEffect(() => {
+        if(!isLoading && !err) {
+            setTransferhistory(data)
+        }
+    },[isLoading])
+    
     const loadTransferHistory = () => {
-        const transferHistory = getData({ URL : USER_DETAILS_DATA, headers : undefined})
-        setTransferhistory(transferHistory);
+        getData();
     }
+    
+    const handleTransfer = () => {
+
+    }
+
     return (
-        <Container>
-            <Row>{ user.accountNo }</Row>
-            <Row>{ user.balance }</Row>
-            <Button onClick={loadTransferHistory}>
-                history
-            </Button>
-        </Container>
+        <>
+            <Navbar/>
+            { 
+                isLoading && <Spinner animation='border'/>
+            }
+            <Container fluid="sm">
+                <Container className='border mt-5 p-2' fluid="md">
+                    <Row className="ps-2"><h2 style={{ "fontWeight" : "bold"}}>eKonto</h2></Row>
+                    <Row className="ps-2">{ user.accountNo }</Row>
+                    <Row className="ps-2">Available funds:</Row>
+                    <Row className="ps-2">{ user.balance }</Row>
+                    <Stack direction='horizontal'>
+                        <Button onClick={(e) =>}>
+                            Transfer
+                        </Button>
+                        <Button onClick={loadTransferHistory}>
+                            history
+                        </Button>
+                    </Stack>
+                </Container>  
+
+                <TransferHistory transferHistory={transferHistory}/> 
+            </Container>
+        </>
+
     )
     }
 
