@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./page/Login";
 import Dashboard from "./page/Dashboard";
 import { dashboardUserLoader } from "./util/loader/dashboardUserLoader";
+import Transfer from "./component/transfer/Transfer";
 
 
 function App() {
@@ -14,7 +15,11 @@ function App() {
     {
       path : "/",
       loader : dashboardUserLoader,
-      element : <Dashboard/>
+      element : <Dashboard/>,
+    },
+    {
+      path : "/payment",
+      element : <Transfer/>
     }
   ])
 

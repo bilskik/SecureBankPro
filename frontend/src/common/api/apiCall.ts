@@ -8,7 +8,7 @@ type getDataType = {
 type postDataType = {
     URL : string,
     data : object,
-    headers : object
+    headers : object | undefined
 }
 const getData = async ({ URL, headers } : getDataType) => {
     const res : any= await axios.get(URL, headers)
@@ -48,8 +48,29 @@ const useFetch = ({ URL, headers } : getDataType) => {
                 setErr(err)
             })
     }
-    
+
     return { data, isLoading, err, getData };
 }
 
-export { getData, postData, useFetch }
+const usePost = ({ URL, data, headers } : postDataType) => {
+    const [resData, setResData] = useState<any>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [err, setErr] = useState<any>();
+
+    const postData = async() => {
+        setIsLoading(true)
+        const res = await axios.post(URL, data, headers)
+            .then((res) => {
+                setIsLoading(false)
+                res.data && setResData(res.data)
+            })
+            .catch((err) => {
+                setIsLoading(false)
+                setErr(err)
+            })
+    }
+
+    return { data, isLoading, err, postData };
+}
+
+export { getData, postData, useFetch, usePost }

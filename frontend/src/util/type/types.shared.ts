@@ -2,11 +2,11 @@ export type UserDataType = {
     accountNo : string,
     balance : number
 }
-export type TransferHistoryType = {
+export type TransferType = {
     transferTitle : string,
     senderName : string,
     senderAccNo : string,
     receiverName : string,
     receiverAccNo : string,
-    balance : number,
+    amount : number,
 }

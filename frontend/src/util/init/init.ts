@@ -1,4 +1,4 @@
-import { TransferHistoryType, UserDataType } from "../type/types.shared";
+import {  TransferType, UserDataType } from "../type/types.shared";
 
 // export const initTransferHistory : TransferHistoryType = {
 //     "transferTitle" : "",
@@ -8,3 +8,11 @@ import { TransferHistoryType, UserDataType } from "../type/types.shared";
 //     "receiverAccNo" : "",
 //     "balance" : 0,
 // }
+export const initTransferData : TransferType = {
+    "transferTitle" : "",
+    "senderName" : "",
+    "senderAccNo" : "",
+    "receiverName" : "",
+    "receiverAccNo" : "",
+    "amount" : 0,
+}

@@ -1,9 +1,9 @@
 import React from 'react'
-import { TransferHistoryType } from '../../util/type/types.shared'
+import { TransferType } from '../../util/type/types.shared'
 import { Table } from 'react-bootstrap'
 
 type TransferHistoryComp = {
-    transferHistory : TransferHistoryType[] | undefined
+    transferHistory : TransferType[] | undefined
 }
 
 const TransferHistory = ({ transferHistory } : TransferHistoryComp) => {
@@ -20,7 +20,7 @@ const TransferHistory = ({ transferHistory } : TransferHistoryComp) => {
                     </tr>
                 </thead>
                 <tbody>
-                    { transferHistory?.map((currTransfer : TransferHistoryType, index) => (
+                    { transferHistory?.map((currTransfer : TransferType, index) => (
                         <tr key={index}>
                             <td>{ currTransfer.transferTitle }</td>
                             <td>{ currTransfer.senderName }</td>

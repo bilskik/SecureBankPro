@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Container, Row, Spinner, Stack } from 'react-bootstrap';
-import { useLoaderData, useNavigate } from 'react-router-dom'
+import { Outlet, useLoaderData, useNavigate } from 'react-router-dom'
 import { getData, useFetch } from '../common/api/apiCall';
 import { TRANSFER_HISTORY_PATH, USER_DETAILS_DATA } from '../common/url/urlMapper';
-import { TransferHistoryType, UserDataType } from '../util/type/types.shared';
+import { TransferType, UserDataType } from '../util/type/types.shared';
 import TransferHistory from '../component/transfer/TransferHistory';
-import Navbar from '../component/navbar/Navbar';
+import NavComp from '../component/navbar/NavComp';
 
 const Dashboard = () => {
     const { data, isLoading, err, getData} = useFetch({ URL : TRANSFER_HISTORY_PATH, headers : undefined})
-    const [transferHistory, setTransferhistory] = useState<TransferHistoryType[] | undefined>(data);
+    const [transferHistory, setTransferhistory] = useState<TransferType[] | undefined>(data);
     const user = useLoaderData() as UserDataType;
     const nav = useNavigate();
-    
+
     useEffect(() => {
         if(!isLoading && !err) {
             setTransferhistory(data)
@@ -29,7 +29,7 @@ const Dashboard = () => {
 
     return (
         <>
-            <Navbar/>
+            <NavComp/>
             { 
                 isLoading && <Spinner animation='border'/>
             }
@@ -40,7 +40,7 @@ const Dashboard = () => {
                     <Row className="ps-2">Available funds:</Row>
                     <Row className="ps-2">{ user.balance }</Row>
                     <Stack direction='horizontal'>
-                        <Button onClick={(e) =>}>
+                        <Button onClick={(e) => nav("/payment")}>
                             Transfer
                         </Button>
                         <Button onClick={loadTransferHistory}>
