@@ -70,84 +70,86 @@ const Transfer = () => {
     };
 
     return (
-      <Container>
+      <>
         <NavComp/>
-        <Form noValidate validated={validated} onSubmit={(e) => handleSubmit(e)}>
-            <h2>Transfer</h2>
-            <FloatingLabel
-              controlId='receiver-name'
-              label="Receiver name"
-              className='mb-3'
-            >
-                <FormControl
-                  required 
-                  type='text'
-                  placeholder='Receiver name'
-                  value={transferData.receiverName}
-                  onChange={(e) => dispatch({ type : TransferKind.RECEIVER_NAME, payload : e.target.value})}
-                />
-            </FloatingLabel>
-            <FloatingLabel
-              controlId='from-acc'
-              label="From account"
-              className='mb-3'
-            >
-                <FormControl 
-                  required 
-                  type='text'
-                  placeholder='From account'
-                />
-            </FloatingLabel>
-            <FloatingLabel
-              controlId='to-acc'
-              label="To account"
-              className='mb-3'
-            >
-                <FormControl 
-                  required 
-                  type='text'
-                  placeholder='To account'
-                  value={transferData.receiverAccNo}
-                  onChange={(e) => dispatch({ type : TransferKind.RECEIVER_ACCNO, payload : e.target.value})}
-                />
-                <FormControl.Feedback type='invalid'>
-                  [0-9][24] 
-                </FormControl.Feedback>
-            </FloatingLabel>
-            <FloatingLabel
-              controlId='transfer-amount'
-              label="Transfer amount"
-              className='mb-3'
-            >
-                <FormControl 
-                  required 
-                  type='text'
-                  placeholder='Transfer amount'
-                  value={transferData.amount == 0 ? "" : transferData.amount}
-                  onChange={(e) => dispatch({ type : TransferKind.TRANSFER_AMOUNT, payload : e.target.value})}
-                />
-                <FormControl.Feedback type='invalid'>
-                  Must be greater than 0! 
-                </FormControl.Feedback>
-            </FloatingLabel>
-            <FloatingLabel
-              controlId='transfer-title'
-              label="Transfer title"
-              className='mb-3'
-            >
-                <FormControl 
-                  required 
-                  type='text'
-                  placeholder='Transfer title'
-                  value={transferData.transferTitle}
-                  onChange={(e) => dispatch({ type : TransferKind.TRANSFER_TITLE, payload : e.target.value})}
-                />
-            </FloatingLabel>
-            <Button type="submit">
-              Send
-            </Button> 
-        </Form>
-      </Container>
+        <Container className='mt-5'>
+          <Form noValidate validated={validated} onSubmit={(e) => handleSubmit(e)}>
+              <h2>Transfer</h2>
+              <FloatingLabel
+                controlId='receiver-name'
+                label="Receiver name"
+                className='mb-3'
+              >
+                  <FormControl
+                    required 
+                    type='text'
+                    placeholder='Receiver name'
+                    value={transferData.receiverName}
+                    onChange={(e) => dispatch({ type : TransferKind.RECEIVER_NAME, payload : e.target.value})}
+                  />
+              </FloatingLabel>
+              <FloatingLabel
+                controlId='from-acc'
+                label="From account"
+                className='mb-3'
+              >
+                  <FormControl 
+                    required 
+                    type='text'
+                    placeholder='From account'
+                  />
+              </FloatingLabel>
+              <FloatingLabel
+                controlId='to-acc'
+                label="To account"
+                className='mb-3'
+              >
+                  <FormControl 
+                    required 
+                    type='text'
+                    placeholder='To account'
+                    value={transferData.receiverAccNo}
+                    onChange={(e) => dispatch({ type : TransferKind.RECEIVER_ACCNO, payload : e.target.value})}
+                  />
+                  <FormControl.Feedback type='invalid'>
+                    [0-9][24] 
+                  </FormControl.Feedback>
+              </FloatingLabel>
+              <FloatingLabel
+                controlId='transfer-amount'
+                label="Transfer amount"
+                className='mb-3'
+              >
+                  <FormControl 
+                    required 
+                    type='text'
+                    placeholder='Transfer amount'
+                    value={transferData.amount == 0 ? "" : transferData.amount}
+                    onChange={(e) => dispatch({ type : TransferKind.TRANSFER_AMOUNT, payload : e.target.value})}
+                  />
+                  <FormControl.Feedback type='invalid'>
+                    Must be greater than 0! 
+                  </FormControl.Feedback>
+              </FloatingLabel>
+              <FloatingLabel
+                controlId='transfer-title'
+                label="Transfer title"
+                className='mb-3'
+              >
+                  <FormControl 
+                    required 
+                    type='text'
+                    placeholder='Transfer title'
+                    value={transferData.transferTitle}
+                    onChange={(e) => dispatch({ type : TransferKind.TRANSFER_TITLE, payload : e.target.value})}
+                  />
+              </FloatingLabel>
+              <Button type="submit" variant='success'>
+                Send
+              </Button> 
+          </Form>
+        </Container>
+      </>
     )
 }
 

@@ -36,14 +36,14 @@ const Login = () => {
             })
     }
     return (
-        <Container style={{ position : "absolute", transform : "translate(-50%, -50%)", left : "50%", top : "30%"  }}>
+        <Container className='container-login' fluid>
             <Form className='mt-3 d-flex flex-column justify-content-center'>
-                <Row>
+                <Row className='m-3'>
                     <Person color='green' size={30}/>
                 </Row>
                 <h2 style={{textAlign : "center"}}>Login</h2>
-                <Form.Group>
-                    <Form.Label>Username</Form.Label>
+                <Form.Group className='m-3 mt-4'>
+                    <Form.Label className="ms-1">Username</Form.Label>
                     <Form.Control 
                         type='text' 
                         placeholder='username'
@@ -51,12 +51,16 @@ const Login = () => {
                         onChange={(e) => setLogin(e.target.value)}
                     />
                 </Form.Group>
-
+                
                 {
-                    range ? <PasswordGroup ranges={range} onHandleSubmit={onHandleSubmit}/> : 
-                    <Button variant='success' onClick={handleNext}>
-                        Next
-                    </Button>
+                    range ? 
+                    <PasswordGroup ranges={range} onHandleSubmit={onHandleSubmit}/>
+                     : 
+                    <Row className='mb-5 ms-3 me-3 mt-4'>
+                        <Button variant='success' onClick={handleNext}>
+                            Next
+                        </Button>
+                    </Row>
                 }
                 
             </Form>

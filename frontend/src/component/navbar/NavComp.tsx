@@ -8,17 +8,17 @@ const NavComp = () => {
     nav("/")
   }
   return (
-    <Navbar>
-        <Container>
-            <Navbar.Brand onClick={() => nav("/")}>Dashboard</Navbar.Brand>
-            <Nav className="me-auto">
-              <Nav.Link onClick={() => nav("/payment")}>Payment</Nav.Link>
-              <Nav.Link onClick={() => nav("/details")}>Details</Nav.Link>
-            </Nav>
-            <Nav>
-              <Nav.Link onClick={() => handleOnLogout}>Logout</Nav.Link>
-            </Nav>            
-        </Container>
+    <Navbar className="border ps-5 pe-5">
+      <Navbar.Brand onClick={() => nav("/")} style={{ cursor : "pointer"}}>Dashboard</Navbar.Brand>
+      <Nav className="me-auto">
+        <Nav.Link onClick={() => nav("/payment")}>Payment</Nav.Link>
+        <Nav.Link onClick={() => nav("/details")}>Details</Nav.Link>
+      </Nav>
+      <Nav>
+        <Nav.Link onClick={() => handleOnLogout} className='text-success' style={{ fontWeight : "bold" }}>
+          Wyloguj
+        </Nav.Link>
+      </Nav>            
     </Navbar>
   )
 }

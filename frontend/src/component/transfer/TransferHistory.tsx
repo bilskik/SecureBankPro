@@ -9,7 +9,7 @@ type TransferHistoryComp = {
 const TransferHistory = ({ transferHistory } : TransferHistoryComp) => {
     return (
             transferHistory ? (
-            <Table>
+            <Table className='mt-3'>
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -17,6 +17,7 @@ const TransferHistory = ({ transferHistory } : TransferHistoryComp) => {
                         <th>Sender account number</th>
                         <th>Receiver name</th>
                         <th>Receiver account number</th>
+                        <th>Amount</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,6 +28,7 @@ const TransferHistory = ({ transferHistory } : TransferHistoryComp) => {
                             <td>{ currTransfer.senderAccNo }</td>
                             <td>{ currTransfer.receiverName }</td>
                             <td>{ currTransfer.receiverAccNo }</td>
+                            <td>{ currTransfer.amount }</td>
                         </tr>
                     ))}
                 </tbody>

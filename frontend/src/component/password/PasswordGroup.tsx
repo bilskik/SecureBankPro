@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Button, Form, Stack } from 'react-bootstrap'
+import { Button, Form, Stack, Row } from 'react-bootstrap'
 import { useState } from 'react'
 import PasswordItem from './PasswordItem'
 import { PASS_INPUT_LEN } from './constant/constant'
@@ -13,7 +13,6 @@ type PasswordStoreType = {
     value : string
 }
 const PasswordGroup = ({ ranges, onHandleSubmit } :  PasswordGroupType) => {
-    const [password,setPassword] = useState<string>('');
     const [passArr, setPassArr] = useState<PasswordStoreType[]>([{ value : "-1", index : "-1" }]);
     const arrayLengthPass = Array.from({ length : PASS_INPUT_LEN }, (_, i) => String(i))
 
@@ -44,29 +43,35 @@ const PasswordGroup = ({ ranges, onHandleSubmit } :  PasswordGroupType) => {
     }
     return (
         <>
-            <Form.Label>Password</Form.Label>
-            <Stack direction='horizontal'>
+            <Form.Group className='m-3'>
+                <Form.Label>Password</Form.Label>
+                <Stack direction='horizontal' className='d-flex flex-wrap'>
 
-                {
-                        arrayLengthPass.map((item, index) => (
-                            passArr.some((el) => el.index === item) ? 
-                                <PasswordItem 
-                                    isDisabled={false}
-                                    onValue={handlePassChange}
-                                    index={item}
-                                /> :
-                                <PasswordItem 
-                                    isDisabled={true}
-                                    onValue={handlePassChange}
-                                    index={item}
-                                />
-                        ))
+                    {
+                            arrayLengthPass.map((item, index) => (
+                                passArr.some((el) => el.index === item) ? 
+                                    <PasswordItem 
+                                        isDisabled={false}
+                                        onValue={handlePassChange}
+                                        index={item}
+                                        key={index}
+                                    /> :
+                                    <PasswordItem 
+                                        isDisabled={true}
+                                        onValue={handlePassChange}
+                                        index={item}
+                                        key={index}
+                                    />
+                            ))
 
-                }
-            </Stack>
-            <Button variant='primary' onClick={onSubmit}>
-                Submit
-            </Button>
+                    }
+                </Stack>
+            </Form.Group>
+            <Row className='mb-5 ms-3 me-3 mt-4'>
+                <Button variant='success' onClick={onSubmit}>
+                    Submit
+                </Button>
+            </Row>
         </>
     )
 }

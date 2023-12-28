@@ -5,6 +5,7 @@ import NavComp from '../component/navbar/NavComp';
 import { Button, Container } from 'react-bootstrap';
 import { initDisplayedDetails } from '../util/init/init';
 const UserDetails = () => {
+    
     const user = useLoaderData() as UserDetailsType;
     const [currDisplayedDetails, setCurrDisplayedDetails] = useState<UserDetailsType>(initDisplayedDetails);
 
@@ -27,16 +28,18 @@ const UserDetails = () => {
     }
 
     return (
-        <Container>
+        <>
             <NavComp/>
-            <p>Credit card number</p>
-            <p>{ currDisplayedDetails.creditCardNo }</p>
-            <p>Pesel</p>
-            <p>{ currDisplayedDetails.pesel }</p>
-            <Button onClick={handleOnShowDetails}>
-                Show details
-            </Button>
-        </Container>
+            <Container className='mt-5'>
+                <p style={{ fontWeight : "bold"}}>Credit card number</p>
+                <p>{ currDisplayedDetails.creditCardNo }</p>
+                <p style={{ fontWeight : "bold"}}>Pesel</p>
+                <p>{ currDisplayedDetails.pesel }</p>
+                <Button onClick={handleOnShowDetails} variant='success'>
+                    Show details
+                </Button>
+            </Container>
+        </>
     )
 }
 

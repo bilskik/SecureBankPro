@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Row, Spinner, Stack } from 'react-bootstrap';
+import { Button, Container, Row, Spinner, Stack, Col } from 'react-bootstrap';
 import { Outlet, useLoaderData, useNavigate } from 'react-router-dom'
 import { getData, useFetch } from '../common/api/apiCall';
 import { TRANSFER_HISTORY_PATH } from '../common/url/urlMapper';
@@ -33,22 +33,24 @@ const Dashboard = () => {
             { 
                 isLoading && <Spinner animation='border'/>
             }
-            <Container fluid="sm">
-                <Container className='border mt-5 p-2' fluid="md">
-                    <Row className="ps-2"><h2 style={{ "fontWeight" : "bold"}}>eKonto</h2></Row>
-                    <Row className="ps-2">{ user.accountNo }</Row>
-                    <Row className="ps-2">Available funds:</Row>
-                    <Row className="ps-2">{ user.balance }</Row>
+            <Container>
+                <Container className='border mt-5 p-2 container-dashboard' fluid>
+                    <Row className="ms-2 mb-3">
+                        <h2 style={{ "fontWeight" : "bold"}}>eKonto</h2>
+                    </Row>
+                    <Row className='ms-2'>Account number</Row>
+                    <Row className="ms-2 mb-3">{ user.accountNo }</Row>
+                    <Row className="ms-2">Available funds:</Row>
+                    <Row className="ms-2 mb-3" style={{ fontWeight : "bold", fontSize : "1.2rem"}}>{ user.balance } PLN</Row>
                     <Stack direction='horizontal'>
-                        <Button onClick={(e) => nav("/payment")}>
+                        <Button onClick={(e) => nav("/payment")} variant='success' className='me-2'>
                             Transfer
                         </Button>
-                        <Button onClick={loadTransferHistory}>
-                            history
+                        <Button onClick={loadTransferHistory} variant='success'>
+                            History
                         </Button>
                     </Stack>
-                </Container>  
-
+                </Container>
                 <TransferHistory transferHistory={transferHistory}/> 
             </Container>
         </>
