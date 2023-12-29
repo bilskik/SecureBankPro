@@ -3,13 +3,9 @@ package pl.bilskik.backend.service.auth.login;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.bilskik.backend.entity.Password;
-import pl.bilskik.backend.entity.Users;
 import pl.bilskik.backend.repository.PasswordRepository;
 import pl.bilskik.backend.repository.UserRepository;
 import pl.bilskik.backend.service.auth.creator.PasswordCreator;
-import pl.bilskik.backend.service.auth.exception.PasswordException;
-import pl.bilskik.backend.service.auth.exception.UsernameException;
 
 import java.util.*;
 
@@ -34,13 +30,13 @@ public class AuthLoginService {
     }
     public String beginLogin(String username) {
         List<String> ranges = userRepository.findPasswordRangeByUsername(username);
-        String range = "";
+        String chosenRange = "";
         if(ranges == null || ranges.isEmpty()) {
-            range = createDummyRange();
+            chosenRange = createDummyRange();
         } else {
-            range = chooseRange(ranges);
+            chosenRange = chooseRange(ranges);
         }
-        return range;
+        return chosenRange;
     }
     
     private String chooseRange(List<String> ranges) {
@@ -51,10 +47,8 @@ public class AuthLoginService {
 
     private String createDummyRange() {
         Random random = new Random();
-        int dummyPassLen = random.nextInt(20) + 1;
-        int maxPartLen = random.nextInt(14 - 12 + 1) + 12;
-        int minPartLen = 6;
-        int partPassLen = random.nextInt(maxPartLen - minPartLen + 1) + minPartLen;
-        return passwordCreator.generateDummyRange(dummyPassLen, partPassLen);
+        int passLen = passwordCreator.generateDummyPassLen();
+        int partPassLen = passwordCreator.generatePartPassLen(passLen);
+        return passwordCreator.generateDummyRange(passLen, partPassLen);
     }
 }

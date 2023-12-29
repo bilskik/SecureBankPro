@@ -1,19 +1,17 @@
 package pl.bilskik.backend.service.transfer;
 
 import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 import pl.bilskik.backend.data.dto.TransferDTO;
 import pl.bilskik.backend.entity.Transfer;
 import pl.bilskik.backend.entity.Users;
 import pl.bilskik.backend.repository.TransferRepository;
 import pl.bilskik.backend.repository.UserRepository;
 import pl.bilskik.backend.service.TransferService;
-import pl.bilskik.backend.service.auth.exception.UserException;
-import pl.bilskik.backend.service.auth.exception.UsernameException;
+import pl.bilskik.backend.service.exception.UserException;
+import pl.bilskik.backend.service.exception.UsernameException;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,13 +1,12 @@
 package pl.bilskik.backend.controller.exhandler;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.bilskik.backend.controller.UserController;
-import pl.bilskik.backend.service.auth.exception.UserException;
-import pl.bilskik.backend.service.auth.exception.UsernameException;
+import pl.bilskik.backend.service.exception.UserException;
+import pl.bilskik.backend.service.exception.UsernameException;
 
 @RestControllerAdvice(assignableTypes = { UserController.class })
 public class UserControllerExHandler {

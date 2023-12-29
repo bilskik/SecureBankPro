@@ -5,9 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 import pl.bilskik.backend.controller.AuthController;
-import pl.bilskik.backend.service.auth.exception.EntropyException;
+import pl.bilskik.backend.service.exception.EntropyException;
 
 import java.util.HashMap;
 import java.util.Map;

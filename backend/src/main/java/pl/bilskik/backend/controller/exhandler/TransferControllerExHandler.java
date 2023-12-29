@@ -2,13 +2,12 @@ package pl.bilskik.backend.controller.exhandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.method.MethodValidationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.bilskik.backend.controller.TransferController;
-import pl.bilskik.backend.service.auth.exception.UserException;
-import pl.bilskik.backend.service.auth.exception.UsernameException;
+import pl.bilskik.backend.service.exception.UserException;
+import pl.bilskik.backend.service.exception.UsernameException;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -53,6 +53,7 @@ public class PasswordCreator {
         Random random = new Random();
         return random.nextInt(maxPartPassLen - minPartPassLen + 1) + minPartPassLen;
     }
+
     public String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
@@ -102,12 +103,26 @@ public class PasswordCreator {
         }
     }
 
-    public String generateDummyRange(int dummyPassLen, int dummyPartPassLen) {
+    public String generateDummyRange(int dummyPassRange, int dummyPartPassLen) {
         Random random = new Random();
         TreeSet<Integer> indexTs = new TreeSet<>();
         while(dummyPartPassLen != indexTs.size()) {
-            indexTs.add((Integer) random.nextInt(dummyPassLen));
+            indexTs.add((Integer) random.nextInt(dummyPassRange));
         }
         return mapIndicies(indexTs);
+    }
+
+    public int generateDummyPassLen() {
+        Random random = new Random();
+        boolean decision = true;
+        for(int i=0; i<4; i++) {
+            boolean currDecision = random.nextBoolean();
+            decision = currDecision && decision;
+        }
+        if(decision) {
+            return random.nextInt(20 - 12  + 1) + 12;
+        } else {
+            return random.nextInt(14 - 12 + 1) + 12;
+        }
     }
 }

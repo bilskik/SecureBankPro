@@ -8,7 +8,7 @@ import pl.bilskik.backend.entity.Password;
 import pl.bilskik.backend.entity.Users;
 import pl.bilskik.backend.repository.PasswordRepository;
 import pl.bilskik.backend.repository.UserRepository;
-import pl.bilskik.backend.service.auth.exception.PasswordException;
+import pl.bilskik.backend.service.exception.PasswordException;
 
 import java.util.ArrayList;
 import java.util.List;

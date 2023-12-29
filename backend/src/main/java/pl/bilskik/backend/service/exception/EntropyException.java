@@ -1,4 +1,4 @@
-package pl.bilskik.backend.service.auth.login.exception;
+package pl.bilskik.backend.service.exception;
 
 public class EntropyException extends UserException {
     public EntropyException(String message) {

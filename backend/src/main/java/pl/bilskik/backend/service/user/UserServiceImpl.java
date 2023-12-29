@@ -8,8 +8,8 @@ import pl.bilskik.backend.data.response.UserDetailsResponse;
 import pl.bilskik.backend.entity.Users;
 import pl.bilskik.backend.repository.UserRepository;
 import pl.bilskik.backend.service.UserService;
-import pl.bilskik.backend.service.auth.exception.UserException;
-import pl.bilskik.backend.service.auth.exception.UsernameException;
+import pl.bilskik.backend.service.exception.UserException;
+import pl.bilskik.backend.service.exception.UsernameException;
 
 import java.util.Optional;
 

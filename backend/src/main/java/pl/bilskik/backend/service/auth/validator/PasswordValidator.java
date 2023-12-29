@@ -4,8 +4,7 @@ import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.resources.*;
 import me.gosimple.nbvcxz.scoring.Result;
 import org.springframework.stereotype.Component;
-import pl.bilskik.backend.service.auth.exception.EntropyException;
-import pl.bilskik.backend.service.auth.exception.PasswordException;
+import pl.bilskik.backend.service.exception.EntropyException;
 
 import java.util.List;
 
