@@ -1,4 +1,4 @@
-package pl.bilskik.backend.service.auth.exception;
+package pl.bilskik.backend.service.auth.login.exception;
 
 public class PasswordException extends UserException {
     public PasswordException(String message) {

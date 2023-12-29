@@ -40,7 +40,7 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public List<TransferDTO> getTransferHistory(String username) {
         if(username == null) {
-            throw new UsernameException("Error! Principal is null!");
+            throw new UsernameException("Error! Current logged user not found!");
         }
         Optional<Users> user = userRepository.findByUsername(username);
         if(user.isEmpty()) {
@@ -82,7 +82,7 @@ public class TransferServiceImpl implements TransferService {
         Transfer transfer = modelMapper.map(transferDTO, Transfer.class);
         transfer.setUser(List.of(senderUser, receiverUser));
 
-        updateBalance(transfer.getBalance(), senderUser, receiverUser);
+        updateBalance(transfer.getAmount(), senderUser, receiverUser);
 
         senderUser.addTransfer(transfer);
         receiverUser.addTransfer(transfer);
@@ -95,9 +95,9 @@ public class TransferServiceImpl implements TransferService {
                                Users receiverUser) {
         long currSenderUserBalance = senderUser.getBalance();
         long currReceiverUserBalance = receiverUser.getBalance();
-//        if(currSenderUserBalance < balance) {
-//            throw new UserException("Cannot perform transfer -> sender doesnt have enoguh money!");
-//        }
+        if(currSenderUserBalance < balance) {
+            throw new UserException("Cannot perform transfer -> sender doesnt have enoguh money!");
+        }
         senderUser.setBalance(currSenderUserBalance - balance);
         receiverUser.setBalance(currReceiverUserBalance + balance);
     }

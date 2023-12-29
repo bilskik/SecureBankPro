@@ -38,20 +38,13 @@ public class AuthFilter extends OncePerRequestFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getUsername(),
                         userDTO.getPassword());
                 Authentication resultAuthentication = authManager.authenticate(authentication);
-                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("Mysiasdek12a45...",
-                        null,
-                        null));
-//                SecurityContextHolder.getContext().setAuthentication(resultAuthentication);
+                SecurityContextHolder.getContext().setAuthentication(resultAuthentication);
                 filterChain.doFilter(request, response);
             } catch(IOException e) {
                 throw new IOException("Error during parsing user!");
             }
-        } else {
-            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("Mysiasdek12a45...",
-                    null,
-                    null));
-                    filterChain.doFilter(request, response);
         }
+        filterChain.doFilter(request, response);
     }
 
     private LoginRequest mapToUserDTO(HttpServletRequest request) throws IOException {

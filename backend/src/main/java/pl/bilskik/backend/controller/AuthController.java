@@ -17,7 +17,6 @@ import static pl.bilskik.backend.controller.mapping.UrlMapping.*;
 
 @RestController
 @RequestMapping(value = AUTH_PATH)
-@CrossOrigin
 public class AuthController {
 
     private AuthService authService;
@@ -39,7 +38,7 @@ public class AuthController {
 
     @PostMapping(value = LOGIN_BEGIN_PATH)
     public ResponseEntity<FirstLoginResponse> beginLogin(
-            @RequestBody FirstLoginRequest request
+            @RequestBody @Valid FirstLoginRequest request
     ) {
         return ResponseEntity.ok(new FirstLoginResponse(authService.beginLogin(request.getUsername())));
     }

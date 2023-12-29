@@ -17,7 +17,6 @@ import static pl.bilskik.backend.controller.mapping.UrlMapping.USER_PATH;
 
 @RestController
 @RequestMapping(value = USER_PATH)
-@CrossOrigin
 @Slf4j
 public class UserController {
 

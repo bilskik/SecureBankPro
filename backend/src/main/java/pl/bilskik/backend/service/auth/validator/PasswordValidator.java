@@ -4,6 +4,7 @@ import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.resources.*;
 import me.gosimple.nbvcxz.scoring.Result;
 import org.springframework.stereotype.Component;
+import pl.bilskik.backend.service.auth.exception.EntropyException;
 import pl.bilskik.backend.service.auth.exception.PasswordException;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class PasswordValidator {
         else if(result == 0) {
             return Entropy.TERRIBLE;
         } else {
-            throw new PasswordException("Cannot get Entropy!");
+            throw new EntropyException("Cannot count Entropy!");
         }
 
     }

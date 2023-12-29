@@ -25,8 +25,8 @@ public class Transfer {
     private String receiverName;
     @Column(name = "receiver_accno")
     private String receiverAccNo;
-    @Column(name = "balance")
-    private long balance;
+    @Column(name = "amount")
+    private long amount;
     @ManyToMany(
             mappedBy = "transferList",
             cascade = {
@@ -44,7 +44,7 @@ public class Transfer {
                     String senderAccNo,
                     String receiverName,
                     String receiverAccNo,
-                    long balance,
+                    long amount,
                     List<Users> user) {
         this.transferId = transferId;
         this.transferTitle = transferTitle;
@@ -52,7 +52,7 @@ public class Transfer {
         this.senderAccNo = senderAccNo;
         this.receiverName = receiverName;
         this.receiverAccNo = receiverAccNo;
-        this.balance = balance;
+        this.amount = amount;
         this.user = user;
     }
 }

@@ -23,9 +23,9 @@ public class UserRegisterRequest {
     @Email(regexp = "^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email is invalid!")
     @NotBlank(message = "Email cannot be blank!")
     private String email;
-    @Pattern(regexp = "^\\d+${11}", message = "Invalid pesel!")
+    @Pattern(regexp = "^\\w{11}$", message = "Invalid pesel!")
     private String pesel;
-    @Pattern(regexp = "^\\d+${16}", message = "Invalid creditCardNo!")
+    @Pattern(regexp = "^\\w{16}$", message = "Invalid creditCardNo!")
     private String creditCardNo;
 
 }

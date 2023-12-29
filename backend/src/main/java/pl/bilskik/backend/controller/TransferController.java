@@ -16,7 +16,6 @@ import static pl.bilskik.backend.controller.mapping.UrlMapping.TRANSFER_PATH;
 
 @RestController
 @RequestMapping(value = TRANSFER_PATH)
-@CrossOrigin
 public class TransferController {
 
     private final TransferService transferService;

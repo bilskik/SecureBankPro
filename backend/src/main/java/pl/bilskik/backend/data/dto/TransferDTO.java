@@ -19,13 +19,13 @@ public class TransferDTO {
     private String transferTitle;
     @NotBlank(message = "Invalid sender name!")
     private String senderName;
-    @Pattern(regexp = "^\\d+${26}", message = "Sender account number is invalid!")
+    @Pattern(regexp = "^\\w{26}$", message = "Sender account number is invalid!")
     private String senderAccNo;
     @NotBlank(message = "Invalid receiver name!")
     private String receiverName;
-    @Pattern(regexp = "^\\d+${26}", message = "Sender account number is invalid!")
+    @Pattern(regexp = "^\\w{26}$", message = "Sender account number is invalid!")
     private String receiverAccNo;
-    @Min(value = 1, message = "Balance of money to send must be at least 1!")
-    private long balance;
+    @Min(value = 1, message = "Amount of money to send must be at least 1!")
+    private long amount;
 
 }
