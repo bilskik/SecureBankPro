@@ -21,6 +21,8 @@ import pl.bilskik.backend.config.manager.AuthManager;
 import java.util.Arrays;
 import java.util.List;
 
+import static pl.bilskik.backend.controller.mapping.UrlMapping.*;
+
 
 @Configuration
 @EnableWebSecurity
@@ -51,6 +53,13 @@ public class SecurityConfig {
                 })
                 .sessionManagement((session) -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+                })
+                .logout((logout) -> {
+                    logout
+                            .logoutUrl(AUTH_PATH + LOGOUT_PATH)
+                            .logoutSuccessUrl(AUTH_PATH + LOGOUT_SUCCESS_PATH).permitAll()
+                            .invalidateHttpSession(true)
+                            .deleteCookies("SESSION");
                 })
                 .build();
     }

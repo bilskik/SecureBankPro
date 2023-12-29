@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "../axios/axios"
+import { redirect, useNavigate } from "react-router-dom"
+import { LOGIN_PAGE } from "../url/urlMapper"
 
 type getDataType = {
     URL : string,
@@ -11,12 +13,12 @@ type postDataType = {
     headers : object | undefined
 }
 const getData = async ({ URL, headers } : getDataType) => {
-    const res : any= await axios.get(URL, headers)
+    const res = await axios.get(URL, headers)
         .then((res : any) => {
             return res.data
         })
         .catch((err : any) => {
-            console.log(err)
+            return null;
         })
     return res;
 }
@@ -55,22 +57,24 @@ const useFetch = ({ URL, headers } : getDataType) => {
 const usePost = ({ URL, data, headers } : postDataType) => {
     const [resData, setResData] = useState<any>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [err, setErr] = useState<any>();
+    const [postState, setPostState] = useState({ isSuccess : false, isError : false, err : ""});
 
     const postData = async() => {
         setIsLoading(true)
         const res = await axios.post(URL, data, headers)
             .then((res) => {
+                setPostState({ isSuccess : true, isError : false, err : "" })
                 setIsLoading(false)
                 res.data && setResData(res.data)
             })
             .catch((err) => {
                 setIsLoading(false)
-                setErr(err)
+                setPostState({ isSuccess : false, isError : true, err : err })
             })
+        return res
     }
 
-    return { data, isLoading, err, postData };
+    return { data, isLoading, postState, postData };
 }
 
 export { getData, postData, useFetch, usePost }

@@ -6,6 +6,14 @@ export const LOGIN_BEGIN_PATH = "/login/begin";
 export const USER_DATA = "/user";
 export const USER_DETAILS_PATH = "/user/details";
 export const TRANSFER_HISTORY_PATH = "/transfer";
+export const LOGOUT_PATH = "/auth/logout"
+
+export const LOGIN_PAGE = "/";
+export const DASHBOARD_PAGE = "/dashboard"
+export const PAYMENT_PAGE = "/dashboard/payment";
+export const DETAILS_PAGE = "/dashboard/details";
+
+
 
 
 

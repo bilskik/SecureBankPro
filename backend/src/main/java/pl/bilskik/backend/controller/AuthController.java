@@ -1,6 +1,7 @@
 package pl.bilskik.backend.controller;
 
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +10,11 @@ import pl.bilskik.backend.data.request.UserRegisterRequest;
 import pl.bilskik.backend.data.request.FirstLoginRequest;
 import pl.bilskik.backend.data.response.FirstLoginResponse;
 import pl.bilskik.backend.data.response.ResponseMessage;
+import pl.bilskik.backend.data.response.UserResponse;
 import pl.bilskik.backend.service.AuthService;
 import pl.bilskik.backend.service.auth.AuthServiceImpl;
+
+import java.security.Principal;
 
 import static pl.bilskik.backend.controller.mapping.UrlMapping.*;
 
@@ -51,6 +55,15 @@ public class AuthController {
     @PostMapping(value = RESET_PASSWORD_PATH)
     public String resetPassword() {
         return "TO DO";
+    }
+
+    @GetMapping(value = LOGOUT_SUCCESS_PATH)
+    public ResponseEntity<ResponseMessage> success() {
+        return ResponseEntity.ok(new ResponseMessage("Logout was succesful!"));
+    }
+    @GetMapping
+    public ResponseEntity<ResponseMessage> getAuth() {
+        return ResponseEntity.ok(new ResponseMessage("Authenticated!"));
     }
 
 }

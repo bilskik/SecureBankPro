@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Button, Container, Row, Spinner, Stack, Col } from 'react-bootstrap';
 import { Outlet, useLoaderData, useNavigate } from 'react-router-dom'
 import { getData, useFetch } from '../common/api/apiCall';
-import { TRANSFER_HISTORY_PATH } from '../common/url/urlMapper';
+import { PAYMENT_PAGE, TRANSFER_HISTORY_PATH } from '../common/url/urlMapper';
 import { TransferType, UserDataType } from '../util/type/types.shared';
 import TransferHistory from '../component/transfer/TransferHistory';
 import NavComp from '../component/navbar/NavComp';
 
 const Dashboard = () => {
-    const { data, isLoading, err, getData} = useFetch({ URL : TRANSFER_HISTORY_PATH, headers : undefined})
+    const { data, isLoading, err, getData } = useFetch({ URL : TRANSFER_HISTORY_PATH, headers : undefined })
     const [transferHistory, setTransferhistory] = useState<TransferType[] | undefined>(data);
     const user = useLoaderData() as UserDataType;
     const nav = useNavigate();
@@ -22,14 +22,10 @@ const Dashboard = () => {
     const loadTransferHistory = () => {
         getData();
     }
-    
-    const handleTransfer = () => {
-
-    }
 
     return (
         <>
-            <NavComp/>
+            <Outlet/>
             { 
                 isLoading && <Spinner animation='border'/>
             }
@@ -43,7 +39,7 @@ const Dashboard = () => {
                     <Row className="ms-2">Available funds:</Row>
                     <Row className="ms-2 mb-3" style={{ fontWeight : "bold", fontSize : "1.2rem"}}>{ user.balance } PLN</Row>
                     <Stack direction='horizontal'>
-                        <Button onClick={(e) => nav("/payment")} variant='success' className='me-2'>
+                        <Button onClick={(e) => nav(PAYMENT_PAGE)} variant='success' className='me-2'>
                             Transfer
                         </Button>
                         <Button onClick={loadTransferHistory} variant='success'>

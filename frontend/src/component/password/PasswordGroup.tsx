@@ -41,6 +41,7 @@ const PasswordGroup = ({ ranges, onHandleSubmit } :  PasswordGroupType) => {
         })
         onHandleSubmit(password.join(''))
     }
+    console.log(ranges)
     return (
         <>
             <Form.Group className='m-3'>

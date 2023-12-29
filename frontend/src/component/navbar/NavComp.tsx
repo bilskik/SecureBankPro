@@ -1,25 +1,39 @@
 import React from 'react'
 import { Container, Navbar, Nav } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { DASHBOARD_PAGE, DETAILS_PAGE, LOGIN_BEGIN_PATH, LOGIN_PAGE, LOGOUT_PATH, PAYMENT_PAGE } from '../../common/url/urlMapper';
+import { useFetch } from '../../common/api/apiCall';
+import axios from '../../common/axios/axios';
 
 const NavComp = () => {
   const nav = useNavigate();
-  const handleOnLogout = () => {
-    nav("/")
+
+  const handleOnLogout = async () => {
+    const res = axios.get(LOGOUT_PATH)
+        .then((res : any) => {
+          nav(LOGIN_PAGE)
+        })
+        .catch((res : any) => {
+          console.log(res)
+        })
   }
+
   return (
-    <Navbar className="border ps-5 pe-5">
-      <Navbar.Brand onClick={() => nav("/")} style={{ cursor : "pointer"}}>Dashboard</Navbar.Brand>
-      <Nav className="me-auto">
-        <Nav.Link onClick={() => nav("/payment")}>Payment</Nav.Link>
-        <Nav.Link onClick={() => nav("/details")}>Details</Nav.Link>
-      </Nav>
-      <Nav>
-        <Nav.Link onClick={() => handleOnLogout} className='text-success' style={{ fontWeight : "bold" }}>
-          Wyloguj
-        </Nav.Link>
-      </Nav>            
-    </Navbar>
+    <>
+      <Navbar className="border ps-5 pe-5">
+        <Navbar.Brand onClick={() => nav(DASHBOARD_PAGE)} style={{ cursor : "pointer"}}>Dashboard</Navbar.Brand>
+        <Nav className="me-auto">
+          <Nav.Link onClick={() => nav(PAYMENT_PAGE)}>Payment</Nav.Link>
+          <Nav.Link onClick={() => nav(DETAILS_PAGE)}>Details</Nav.Link>
+        </Nav>
+        <Nav>
+          <Nav.Link onClick={handleOnLogout} className='text-success' style={{ fontWeight : "bold" }}>
+            Wyloguj
+          </Nav.Link>
+        </Nav>            
+      </Navbar>
+      <Outlet/>
+    </>
   )
 }
 

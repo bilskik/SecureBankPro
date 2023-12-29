@@ -1,9 +1,10 @@
 import { redirect } from "react-router-dom";
 import { getData } from "../../common/api/apiCall";
-import { LOGIN_PAGE, USER_DATA, USER_DETAILS_PATH } from "../../common/url/urlMapper";
+import { AUTH_PATH, LOGIN_PAGE } from "../../common/url/urlMapper";
 
-export const userDetailsLoader = () => {
-    const data = getData({ URL : USER_DETAILS_PATH, headers : undefined })
+export const navLoader = () => {
+    const data = getData({ URL : AUTH_PATH, headers : undefined })
+    console.log(data)
     const res = data.then((value : any) => {
         if(value == null) {
             return redirect(LOGIN_PAGE)
@@ -13,4 +14,4 @@ export const userDetailsLoader = () => {
         }
     })
     return res;
-}
+ }

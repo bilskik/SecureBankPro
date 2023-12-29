@@ -2,9 +2,11 @@ import React, { useEffect, useReducer, useState } from 'react'
 import { Button, FloatingLabel, FormControl, FormGroup, Container, Form } from 'react-bootstrap'
 import { initTransferData } from '../util/init/init'
 import { TransferType } from '../util/type/types.shared'
-import { usePost } from '../common/api/apiCall'
-import { useNavigate } from 'react-router-dom'
+import { getData, usePost } from '../common/api/apiCall'
+import { redirect, useNavigate } from 'react-router-dom'
 import NavComp from '../component/navbar/NavComp'
+import { DASHBOARD_PAGE, USER_DATA } from '../common/url/urlMapper'
+import axios from '../common/axios/axios'
 
 enum TransferKind {
   SENDER_NAME = "SENDER_NAME",
@@ -23,6 +25,16 @@ type TransferActionType = {
 const transferReducer = (state : TransferType, action : TransferActionType) => {
   const { type, payload } = action
   switch(type) {
+      case TransferKind.SENDER_NAME:
+        return {
+          ...state,
+          senderName : payload
+        } as TransferType
+      case TransferKind.SENDER_ACCNO:
+          return {
+            ...state,
+            senderAccNo : payload
+          } as TransferType
       case TransferKind.RECEIVER_NAME:
           return { 
               ...state,
@@ -52,8 +64,12 @@ const transferReducer = (state : TransferType, action : TransferActionType) => {
 const Transfer = () => {
     const [transferData, dispatch] = useReducer(transferReducer, initTransferData)
     const [validated, setValidated] = useState<boolean>(false);
-    const { isLoading, err,  postData,  ...rest } = usePost({ URL : "/transfer/payment", data : transferData, headers : undefined })
     const nav = useNavigate();
+
+    useEffect(() => {
+        const res = getData({ URL : USER_DATA, headers : undefined})
+        res.then((value : any) => dispatch({ type : TransferKind.SENDER_ACCNO, payload : value?.accountNo }))
+    },[])
 
     const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
       const form = event.currentTarget;
@@ -62,30 +78,41 @@ const Transfer = () => {
       if (form.checkValidity() === false || fromAccRegex.test(transferData.receiverAccNo) || transferData.amount > 0) {
         event.stopPropagation();
         setValidated(true);
+        submitTransfer()
       } else {
         setValidated(false)
-        postData()
-        nav("/")
       }
     };
 
+    const submitTransfer = async() => {
+      console.log(transferData)
+      const res = await axios.post("/transfer/payment", transferData)
+              .then((res) => {
+                  console.log(res)
+                //modal here
+                  nav(DASHBOARD_PAGE)
+              })
+              .catch((err : any) => {
+                console.log(err)
+              })
+    }
+
     return (
       <>
-        <NavComp/>
         <Container className='mt-5'>
           <Form noValidate validated={validated} onSubmit={(e) => handleSubmit(e)}>
               <h2>Transfer</h2>
               <FloatingLabel
-                controlId='receiver-name'
-                label="Receiver name"
+                controlId='sender-name'
+                label="Sender name"
                 className='mb-3'
               >
                   <FormControl
                     required 
                     type='text'
-                    placeholder='Receiver name'
-                    value={transferData.receiverName}
-                    onChange={(e) => dispatch({ type : TransferKind.RECEIVER_NAME, payload : e.target.value})}
+                    placeholder='Sender name'
+                    value={transferData.senderName}
+                    onChange={(e) => dispatch({ type : TransferKind.SENDER_NAME, payload : e.target.value})}
                   />
               </FloatingLabel>
               <FloatingLabel
@@ -97,6 +124,21 @@ const Transfer = () => {
                     required 
                     type='text'
                     placeholder='From account'
+                    readOnly
+                    value={transferData.senderAccNo}
+                  />
+              </FloatingLabel>
+              <FloatingLabel
+                controlId='receiver-name'
+                label="Receiver name"
+                className='mb-3'
+              >
+                  <FormControl
+                    required 
+                    type='text'
+                    placeholder='Receiver name'
+                    value={transferData.receiverName}
+                    onChange={(e) => dispatch({ type : TransferKind.RECEIVER_NAME, payload : e.target.value})}
                   />
               </FloatingLabel>
               <FloatingLabel

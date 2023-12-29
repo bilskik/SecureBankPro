@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
         if(user.isEmpty()) {
             throw new UserException("User is empty!");
         }
+        System.out.println("USER");
         return mapper.map(user.get(), UserResponse.class);
 
     }
