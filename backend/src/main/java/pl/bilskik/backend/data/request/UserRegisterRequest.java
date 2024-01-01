@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserRegisterRequest {
 
-    @Pattern(regexp = "^[a-zA-Z0-9]{9,}$", message = "Invalid username - at least 9 characters, " +
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[^\\s]{9,}$", message = "Invalid username - at least 9 characters, " +
             "one lowercase, one uppercase, one digit")
     private String username;
     @NotBlank(message = "Password cannot be blank!")

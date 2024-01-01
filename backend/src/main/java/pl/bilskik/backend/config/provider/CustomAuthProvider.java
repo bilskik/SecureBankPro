@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import pl.bilskik.backend.config.failure.AuthenticationFailureCounter;
 import pl.bilskik.backend.config.userconfig.DetailsService;
 import pl.bilskik.backend.config.userconfig.SecurityUser;
 
@@ -37,11 +38,13 @@ public class CustomAuthProvider implements AuthenticationProvider {
             mitigateAgainstTimingAttack(credentials);
             return authentication;
         }
+
         if(loadedUser == null) {
             throw new InternalAuthenticationServiceException(
                     "UserDetailsService returned null, which is an interface contract violation");
         }
-        if(!principal.equals(loadedUser.getUsername())) {
+
+        if(!isUserAccountValid(loadedUser) || !principal.equals(loadedUser.getUsername())) {
             mitigateAgainstTimingAttack(credentials);
             return authentication;
         } else {
@@ -49,7 +52,7 @@ public class CustomAuthProvider implements AuthenticationProvider {
             boolean isMatch = matchPassword(credentials, loadedUser);
             System.out.println(isMatch);
             if(isMatch) {
-                return new UsernamePasswordAuthenticationToken(principal, null, null);
+                return new UsernamePasswordAuthenticationToken(principal, null, loadedUser.getAuthorities());
             } else {
                 return authentication;
             }
@@ -82,4 +85,13 @@ public class CustomAuthProvider implements AuthenticationProvider {
         Random random = new Random();
         return random.nextInt(20 - 15 + 1) + 15;
     }
+
+    private boolean isUserAccountValid(SecurityUser loadedUser) {
+        if(!loadedUser.isAccountNonLocked() || !loadedUser.isAccountNonExpired()
+                || !loadedUser.isEnabled() || !loadedUser.isCredentialsNonExpired()) {
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -45,8 +45,8 @@ public class AuthRegisterService {
         if(entropy == GOOD) {
             Users user = mapToUsersObj(userRegisterRequest);
             List<Password> passwordList = createPasswords(userRegisterRequest.getPassword(), user);
-            user.setPasswordList(passwordList);
-            userRepository.save(user);
+            Users buildedUser = buildUser(user, passwordList);
+            userRepository.save(buildedUser);
         } else {
            throw new EntropyException("Entropy value: " + entropy + "is too weak!");
         }
@@ -66,6 +66,13 @@ public class AuthRegisterService {
             p.setUser(users);
         }
         return passwordList;
+    }
+    private Users buildUser(Users user, List<Password> passwordList) {
+        user.setPasswordList(passwordList);
+        Set<String> roles = new HashSet<>();
+        roles.add("CLIENT");
+        user.setRoles(roles);
+        return user;
     }
 
 }

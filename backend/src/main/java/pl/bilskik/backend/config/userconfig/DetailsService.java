@@ -46,6 +46,7 @@ public class DetailsService {
         UserLoginDTO userLoginDTO = modelMapper.map(user, UserLoginDTO.class);
         List<String> passwords = extractPasswords(passwordObjList);
         userLoginDTO.setPasswords(passwords);
+        userLoginDTO.setRoles(user.getRoles());
         return userLoginDTO;
     }
 
