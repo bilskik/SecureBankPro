@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Navbar, Nav } from 'react-bootstrap'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { DASHBOARD_PAGE, DETAILS_PAGE, LOGIN_BEGIN_PATH, LOGIN_PAGE, LOGOUT_PATH, PAYMENT_PAGE } from '../../common/url/urlMapper';
@@ -7,15 +7,34 @@ import axios from '../../common/axios/axios';
 
 const NavComp = () => {
   const nav = useNavigate();
+  const [csrf, setCsrf] = useState<string>("");
+
+  useEffect(() => {
+    axios.get("/auth/csrf")
+        .then((res : any) => {
+            if(res.data && res.data.token) {
+                setCsrf(res.data.token)
+            } 
+        })
+        .catch((res : any) => {
+            console.log(res)
+        })
+},[])
 
   const handleOnLogout = async () => {
-    const res = axios.get(LOGOUT_PATH)
+    const res = axios.post(LOGOUT_PATH, undefined, { headers : getHeaders() })
         .then((res : any) => {
           nav(LOGIN_PAGE)
         })
         .catch((res : any) => {
           console.log(res)
         })
+  }
+
+  const getHeaders = () => {
+    return {
+      'X-XSRF-TOKEN' : csrf
+    }
   }
 
   return (

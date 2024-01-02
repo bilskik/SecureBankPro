@@ -1,17 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from '../common/axios/axios';
 import { Button, Container, Form, Row } from 'react-bootstrap';
 import { AUTH_PATH, DASHBOARD_PAGE, LOGIN_BEGIN_PATH, LOGIN_FINISH_PATH, REGISTER_PATH } from '../common/url/urlMapper';
 import PasswordGroup from '../component/password/PasswordGroup';
 import { Person } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const Login = () => {
     const [login, setLogin] = useState<string>("");
     const [range, setRange] = useState<string>("");
+    const [csrf, setCsrf] = useState<string>("");
     const [err, setErr] = useState({ isError : false, message : '', loginAttempt : 0 })
     const nav = useNavigate();
     
+    useEffect(() => {
+        axios.get("/auth/csrf")
+            .then((res : any) => {
+                if(res.data && res.data.token) {
+                    setCsrf(res.data.token)
+                } 
+            })
+            .catch((res : any) => {
+                console.log(res)
+            })
+    },[])
+
     const handleNext = () => {
         setErr(prev => ({
                 ...prev,
@@ -20,7 +34,7 @@ const Login = () => {
         const prepareData = {
             username : login
         }
-        axios.post(AUTH_PATH + LOGIN_BEGIN_PATH, prepareData)
+        axios.post(AUTH_PATH + LOGIN_BEGIN_PATH, prepareData, { headers : getHeaders() })
             .then((res : any) => {
                 console.log(res)
                 if(res.data?.range) {
@@ -40,7 +54,8 @@ const Login = () => {
             username : login,
             password 
         }
-        axios.post(AUTH_PATH + LOGIN_FINISH_PATH, prepareData)
+        
+        axios.post(AUTH_PATH + LOGIN_FINISH_PATH, prepareData, { headers : getHeaders() })
             .then((res : any) => {
                 setErr(prev => ({
                     ...prev,
@@ -58,6 +73,12 @@ const Login = () => {
                     loginAttempt : 1
                 })
             })
+    }
+
+    const getHeaders = () => {
+        return {
+            'X-XSRF-TOKEN' : csrf
+        }
     }
 
     return (

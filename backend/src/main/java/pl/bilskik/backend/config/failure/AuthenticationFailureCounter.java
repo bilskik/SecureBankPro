@@ -8,19 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import pl.bilskik.backend.config.userconfig.DetailsService;
 import pl.bilskik.backend.config.userconfig.SecurityUser;
 import pl.bilskik.backend.repository.UserRepository;
-import pl.bilskik.backend.service.exception.PasswordException;
 
 import java.io.IOException;
-import java.security.Security;
-import java.util.HashMap;
 import java.util.Map;
 
 import static pl.bilskik.backend.controller.mapping.UrlMapping.AUTH_PATH;
@@ -32,14 +26,20 @@ public class AuthenticationFailureCounter implements AccessDeniedHandler {
 
     private final DetailsService detailsService;
     private final UserRepository userRepository;
-    private final Map<String, Integer> loginAttemptsMap;
-    private final static Integer MAX_NUMBER_OF_LOGIN_ATTEMPT = 5;
+    private final Map<String, Integer> loginAttemptsHolder;
+    private final LoginAttemptsContainer loginAttemptsContainer;
+    private final static Integer MAX_NUMBER_OF_LOGIN_ATTEMPT = 5; //to change in future
 
     @Autowired
-    public AuthenticationFailureCounter(DetailsService detailsService, UserRepository userRepository) {
+    public AuthenticationFailureCounter(
+            DetailsService detailsService,
+            UserRepository userRepository,
+            LoginAttemptsContainer loginAttemptsContainer
+    ) {
         this.detailsService = detailsService;
         this.userRepository = userRepository;
-        loginAttemptsMap = new HashMap<>();
+        this.loginAttemptsHolder = loginAttemptsContainer.getLoginAttemptsHolder();
+        this.loginAttemptsContainer = loginAttemptsContainer;
     }
 
     @Override
@@ -51,23 +51,23 @@ public class AuthenticationFailureCounter implements AccessDeniedHandler {
         log.error(String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
         log.error(accessDeniedException.getMessage());
         if(request.getMethod().equals("POST") && request.getServletPath().equals(AUTH_PATH + LOGIN_FINISH_PATH)) {
-            String username  = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            SecurityUser securityUser;
             try {
-                 securityUser = detailsService.loadUserByUsername(username);
+                String username  = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                SecurityUser securityUser = detailsService.loadUserByUsername(username);
                  if(securityUser.isAccountNonLocked()) {
-                     if (loginAttemptsMap.containsKey(username)) {
-                         Integer currInvalidAuthAttempt = loginAttemptsMap.get(username);
+                     if (loginAttemptsHolder.containsKey(username)) {
+                         Integer currInvalidAuthAttempt = loginAttemptsHolder.get(username);
                          currInvalidAuthAttempt++;
                          if (currInvalidAuthAttempt > MAX_NUMBER_OF_LOGIN_ATTEMPT) {
                              lockAccount(username);
                          } else {
-                             loginAttemptsMap.put(username, currInvalidAuthAttempt);
+                             loginAttemptsHolder.put(username, currInvalidAuthAttempt);
                          }
                      } else {
                          Integer invalidAuthAttempt = 1;
-                         loginAttemptsMap.put(username, invalidAuthAttempt);
+                         loginAttemptsHolder.put(username, invalidAuthAttempt);
                      }
+                     loginAttemptsContainer.commitChanges(loginAttemptsHolder);
                  }
             } catch(Exception ex) {
                 if (response.isCommitted()) {
@@ -87,4 +87,5 @@ public class AuthenticationFailureCounter implements AccessDeniedHandler {
     private void lockAccount(String username) {
         userRepository.lockAccount(username);
     }
+
 }

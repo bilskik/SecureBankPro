@@ -12,4 +12,5 @@ public class UrlMapping {
     public final static String TRANSFER_PATH = "/transfer";
     public final static String USER_PATH = "/user";
     public final static String USER_DETAILS_PATH = "/details";
+    public final static String CSRF_PATH = "/csrf";
 }

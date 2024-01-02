@@ -8,9 +8,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.bilskik.backend.config.failure.AuthenticationFailureCounter;
+import pl.bilskik.backend.config.failure.LoginAttemptsContainer;
 import pl.bilskik.backend.config.userconfig.DetailsService;
 import pl.bilskik.backend.config.userconfig.SecurityUser;
 
+import java.util.Map;
 import java.util.Random;
 
 @Component
@@ -18,13 +20,18 @@ public class CustomAuthProvider implements AuthenticationProvider {
 
     private final DetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final LoginAttemptsContainer loginAttemptsContainer;
     private final String USER_NOT_FOUND_PASSWORD = "NotF!Pass43490!.";
 
     public CustomAuthProvider(
             DetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            LoginAttemptsContainer loginAttemptsContainer
+
+    ) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
+        this.loginAttemptsContainer = loginAttemptsContainer;
     }
 
     @Override
@@ -52,12 +59,15 @@ public class CustomAuthProvider implements AuthenticationProvider {
             boolean isMatch = matchPassword(credentials, loadedUser);
             System.out.println(isMatch);
             if(isMatch) {
+                updateLoginAttemptsContainer(principal);
                 return new UsernamePasswordAuthenticationToken(principal, null, loadedUser.getAuthorities());
             } else {
                 return authentication;
             }
         }
     }
+
+
 
     @Override
     public boolean supports(Class<?> authentication) {
@@ -92,6 +102,14 @@ public class CustomAuthProvider implements AuthenticationProvider {
             return false;
         }
         return true;
+    }
+    private void updateLoginAttemptsContainer(String username) {
+        Map<String, Integer> loginAttemptsHolder = loginAttemptsContainer.getLoginAttemptsHolder();
+        if(loginAttemptsHolder.containsKey(username)) {
+            Integer loginAttempts = 0;
+            loginAttemptsHolder.put(username, loginAttempts);
+            loginAttemptsContainer.commitChanges(loginAttemptsHolder);
+        }
     }
 
 }

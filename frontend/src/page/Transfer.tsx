@@ -64,11 +64,24 @@ const transferReducer = (state : TransferType, action : TransferActionType) => {
 const Transfer = () => {
     const [transferData, dispatch] = useReducer(transferReducer, initTransferData)
     const [validated, setValidated] = useState<boolean>(false);
+    const [csrf, setCsrf] = useState<string>("");
     const nav = useNavigate();
 
     useEffect(() => {
         const res = getData({ URL : USER_DATA, headers : undefined})
         res.then((value : any) => dispatch({ type : TransferKind.SENDER_ACCNO, payload : value?.accountNo }))
+    },[])
+
+    useEffect(() => {
+      axios.get("/auth/csrf")
+          .then((res : any) => {
+              if(res.data && res.data.token) {
+                  setCsrf(res.data.token)
+              } 
+          })
+          .catch((res : any) => {
+              console.log(res)
+          })
     },[])
 
     const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
@@ -86,7 +99,7 @@ const Transfer = () => {
 
     const submitTransfer = async() => {
       console.log(transferData)
-      const res = await axios.post("/transfer/payment", transferData)
+      const res = await axios.post("/transfer/payment", transferData, { headers : getHeaders() })
               .then((res) => {
                   console.log(res)
                 //modal here
@@ -95,6 +108,12 @@ const Transfer = () => {
               .catch((err : any) => {
                 console.log(err)
               })
+    }
+
+    const getHeaders = () => {
+      return {
+        'X-XSRF-TOKEN' : csrf
+      }
     }
 
     return (

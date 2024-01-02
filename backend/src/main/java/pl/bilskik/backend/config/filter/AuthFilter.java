@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,7 @@ import static pl.bilskik.backend.controller.mapping.UrlMapping.LOGIN_FINISH_PATH
 public class AuthFilter extends OncePerRequestFilter {
 
     private final AuthManager authManager;
+    private final long DELAY_AUTH_TIME_IN_MS = 500;
 
     public AuthFilter(AuthManager authManager) {
         this.authManager = authManager;
@@ -31,9 +33,12 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain) throws ServletException, IOException {
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+
         if(request.getMethod().equals("POST") && request.getServletPath().equals(AUTH_PATH + LOGIN_FINISH_PATH)) {
             try {
+                handleAuthDelay();
                 LoginRequest userDTO = mapToUserDTO(request);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getUsername(),
                         userDTO.getPassword());
@@ -44,7 +49,16 @@ public class AuthFilter extends OncePerRequestFilter {
                 throw new IOException("Error during parsing user!");
             }
         }
+
         filterChain.doFilter(request, response);
+    }
+
+    private void handleAuthDelay() {
+        try {
+            Thread.sleep(DELAY_AUTH_TIME_IN_MS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private LoginRequest mapToUserDTO(HttpServletRequest request) throws IOException {

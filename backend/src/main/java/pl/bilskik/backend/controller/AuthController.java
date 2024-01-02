@@ -5,6 +5,7 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import pl.bilskik.backend.data.request.UserRegisterRequest;
 import pl.bilskik.backend.data.request.FirstLoginRequest;
@@ -61,9 +62,14 @@ public class AuthController {
     public ResponseEntity<ResponseMessage> success() {
         return ResponseEntity.ok(new ResponseMessage("Logout was succesful!"));
     }
+
     @GetMapping
     public ResponseEntity<ResponseMessage> getAuth() {
         return ResponseEntity.ok(new ResponseMessage("Authenticated!"));
     }
 
+    @GetMapping(value = CSRF_PATH)
+    public CsrfToken csrfToken(CsrfToken token) {
+        return token;
+    }
 }

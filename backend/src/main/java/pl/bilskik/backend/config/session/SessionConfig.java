@@ -12,7 +12,7 @@ public class SessionConfig {
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
         serializer.setCookieName("SESSION");
-//        serializer.setUseSecureCookie(true);
+        serializer.setUseSecureCookie(true);
 //        serializer.setCookiePath("/");
 //        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
         return serializer;
