@@ -88,12 +88,11 @@ const Transfer = () => {
       const form = event.currentTarget;
       const fromAccRegex = /^\d{20}$/;
       event.preventDefault();
-      if (form.checkValidity() === false || fromAccRegex.test(transferData.receiverAccNo) || transferData.amount > 0) {
+      if (form.checkValidity() === false || !fromAccRegex.test(transferData.receiverAccNo) || transferData.amount < 1) {
         event.stopPropagation();
         setValidated(true);
-        submitTransfer()
       } else {
-        setValidated(false)
+        submitTransfer()
       }
     };
 

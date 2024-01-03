@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import axios from '../common/axios/axios';
-import { Button, Container, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Container, Form, Row } from 'react-bootstrap';
 import { AUTH_PATH, DASHBOARD_PAGE, LOGIN_BEGIN_PATH, LOGIN_FINISH_PATH, REGISTER_PATH } from '../common/url/urlMapper';
 import PasswordGroup from '../component/password/PasswordGroup';
 import { Person } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+import { ErrorType } from '../util/type/types.shared';
+import ResetPassword from '../component/password/ResetPassword';
 
 const Login = () => {
     const [login, setLogin] = useState<string>("");
     const [range, setRange] = useState<string>("");
     const [csrf, setCsrf] = useState<string>("");
-    const [err, setErr] = useState({ isError : false, message : '', loginAttempt : 0 })
+    const [err, setErr] = useState<ErrorType>({ isError : false, message : ''})
+    const [isResetPassword, setIsResetPassword] = useState<boolean>(false);
     const nav = useNavigate();
     
     useEffect(() => {
@@ -43,8 +45,7 @@ const Login = () => {
             }).catch((err : any) => {
                 setErr({
                     isError : true,
-                    message : err.response?.data?.username,
-                    loginAttempt : 1
+                    message : err.response?.data?.username
                 })
             })
     }
@@ -54,7 +55,12 @@ const Login = () => {
             username : login,
             password 
         }
-        
+
+        setErr(prev => ({
+            ...prev,
+            isError : false
+        }))
+
         axios.post(AUTH_PATH + LOGIN_FINISH_PATH, prepareData, { headers : getHeaders() })
             .then((res : any) => {
                 setErr(prev => ({
@@ -69,8 +75,7 @@ const Login = () => {
                 console.log(err)
                 setErr({
                     isError : true,
-                    message : "Credentials invalid!",
-                    loginAttempt : 1
+                    message : "Credentials invalid!"
                 })
             })
     }
@@ -88,35 +93,41 @@ const Login = () => {
                     <Person color='green' size={30}/>
                 </Row>
                 <h2 style={{textAlign : "center"}}>Login</h2>
-                <Form.Group className='m-3 mt-4'>
-                    <Form.Label className="ms-1">Username</Form.Label>
-                    <Form.Control 
-                        type='text' 
-                        placeholder='username'
-                        value={login}
-                        onChange={(e) => setLogin(e.target.value)}
+                {
+                    isResetPassword ? 
+                    <ResetPassword 
+                        handlePasswordResetUnShow={() => setIsResetPassword(false)}
+                        headers={getHeaders()} 
+                        login={login}
                     />
-                </Form.Group>
-                {
-                    err.isError ? 
-                    <Row className='ms-3 me-3'>
-                        { err.message } Login attempt : { err.loginAttempt } / 5
-                    </Row>
                     :
-                    null
+                    <>
+                        <Form.Group className='m-3 mt-4'>
+                            <Form.Label className="ms-1">Username</Form.Label>
+                            <Form.Control 
+                                type='text' 
+                                placeholder='username'
+                                value={login}
+                                onChange={(e) => setLogin(e.target.value)}
+                            />
+                        </Form.Group>
+                        {
+                            range ? 
+                            <PasswordGroup 
+                                ranges={range} 
+                                onHandleSubmit={onHandleSubmit} 
+                                err={err} 
+                                handleResetPasswordShow={() => setIsResetPassword(true)}
+                            />
+                            : 
+                            <Row className='mb-5 ms-3 me-3 mt-4'>
+                                <Button variant='success' onClick={handleNext}>
+                                    Next
+                                </Button>
+                            </Row>
+                        }
+                    </>
                 }
-                
-                {
-                    range ? 
-                    <PasswordGroup ranges={range} onHandleSubmit={onHandleSubmit}/>
-                     : 
-                    <Row className='mb-5 ms-3 me-3 mt-4'>
-                        <Button variant='success' onClick={handleNext}>
-                            Next
-                        </Button>
-                    </Row>
-                }
-                
             </Form>
         </Container>
     )

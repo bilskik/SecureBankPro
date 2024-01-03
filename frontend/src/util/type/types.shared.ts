@@ -14,3 +14,8 @@ export type UserDetailsType = {
     creditCardNo : string,
     pesel : string
 }
+
+export type ErrorType = {
+    isError : boolean,
+    message : string
+}

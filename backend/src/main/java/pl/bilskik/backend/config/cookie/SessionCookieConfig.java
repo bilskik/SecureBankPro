@@ -1,5 +1,6 @@
 package pl.bilskik.backend.config.session;
 
+import org.springframework.boot.web.server.Cookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.session.web.http.CookieSerializer;
@@ -12,9 +13,10 @@ public class SessionConfig {
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
         serializer.setCookieName("SESSION");
+        serializer.setSameSite(Cookie.SameSite.STRICT.attributeValue());
         serializer.setUseSecureCookie(true);
-//        serializer.setCookiePath("/");
-//        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+        serializer.setCookiePath("/");
+        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
         return serializer;
     }
 }
