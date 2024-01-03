@@ -28,7 +28,7 @@ public class AuthenticationFailureCounter implements AccessDeniedHandler {
     private final UserRepository userRepository;
     private final Map<String, Integer> loginAttemptsHolder;
     private final LoginAttemptsContainer loginAttemptsContainer;
-    private final static Integer MAX_NUMBER_OF_LOGIN_ATTEMPT = 5; //to change in future
+    private final static Integer MAX_NUMBER_OF_LOGIN_ATTEMPT = 5;
 
     @Autowired
     public AuthenticationFailureCounter(

@@ -1,2 +1,5 @@
-package pl.bilskik.backend.config.userconfig;public class UserRole {
+package pl.bilskik.backend.config.userconfig;
+
+public enum UserRole {
+    CLIENT, ADMIN
 }

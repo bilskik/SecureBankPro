@@ -61,6 +61,7 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "transfer_id")
     )
     private List<Transfer> transferList;
+
     @OneToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY

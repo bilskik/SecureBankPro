@@ -50,7 +50,6 @@ public class CustomAuthProvider implements AuthenticationProvider {
             throw new InternalAuthenticationServiceException(
                     "UserDetailsService returned null, which is an interface contract violation");
         }
-
         if(!isUserAccountValid(loadedUser) || !principal.equals(loadedUser.getUsername())) {
             mitigateAgainstTimingAttack(credentials);
             return authentication;
@@ -66,8 +65,6 @@ public class CustomAuthProvider implements AuthenticationProvider {
             }
         }
     }
-
-
 
     @Override
     public boolean supports(Class<?> authentication) {

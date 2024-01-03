@@ -38,22 +38,5 @@ public class Transfer {
 
     public Transfer() {}
 
-    public Transfer(int transferId,
-                    String transferTitle,
-                    String senderName,
-                    String senderAccNo,
-                    String receiverName,
-                    String receiverAccNo,
-                    long amount,
-                    List<Users> user) {
-        this.transferId = transferId;
-        this.transferTitle = transferTitle;
-        this.senderName = senderName;
-        this.senderAccNo = senderAccNo;
-        this.receiverName = receiverName;
-        this.receiverAccNo = receiverAccNo;
-        this.amount = amount;
-        this.user = user;
-    }
 }
 

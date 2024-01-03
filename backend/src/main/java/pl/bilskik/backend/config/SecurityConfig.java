@@ -14,11 +14,16 @@ import org.springframework.security.web.csrf.*;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import pl.bilskik.backend.config.cookie.CsrfCookieConfig;
+import pl.bilskik.backend.config.cors.CorsConfig;
 import pl.bilskik.backend.config.failure.AuthenticationFailureCounter;
 import pl.bilskik.backend.config.filter.AuthFilter;
 import pl.bilskik.backend.config.manager.AuthManager;
+import pl.bilskik.backend.config.userconfig.UserRole;
+
 import java.util.Arrays;
 
+import static pl.bilskik.backend.config.cookie.SessionCookieConfig.SESSION_COOKIE_NAME;
 import static pl.bilskik.backend.controller.mapping.UrlMapping.*;
 
 
@@ -27,23 +32,27 @@ import static pl.bilskik.backend.controller.mapping.UrlMapping.*;
 public class SecurityConfig {
 
     private final AuthFilter authFilter;
-    private final AuthManager authenticationManager;
+    private final CorsConfig corsConfig;
+    private final CsrfCookieConfig csrfCookieConfig;
     private final AuthenticationFailureCounter authenticationFailureCounter;
 
     @Autowired
     public SecurityConfig(AuthFilter authFilter,
-                          AuthManager authenticationManager,
-                          AuthenticationFailureCounter authenticationFailureCounter) {
+                          AuthenticationFailureCounter authenticationFailureCounter,
+                          CorsConfig corsConfig,
+                          CsrfCookieConfig csrfCookieConfig
+    ) {
         this.authFilter = authFilter;
-        this.authenticationManager = authenticationManager;
         this.authenticationFailureCounter = authenticationFailureCounter;
+        this.corsConfig = corsConfig;
+        this.csrfCookieConfig = csrfCookieConfig;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .cors(c -> c.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .cors(c -> c.configurationSource(corsConfig.corsConfigurationSource()))
+                .csrf(csrf -> csrf.csrfTokenRepository(csrfCookieConfig.cookieCsrfTokenRepository()))
                 .headers(h -> {
                     h
                         .xssProtection(Customizer.withDefaults())
@@ -52,36 +61,24 @@ public class SecurityConfig {
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((auth) -> {
                     auth
-                            .requestMatchers("/auth/register/**", "/auth/login/begin", "/auth/csrf", "/auth/test")
+                            .requestMatchers(REGISTER_URL, LOGIN_BEGIN_URL, CSRF_URL, "/auth/test")
                             .permitAll()
                             .anyRequest()
-                            .hasRole("CLIENT");
+                            .hasRole(UserRole.CLIENT.name());
                 })
                 .sessionManagement((session) -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
                 })
                 .logout((logout) -> {
                     logout
-                            .logoutUrl(AUTH_PATH + LOGOUT_PATH)
-                            .logoutSuccessUrl(AUTH_PATH + LOGOUT_SUCCESS_PATH).permitAll()
+                            .logoutUrl(LOGOUT_URL)
+                            .logoutSuccessUrl(LOGOUT_SUCCESS_URL).permitAll()
                             .clearAuthentication(true)
                             .invalidateHttpSession(true)
-                            .deleteCookies("SESSION");
+                            .deleteCookies(SESSION_COOKIE_NAME);
                 })
                 .exceptionHandling((ex) -> ex.accessDeniedHandler(authenticationFailureCounter))
                 .build();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
     private String buildContentPolicyDirectives() {
