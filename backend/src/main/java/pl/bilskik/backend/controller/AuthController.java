@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
+import pl.bilskik.backend.data.request.BeginResetPasswordRequest;
+import pl.bilskik.backend.data.request.FinishResetPasswordRequest;
 import pl.bilskik.backend.data.request.UserRegisterRequest;
 import pl.bilskik.backend.data.request.FirstLoginRequest;
 import pl.bilskik.backend.data.response.FirstLoginResponse;
@@ -53,8 +55,26 @@ public class AuthController {
         return ResponseEntity.ok(new ResponseMessage("Authenticated!"));
     }
 
-    @PostMapping(value = RESET_PASSWORD_PATH)
-    public String resetPassword() {
+    @PostMapping(value = RESET_PASSWORD_BEGIN_PATH)
+    public ResponseEntity<ResponseMessage> beginResetPassword(
+            @RequestBody @Valid BeginResetPasswordRequest request
+    ) {
+        return ResponseEntity.ok(
+                new ResponseMessage(
+                        authService.beginResetPassword(request.getUsername(), request.getEmail())
+                )
+        );
+    }
+
+    @PostMapping(value = RESET_PASSWORD_FINISH_PATH)
+    public String finishResetPassword(
+            @RequestBody @Valid FinishResetPasswordRequest request
+    ) {
+        authService.finishResetPassword(
+                request.getUsername(),
+                request.getEmail(),
+                request.getPassword()
+        );
         return "TO DO";
     }
 

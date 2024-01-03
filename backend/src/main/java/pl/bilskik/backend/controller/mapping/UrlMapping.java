@@ -4,7 +4,8 @@ public final class UrlMapping {
 
     public final static String AUTH_PATH = "/auth";
     public final static String REGISTER_PATH = "/register";
-    public final static String RESET_PASSWORD_PATH = "/resetpassword";
+    public final static String RESET_PASSWORD_BEGIN_PATH = "/reset-password/begin";
+    public final static String RESET_PASSWORD_FINISH_PATH = "/reset-password/finish";
     public final static String LOGIN_FINISH_PATH = "/login/finish";
     public final static String LOGIN_BEGIN_PATH = "/login/begin";
     public final static String LOGOUT_PATH = "/logout";
@@ -21,6 +22,8 @@ public final class UrlMapping {
     public final static String LOGOUT_SUCCESS_URL = AUTH_PATH + LOGOUT_SUCCESS_PATH;
     public final static String LOGIN_BEGIN_URL = AUTH_PATH + LOGIN_BEGIN_PATH;
     public final static String LOGIN_FINISH_URL = AUTH_PATH + LOGIN_FINISH_PATH;
+    public final static String RESET_PASSWORD_BEGIN_URL = AUTH_PATH + RESET_PASSWORD_BEGIN_PATH;
+    public final static String RESET_PASSWORD_FINISH_URL = AUTH_PATH + RESET_PASSWORD_FINISH_PATH;
     public final static String CSRF_URL = AUTH_PATH + CSRF_PATH;
 
 }

@@ -15,7 +15,6 @@ public class PasswordValidator {
         Nbvcxz nbvcxz = new Nbvcxz(configuration(List.of(username)));
         Result result = nbvcxz.estimate(password);
         return getEntropy(result.getBasicScore());
-
     }
 
     private Entropy getEntropy(int result) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.bilskik.backend.entity.Password;
+import pl.bilskik.backend.entity.Users;
 
 import java.util.*;
 
@@ -19,7 +20,15 @@ public class PasswordCreator {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Password> createPasswords(String password) {
+    public List<Password> createPasswords(String password, Users users) { //create partial passwords, each returned PasswordObj store user
+        List<Password> passwordList = createPasswords(password);
+        for(var p : passwordList) {
+            p.setUser(users);
+        }
+        return passwordList;
+    }
+
+    public List<Password> createPasswords(String password) { //create partial passwords, each returned PasswordObj doesn't store specific user
         List<Character> chars = password.chars()
                 .mapToObj(e -> (char) e).toList();
         Set<String> indiciesList = new HashSet<>();

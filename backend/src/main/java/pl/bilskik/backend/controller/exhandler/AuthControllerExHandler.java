@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.bilskik.backend.controller.AuthController;
 import pl.bilskik.backend.service.exception.EntropyException;
+import pl.bilskik.backend.service.exception.UserException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,11 @@ public class AuthControllerExHandler  {
 
     @ExceptionHandler({ EntropyException.class } )
     public ResponseEntity<String> handleEntropyCountEx(EntropyException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({ UserException.class })
+    public ResponseEntity<String> handleUserEx(UserException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

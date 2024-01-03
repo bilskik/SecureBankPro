@@ -44,7 +44,7 @@ public class AuthRegisterService {
                 userRegisterRequest.getPassword());
         if(entropy == GOOD) {
             Users user = mapToUsersObj(userRegisterRequest);
-            List<Password> passwordList = createPasswords(userRegisterRequest.getPassword(), user);
+            List<Password> passwordList = passwordCreator.createPasswords(userRegisterRequest.getPassword(), user);
             Users buildedUser = buildUser(user, passwordList);
             userRepository.save(buildedUser);
         } else {
@@ -60,13 +60,7 @@ public class AuthRegisterService {
         return users;
     }
 
-    private List<Password> createPasswords(String password, Users users) {
-        List<Password> passwordList = passwordCreator.createPasswords(password);
-        for(var p : passwordList) {
-            p.setUser(users);
-        }
-        return passwordList;
-    }
+
     private Users buildUser(Users user, List<Password> passwordList) {
         user.setPasswordList(passwordList);
         Set<String> roles = new HashSet<>();

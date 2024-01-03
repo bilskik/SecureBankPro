@@ -61,7 +61,13 @@ public class SecurityConfig {
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((auth) -> {
                     auth
-                            .requestMatchers(REGISTER_URL, LOGIN_BEGIN_URL, CSRF_URL, "/auth/test")
+                            .requestMatchers(
+                                    REGISTER_URL,
+                                    LOGIN_BEGIN_URL,
+                                    CSRF_URL,
+                                    RESET_PASSWORD_BEGIN_URL,
+                                    RESET_PASSWORD_FINISH_URL,
+                                    "/auth/test")
                             .permitAll()
                             .anyRequest()
                             .hasRole(UserRole.CLIENT.name());
