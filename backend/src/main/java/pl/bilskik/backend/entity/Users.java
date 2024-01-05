@@ -66,7 +66,7 @@ public class Users {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-    private List<Password> passwordList;
+    private List<Password> passwordList = new ArrayList<>();
 
     public Users() {}
 
@@ -76,5 +76,7 @@ public class Users {
         }
         transferList.add(transfer);
     }
+
+
 
 }

@@ -12,6 +12,7 @@ import pl.bilskik.backend.service.auth.validator.Entropy;
 import pl.bilskik.backend.service.auth.validator.PasswordValidator;
 import pl.bilskik.backend.service.exception.UserException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -53,8 +54,7 @@ public class AuthPasswordResetService {
             Entropy entropy = passwordValidator.countEntropy(username, password);
             if(entropy == Entropy.GOOD) {
                 List<Password> passwordList = passwordCreator.createPasswords(password, user);
-                deleteOldUsersPasswords(user);
-                updateUserPasswords(user , password,  passwordList);
+                replacePasswordsInDB(user, password, passwordList);
             } else {
                 return "Entropy: " +  entropy.name();
             }
@@ -63,15 +63,12 @@ public class AuthPasswordResetService {
     }
 
     @Transactional
-    private void updateUserPasswords(Users users, String password, List<Password> passwordList) {
+    private void replacePasswordsInDB(Users users, String password, List<Password> passwordList) {
+        List<Password> oldPasswords = new ArrayList<>(users.getPasswordList());
         users.setPasswordList(passwordList);
         users.setPassword(passwordCreator.encodePassword(password));
         userRepository.save(users);
-    }
-
-    @Transactional
-    private void deleteOldUsersPasswords(Users users) {
-        passwordRepository.deleteAllByUserId(users);
+        passwordRepository.deleteAll(oldPasswords);
     }
 
     private boolean validateUser(Optional<Users> user, String email) {
