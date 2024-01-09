@@ -23,8 +23,8 @@ const Login = () => {
                     setCsrf(res.data.token)
                 } 
             })
-            .catch((res : any) => {
-                console.log(res)
+            .catch((err : any) => {
+                console.log(err)
             })
     },[])
 
@@ -38,7 +38,6 @@ const Login = () => {
         }
         axios.post(AUTH_PATH + LOGIN_BEGIN_PATH, prepareData, { headers : getHeaders() })
             .then((res : any) => {
-                console.log(res)
                 if(res.data?.range) {
                     setRange(res.data.range);
                 }
@@ -96,7 +95,7 @@ const Login = () => {
                 {
                     isResetPassword ? 
                     <ResetPassword 
-                        handlePasswordResetUnShow={() => setIsResetPassword(false)}
+                        handlePasswordResetUnShow={() => { setIsResetPassword(false); setRange(''); } }
                         headers={getHeaders()} 
                         login={login}
                     />

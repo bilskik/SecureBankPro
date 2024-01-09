@@ -1,6 +1,7 @@
 export const AUTH_PATH = "/auth";
 export const REGISTER_PATH = "/register";
-export const RESET_PASSWORD_PATH = "/reset-password";
+export const RESET_PASSWORD_BEGIN_PATH = "/reset-password/begin";
+export const RESET_PASSWORD_FINISH_PATH = "/reset-password/finish";
 export const LOGIN_FINISH_PATH = "/login/finish";
 export const LOGIN_BEGIN_PATH = "/login/begin";
 export const USER_DATA = "/user";

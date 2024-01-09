@@ -67,15 +67,18 @@ public class AuthController {
     }
 
     @PostMapping(value = RESET_PASSWORD_FINISH_PATH)
-    public String finishResetPassword(
+    public ResponseEntity<ResponseMessage> finishResetPassword(
             @RequestBody @Valid FinishResetPasswordRequest request
     ) {
-        authService.finishResetPassword(
-                request.getUsername(),
-                request.getEmail(),
-                request.getPassword()
+        return ResponseEntity.ok(
+                new ResponseMessage(
+                        authService.finishResetPassword(
+                            request.getUsername(),
+                            request.getEmail(),
+                            request.getPassword()
+                        )
+                )
         );
-        return "TO DO";
     }
 
     @GetMapping(value = LOGOUT_SUCCESS_PATH)

@@ -86,9 +86,9 @@ const Transfer = () => {
 
     const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
       const form = event.currentTarget;
-      const fromAccRegex = /^\d{20}$/;
+      const fromAccRegex = /^\d{26}$/;
       event.preventDefault();
-      if (form.checkValidity() === false || !fromAccRegex.test(transferData.receiverAccNo) || transferData.amount < 1) {
+      if (!form.checkValidity() || !fromAccRegex.test(transferData.receiverAccNo) || transferData.amount < 1) {
         event.stopPropagation();
         setValidated(true);
       } else {
@@ -97,11 +97,8 @@ const Transfer = () => {
     };
 
     const submitTransfer = async() => {
-      console.log(transferData)
       const res = await axios.post("/transfer/payment", transferData, { headers : getHeaders() })
               .then((res) => {
-                  console.log(res)
-                //modal here
                   nav(DASHBOARD_PAGE)
               })
               .catch((err : any) => {

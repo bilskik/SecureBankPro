@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'pl.bilskik'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 
 java {
     sourceCompatibility = '17'
@@ -32,6 +32,7 @@ dependencies {
     implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
     implementation group: 'me.gosimple', name: 'nbvcxz', version: '1.5.1'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.0'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.1'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -41,4 +42,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+bootJar {
+    archiveFileName = "app.jar"
 }

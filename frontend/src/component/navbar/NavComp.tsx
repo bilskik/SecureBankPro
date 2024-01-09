@@ -5,8 +5,10 @@ import { DASHBOARD_PAGE, DETAILS_PAGE, LOGIN_BEGIN_PATH, LOGIN_PAGE, LOGOUT_PATH
 import { useFetch } from '../../common/api/apiCall';
 import axios from '../../common/axios/axios';
 
+import { useCookies } from 'react-cookie';
 const NavComp = () => {
   const nav = useNavigate();
+  const [cookie, setCookie, removeCookie] = useCookies(['SESSION',"XSRF-TOKEN"])
   const [csrf, setCsrf] = useState<string>("");
 
   useEffect(() => {
@@ -24,6 +26,8 @@ const NavComp = () => {
   const handleOnLogout = async () => {
     const res = axios.post(LOGOUT_PATH, undefined, { headers : getHeaders() })
         .then((res : any) => {
+          removeCookie('SESSION')
+          removeCookie('XSRF-TOKEN')
           nav(LOGIN_PAGE)
         })
         .catch((res : any) => {

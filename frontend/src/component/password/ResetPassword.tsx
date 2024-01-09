@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { FormControl, FormGroup, FormLabel,Row, Button } from 'react-bootstrap'
-import { Form } from 'react-router-dom'
+import { Form, useNavigate } from 'react-router-dom'
 import axios from '../../common/axios/axios'
-import { AUTH_PATH, RESET_PASSWORD_PATH } from '../../common/url/urlMapper'
+import { AUTH_PATH, LOGIN_PAGE, RESET_PASSWORD_BEGIN_PATH, RESET_PASSWORD_FINISH_PATH } from '../../common/url/urlMapper'
 import { ErrorType } from '../../util/type/types.shared'
 
 type ResetPasswordType = {
@@ -30,9 +30,11 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
         isError : false,
         message : ""
       })
+
       if(isValidSendEmailData()) {
-          axios.post(AUTH_PATH + RESET_PASSWORD_PATH, prepareData, { headers })
+          axios.post(AUTH_PATH + RESET_PASSWORD_BEGIN_PATH, prepareData, { headers })
             .then((res : any) => {
+              console.log(`I've sent email to ${user.email}`)
               setShowPasswordInput(true);
             })
             .catch((res : any) => {
@@ -40,7 +42,6 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
                   isError : true,
                   message : "Bad credentials!"
                 })
-                setShowPasswordInput(true);
             })
       }
     }
@@ -60,21 +61,22 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
           password : user.password
       }
       if(isValidResetPasswordData()) {
-        axios.post(AUTH_PATH + RESET_PASSWORD_PATH, prepareData, { headers })
+        axios.post(AUTH_PATH + RESET_PASSWORD_FINISH_PATH, prepareData, { headers })
           .then((res : any) => {
-            //logged In
+            handlePasswordResetUnShow()
           })
           .catch((res : any) => {
               setErr({
                 isError : true,
                 message : "Bad credentials!"
               })
+              setShowPasswordInput(true);
           })
       }
     }
 
     const isValidResetPasswordData = () => {
-      if(isValidSendEmailData() || !user.password) {
+      if(!isValidSendEmailData() || !user.password) {
           return false;
       }
       return true;
@@ -121,8 +123,10 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
           }
           
           <Row className='mb-5 ms-3 me-3 mt-4'>
-              <Button variant='success' onClick={handleSendEmail}>
-                  Send email
+              <Button variant='success' onClick={showPasswordInput ? handleResetPassword : handleSendEmail}>
+                  {
+                    showPasswordInput ? 'Reset Password' : 'Send Email'
+                  }
               </Button>
           </Row>
       </>
