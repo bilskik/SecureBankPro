@@ -10,7 +10,7 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 public class SessionCookieConfig {
 
     public final static String SESSION_COOKIE_NAME = "SESSION";
-    public final static String SESSION_COOKIE_DOMAIN = "http://localhost:8080";
+    public final static String SESSION_COOKIE_DOMAIN = "https://localhost:3000";
 
     @Bean
     public CookieSerializer cookieSerializer() {

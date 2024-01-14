@@ -1,43 +1,3 @@
-#version: "3.0"
-#
-#services:
-#  mysql:
-#    image: mysql
-#    container_name: mysql
-##    command: --default-authentication-plugin=mysql_native_password
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=password
-#      - MYSQL_DATABASE=bankdb
-#      - MYSQL_USER=user
-#      - MYSQL_PASSWORD=password
-#    ports:
-#      - '3307:3306'
-#    networks:
-#      - sbp
-#  redis:
-#    container_name: redis
-#    image: redis
-#    ports:
-#      - "6379:6379"
-#    networks:
-#      - sbp
-#  backend:
-#    container_name: backend
-#    image: backend
-##    networks:
-##      - sbp
-#    depends_on:
-#      - mysql
-#      - redis
-##    build:
-##      context: backend
-##      dockerfile: Dockerfile
-#    restart: on-failure
-#    ports:
-#      - "8080:8080"
-#networks:
-#  sbp:
-
 version: "3.8"
 
 services:
@@ -48,31 +8,30 @@ services:
       - 'POSTGRES_DB=bank'
       - 'POSTGRES_PASSWORD=password'
       - 'POSTGRES_USER=user'
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     networks:
-      - springboot-mysql-net
+      - sbp-network
   redis:
     container_name: redis
     image: redis
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
     networks:
-      - springboot-mysql-net
+      - sbp-network
   backend:
     container_name: backend
     image: backend
     build:
       context: backend
       dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
       - postgres
       - redis
     networks:
-      - springboot-mysql-net
-#    restart: on-failure
+      - sbp-network
   frontend:
     container_name: frontend
     image: frontend
@@ -80,20 +39,20 @@ services:
       context: frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3000:443"
     depends_on:
       - backend
     networks:
-      - springboot-mysql-net
+      - sbp-network
   nginx:
     container_name: nginx
     build:
       context: nginx
       dockerfile: Dockerfile
     networks:
-      - springboot-mysql-net
+      - sbp-network
     ports:
-      - "443:443"
+      - "8000:443"
     depends_on:
       frontend:
         condition: service_started
@@ -101,4 +60,4 @@ services:
         condition: service_started
 
 networks:
-  springboot-mysql-net:
+  sbp-network:
