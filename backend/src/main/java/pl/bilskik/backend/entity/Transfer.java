@@ -17,24 +17,26 @@ public class Transfer {
     private int transferId;
     @Column(name = "transfer_title")
     private String transferTitle;
+    @Column(name = "sender_name")
+    private String senderName;
+    @Column(name = "sender_accno")
+    private String senderAccNo;
     @Column(name = "receiver_name")
     private String receiverName;
+    @Column(name = "receiver_accno")
+    private String receiverAccNo;
     @Column(name = "amount")
-    private Long amount;
-    @ManyToMany(mappedBy = "transferList")
+    private long amount;
+    @ManyToMany(
+            mappedBy = "transferList",
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
     private List<Users> user; //0 fromUser //1 toUser
 
-    public Transfer() {
+    public Transfer() {}
 
-    }
-
-//    public Transfer(Long transferId, String transferTitle, String receiverName, Long amount, User fromUser, User toUser) {
-//        this.transferId = transferId;
-//        this.transferTitle = transferTitle;
-//        this.receiverName = receiverName;
-//        this.amount = amount;
-//        this.fromUser = fromUser;
-//        this.toUser = toUser;
-//    }
 }
 

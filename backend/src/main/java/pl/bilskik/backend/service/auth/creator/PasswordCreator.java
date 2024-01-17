@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.bilskik.backend.entity.Password;
+import pl.bilskik.backend.entity.Users;
 
 import java.util.*;
 
@@ -19,7 +20,15 @@ public class PasswordCreator {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Password> createPasswords(String password) {
+    public List<Password> createPasswords(String password, Users users) { //create partial passwords, each returned PasswordObj store user
+        List<Password> passwordList = createPasswords(password);
+        for(var p : passwordList) {
+            p.setUser(users);
+        }
+        return passwordList;
+    }
+
+    public List<Password> createPasswords(String password) { //create partial passwords, each returned PasswordObj doesn't store specific user
         List<Character> chars = password.chars()
                 .mapToObj(e -> (char) e).toList();
         Set<String> indiciesList = new HashSet<>();
@@ -52,6 +61,10 @@ public class PasswordCreator {
         int maxPartPassLen = countMaxPartPassLen(passLen);
         Random random = new Random();
         return random.nextInt(maxPartPassLen - minPartPassLen + 1) + minPartPassLen;
+    }
+
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 
     private List<Password> mapToPasswordObj(Set<String> partialPasswordList, Set<String> indiciesList) {
@@ -99,12 +112,26 @@ public class PasswordCreator {
         }
     }
 
-    public String generateDummyRange(int dummyPassLen, int dummyPartPassLen) {
+    public String generateDummyRange(int dummyPassRange, int dummyPartPassLen) {
         Random random = new Random();
         TreeSet<Integer> indexTs = new TreeSet<>();
         while(dummyPartPassLen != indexTs.size()) {
-            indexTs.add((Integer) random.nextInt(dummyPassLen));
+            indexTs.add((Integer) random.nextInt(dummyPassRange));
         }
         return mapIndicies(indexTs);
+    }
+
+    public int generateDummyPassLen() {
+        Random random = new Random();
+        boolean decision = true;
+        for(int i=0; i<4; i++) {
+            boolean currDecision = random.nextBoolean();
+            decision = currDecision && decision;
+        }
+        if(decision) {
+            return random.nextInt(20 - 12  + 1) + 12;
+        } else {
+            return random.nextInt(14 - 12 + 1) + 12;
+        }
     }
 }

@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: postgresdb
+    image: postgres
+    environment:
+      - 'POSTGRES_DB=bank'
+      - 'POSTGRES_PASSWORD=password'
+      - 'POSTGRES_USER=user'
+    expose:
+      - "5432"
+    networks:
+      - sbp-network
+  redis:
+    container_name: redis
+    image: redis
+    expose:
+      - "6379"
+    networks:
+      - sbp-network
+  backend:
+    container_name: backend
+    image: backend
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - sbp-network
+  frontend:
+    container_name: frontend
+    image: frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:443"
+    depends_on:
+      - backend
+    networks:
+      - sbp-network
+  nginx:
+    container_name: nginx
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    networks:
+      - sbp-network
+    ports:
+      - "8000:443"
+    depends_on:
+      frontend:
+        condition: service_started
+      backend:
+        condition: service_started
+
+networks:
+  sbp-network:

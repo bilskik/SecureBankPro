@@ -18,7 +18,9 @@ public class Password {
     private String ranges;
     @Column(name = "password")
     private String password;
-    @ManyToOne
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
     private Users user;
 
     public Password(String ranges, String password) {
