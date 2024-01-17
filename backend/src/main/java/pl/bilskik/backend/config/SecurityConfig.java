@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.csrf.*;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -78,6 +79,7 @@ public class SecurityConfig {
                 .logout((logout) -> {
                     logout
                             .logoutUrl(LOGOUT_URL)
+                            .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
                             .clearAuthentication(true)
                             .invalidateHttpSession(true)
                             .deleteCookies(SESSION_COOKIE_NAME);
