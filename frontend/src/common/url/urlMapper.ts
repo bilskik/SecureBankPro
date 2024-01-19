@@ -1,3 +1,4 @@
+export const API_CALL_DEFAULT_PATH = "/api"
 export const AUTH_PATH = "/auth";
 export const REGISTER_PATH = "/register";
 export const RESET_PASSWORD_BEGIN_PATH = "/reset-password/begin";

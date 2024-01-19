@@ -63,9 +63,11 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
       if(isValidResetPasswordData()) {
         axios.post(AUTH_PATH + RESET_PASSWORD_FINISH_PATH, prepareData, { headers })
           .then((res : any) => {
+            console.log(res);
             handlePasswordResetUnShow()
           })
           .catch((res : any) => {
+              console.log(res);
               setErr({
                 isError : true,
                 message : "Bad credentials!"

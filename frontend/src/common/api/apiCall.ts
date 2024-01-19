@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react"
 import axios from "../axios/axios"
-import { redirect, useNavigate } from "react-router-dom"
-import { LOGIN_PAGE } from "../url/urlMapper"
 
 type getDataType = {
     URL : string,

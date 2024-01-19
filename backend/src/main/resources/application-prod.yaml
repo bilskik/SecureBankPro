@@ -1,0 +1,29 @@
+server:
+  port: ${BACKEND_PORT}
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:secure-bank-pro.p12
+    key-store-password: ${KEY_STORE_PASSWORD}
+    enabled: true
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: ${POSTGRE_URL}
+    username: ${POSTGRE_USER}
+    password: ${POSTGRE_PASSWORD}
+
+  session:
+    redis:
+      repository-type: default
+  data:
+    redis:
+      host: ${HOST_REDIS_NAME}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+

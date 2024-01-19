@@ -26,6 +26,7 @@ const NavComp = () => {
   const handleOnLogout = async () => {
     const res = axios.post(LOGOUT_PATH, undefined, { headers : getHeaders() })
         .then((res : any) => {
+          console.log(res);
           removeCookie('SESSION')
           removeCookie('XSRF-TOKEN')
           nav(LOGIN_PAGE)
