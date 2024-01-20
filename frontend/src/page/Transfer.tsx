@@ -1,70 +1,18 @@
 import React, { useEffect, useReducer, useState } from 'react'
-import { Button, FloatingLabel, FormControl, FormGroup, Container, Form } from 'react-bootstrap'
+import { Button, FloatingLabel, FormControl, FormGroup, Container, Form, Spinner } from 'react-bootstrap'
 import { initTransferData } from '../util/init/init'
-import { TransferType } from '../util/type/types.shared'
 import { getData, usePost } from '../common/api/apiCall'
 import { redirect, useNavigate } from 'react-router-dom'
-import NavComp from '../component/navbar/NavComp'
-import { DASHBOARD_PAGE, USER_DATA } from '../common/url/urlMapper'
+import { CSRF_PATH, DASHBOARD_PAGE, TRANSFER_MONEY_PATH, USER_DATA } from '../common/url/urlMapper'
 import axios from '../common/axios/axios'
-
-enum TransferKind {
-  SENDER_NAME = "SENDER_NAME",
-  SENDER_ACCNO = "SENDER_ACCNO",
-  RECEIVER_NAME = "RECEIVER_NAME",
-  RECEIVER_ACCNO = "RECEIVER_ACCNO",
-  TRANSFER_AMOUNT = "TRANSFER_AMOUNT",
-  TRANSFER_TITLE = "TRANSFER_TITLE",
-}
-
-type TransferActionType = {
-  type: TransferKind,
-  payload : string | number
-}
-
-const transferReducer = (state : TransferType, action : TransferActionType) => {
-  const { type, payload } = action
-  switch(type) {
-      case TransferKind.SENDER_NAME:
-        return {
-          ...state,
-          senderName : payload
-        } as TransferType
-      case TransferKind.SENDER_ACCNO:
-          return {
-            ...state,
-            senderAccNo : payload
-          } as TransferType
-      case TransferKind.RECEIVER_NAME:
-          return { 
-              ...state,
-              receiverName : payload
-          } as TransferType
-      case TransferKind.RECEIVER_ACCNO:
-          return {
-            ...state,
-            receiverAccNo : payload
-          } as TransferType
-      case TransferKind.TRANSFER_AMOUNT:
-          return {
-            ...state,
-            amount : payload
-          } as TransferType
-      case TransferKind.TRANSFER_TITLE:
-          return {
-            ...state,
-            transferTitle : payload
-          } as TransferType
-      default:
-        return state
-  }
-}
+import { TransferKind, transferReducer } from '../util/reducer/transferReducer'
 
 
 const Transfer = () => {
     const [transferData, dispatch] = useReducer(transferReducer, initTransferData)
     const [validated, setValidated] = useState<boolean>(false);
     const [csrf, setCsrf] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const nav = useNavigate();
 
     useEffect(() => {
@@ -73,7 +21,7 @@ const Transfer = () => {
     },[])
 
     useEffect(() => {
-      axios.get("/auth/csrf")
+      axios.get(CSRF_PATH)
           .then((res : any) => {
               if(res.data && res.data.token) {
                   setCsrf(res.data.token)
@@ -97,11 +45,14 @@ const Transfer = () => {
     };
 
     const submitTransfer = async() => {
-      const res = await axios.post("/transfer/payment", transferData, { headers : getHeaders() })
+      setIsLoading(true);
+      await axios.post(TRANSFER_MONEY_PATH, transferData, { headers : getHeaders() })
               .then((res) => {
+                  setIsLoading(false);
                   nav(DASHBOARD_PAGE)
               })
               .catch((err : any) => {
+                setIsLoading(false);
                 console.log(err)
               })
     }
@@ -114,6 +65,7 @@ const Transfer = () => {
 
     return (
       <>
+        { isLoading ? <Spinner className='spinner'/> : null }
         <Container className='mt-5'>
           <Form noValidate validated={validated} onSubmit={(e) => handleSubmit(e)}>
               <h2>Transfer</h2>
@@ -169,7 +121,7 @@ const Transfer = () => {
                     onChange={(e) => dispatch({ type : TransferKind.RECEIVER_ACCNO, payload : e.target.value})}
                   />
                   <FormControl.Feedback type='invalid'>
-                    [0-9][24] 
+                    [0-9][26] 
                   </FormControl.Feedback>
               </FloatingLabel>
               <FloatingLabel

@@ -27,7 +27,7 @@ const Dashboard = () => {
         <>
             <Outlet/>
             { 
-                isLoading && <Spinner animation='border'/>
+                isLoading && <Spinner animation='border' className='spinner'/>
             }
             <Container>
                 <Container className='border mt-5 p-2 container-dashboard' fluid>

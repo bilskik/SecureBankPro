@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from '../common/axios/axios';
-import { Alert, Button, Container, Form, Row } from 'react-bootstrap';
-import { AUTH_PATH, DASHBOARD_PAGE, LOGIN_BEGIN_PATH, LOGIN_FINISH_PATH, REGISTER_PATH } from '../common/url/urlMapper';
+import { Button, Container, Form, Row, Spinner } from 'react-bootstrap';
+import { AUTH_PATH, CSRF_PATH, DASHBOARD_PAGE, LOGIN_BEGIN_PATH, LOGIN_FINISH_PATH, REGISTER_PATH } from '../common/url/urlMapper';
 import PasswordGroup from '../component/password/PasswordGroup';
 import { Person } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
@@ -13,11 +13,12 @@ const Login = () => {
     const [range, setRange] = useState<string>("");
     const [csrf, setCsrf] = useState<string>("");
     const [err, setErr] = useState<ErrorType>({ isError : false, message : ''})
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isResetPassword, setIsResetPassword] = useState<boolean>(false);
     const nav = useNavigate();
     
     useEffect(() => {
-        axios.get("/auth/csrf")
+        axios.get(CSRF_PATH)
             .then((res : any) => {
                 if(res.data && res.data.token) {
                     setCsrf(res.data.token)
@@ -36,12 +37,15 @@ const Login = () => {
         const prepareData = {
             username : login
         }
+        setIsLoading(true);
         axios.post(AUTH_PATH + LOGIN_BEGIN_PATH, prepareData, { headers : getHeaders() })
             .then((res : any) => {
+                setIsLoading(false);
                 if(res.data?.range) {
                     setRange(res.data.range);
                 }
             }).catch((err : any) => {
+                setIsLoading(false);
                 setErr({
                     isError : true,
                     message : err.response?.data?.username
@@ -59,9 +63,10 @@ const Login = () => {
             ...prev,
             isError : false
         }))
-
+        setIsLoading(true);
         axios.post(AUTH_PATH + LOGIN_FINISH_PATH, prepareData, { headers : getHeaders() })
             .then((res : any) => {
+                setIsLoading(false);
                 setErr(prev => ({
                     ...prev,
                     isError : false
@@ -71,7 +76,7 @@ const Login = () => {
                 },100)
             })
             .catch((err : any) => {
-                console.log(err)
+                setIsLoading(false);
                 setErr({
                     isError : true,
                     message : "Credentials invalid!"
@@ -87,6 +92,7 @@ const Login = () => {
 
     return (
         <Container className='container-login' fluid>
+            { isLoading ? <Spinner className='spinner' /> : null }
             <Form className='mt-3 d-flex flex-column justify-content-center'>
                 <Row className='m-3'>
                     <Person color='green' size={30}/>

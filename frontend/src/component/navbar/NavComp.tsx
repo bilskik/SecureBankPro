@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Navbar, Nav } from 'react-bootstrap'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { DASHBOARD_PAGE, DETAILS_PAGE, LOGIN_BEGIN_PATH, LOGIN_PAGE, LOGOUT_PATH, PAYMENT_PAGE } from '../../common/url/urlMapper';
+import { CSRF_PATH, DASHBOARD_PAGE, DETAILS_PAGE, LOGIN_BEGIN_PATH, LOGIN_PAGE, LOGOUT_PATH, PAYMENT_PAGE } from '../../common/url/urlMapper';
 import { useFetch } from '../../common/api/apiCall';
 import axios from '../../common/axios/axios';
 
@@ -12,7 +12,7 @@ const NavComp = () => {
   const [csrf, setCsrf] = useState<string>("");
 
   useEffect(() => {
-    axios.get("/auth/csrf")
+    axios.get(CSRF_PATH)
         .then((res : any) => {
             if(res.data && res.data.token) {
                 setCsrf(res.data.token)
