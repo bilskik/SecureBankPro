@@ -67,8 +67,8 @@ public class SecurityConfig {
                                     LOGIN_BEGIN_URL,
                                     CSRF_URL,
                                     RESET_PASSWORD_BEGIN_URL,
-                                    RESET_PASSWORD_FINISH_URL,
-                                    "/auth/test")
+                                    RESET_PASSWORD_FINISH_URL
+                            )
                             .permitAll()
                             .anyRequest()
                             .hasRole(UserRole.CLIENT.name());

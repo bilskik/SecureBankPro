@@ -1,5 +1,6 @@
 package pl.bilskik.backend.config.cors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,18 +14,14 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    public final static String ORIGIN = "https://localhost:3000";
+    @Value("${frontend.url}")
+    public String FRONTEND_URL;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
-                "https://localhost",
-                "https://localhost/",
-                "https://localhost:3000",
-                "https://localhost:3000/",
-                "http://localhost",
-                "http://localhost:3000"
+                FRONTEND_URL
         ));
         configuration.setAllowedMethods(Arrays.asList(
                 HttpMethod.GET.name(),

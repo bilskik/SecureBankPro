@@ -30,6 +30,13 @@ logging:
     org:
       springframework.security: TRACE
 
+frontend:
+  url: http://localhost:3000
+
+cookie:
+  domain: localhost
+
+
 cipher:
   AES:
     key: "1234567812345678"

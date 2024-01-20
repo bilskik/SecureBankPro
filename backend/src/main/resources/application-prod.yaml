@@ -30,6 +30,9 @@ spring:
 frontend:
   url: ${FRONTEND_URL}
 
+cookie:
+  domain: ${DOMAIN}
+
 cipher:
   AES:
     key: ${AES_KEY}
