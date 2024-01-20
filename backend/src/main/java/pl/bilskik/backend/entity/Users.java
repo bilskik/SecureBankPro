@@ -6,6 +6,7 @@ import lombok.Setter;
 import pl.bilskik.backend.entity.Password;
 import pl.bilskik.backend.entity.Transfer;
 import pl.bilskik.backend.entity.embeded.Address;
+import pl.bilskik.backend.entity.util.Encrypt;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,9 +33,11 @@ public class Users {
     private String email;
 
     @Column(name = "pesel", unique = true, nullable = false)
+    @Convert(converter = Encrypt.class)
     private String pesel;
 
     @Column(name = "credit_cardno", unique = true, nullable = false)
+    @Convert(converter = Encrypt.class)
     private String creditCardNo;
 
     @Column(name = "accountno", unique = true, nullable = false)

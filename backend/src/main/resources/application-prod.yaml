@@ -27,3 +27,13 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+frontend:
+  url: ${FRONTEND_URL}
+
+cipher:
+  AES:
+    key: ${AES_KEY}
+    iv : ${IV}
+    algoList : ${ALGO_LIST}
+
+

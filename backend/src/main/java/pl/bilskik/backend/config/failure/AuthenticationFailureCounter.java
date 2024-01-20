@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,7 +51,7 @@ public class AuthenticationFailureCounter implements AccessDeniedHandler {
     ) throws IOException, ServletException {
         log.error(String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
         log.error(accessDeniedException.getMessage());
-        if(request.getMethod().equals("POST") && request.getServletPath().equals(AUTH_PATH + LOGIN_FINISH_PATH)) {
+        if(request.getMethod().equals(HttpMethod.POST.name()) && request.getServletPath().equals(AUTH_PATH + LOGIN_FINISH_PATH)) {
             try {
                 String username  = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 SecurityUser securityUser = detailsService.loadUserByUsername(username);

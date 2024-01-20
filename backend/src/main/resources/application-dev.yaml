@@ -3,13 +3,14 @@ server:
 
 spring:
   jpa:
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
         use_sql_comments: true
         highlight_sql: true
+    hibernate:
+      ddl-auto: update
+
   datasource:
     url: jdbc:mysql://localhost:3306/bankdb
     username: root
@@ -29,6 +30,11 @@ logging:
     org:
       springframework.security: TRACE
 
+cipher:
+  AES:
+    key: "1234567812345678"
+    iv : "1234567812345678"
+    algoList : "AES/CBC/PKCS5PADDING"
 
 #server.port=8080
 #server.ssl.key-store-type=PKCS12
