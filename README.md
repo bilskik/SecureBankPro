@@ -43,18 +43,18 @@ As a algorithm for hashing passwords, I used Argon2 algoritm, beacuse its very s
 
 ## Security methods
 
-I used sessions as the authentication mechanism. To authenticate, the user must provide a valid username and an accurate part of their password (which the system will randomly generate and prompt for each time). If all is correct, the system verifies the user's access rights and then grants them access to their account.
-
-If the credentials are not valid, the system will not indicate whether the password or username is incorrect.
-
-If the user provides a username that does not exist, the system will not inform them; however, it will still request a portion of their password. Obviously, user will not be authenticated.
-
-Brute-force attacks are highly unlikely in this situation.
-
-- If you enter your credentials incorrectly five times, your IP address will be blocked.
-
-- There is no possibility of a timing attack. If an attacker supplies a non-existent username and then password, the server's time response will be similar to that of a valid username.
-
-SessionID cookie is set with all appropriate flags. Expiration time for Session cookie is 15 minutes.
-
-There is also CSRF protection.
+- stick data validation
+- max 5x you can try to login in to given account
+- Session
+- Argon2 as password hasher
+- Entropy counting
+- Nginx
+- CSRF
+- CSP, XSS header
+- honeypots
+- data encryption for private data
+  
+## Features
+- login & logout
+- reset-password
+- transfers
