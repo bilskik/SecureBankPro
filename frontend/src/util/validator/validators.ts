@@ -10,3 +10,10 @@ export const sendEmailValidator = ({ username, email} : { username : string, ema
 export const resetPasswordValidator = ({ username, email, password} : { username : string, email : string, password : string }) => {
     return username.trim() && email.trim() && password.trim()
 }
+export const formAmountValidator = (amount : number) => {
+    return amount >= 1;
+}
+export const formAccValidator = (accNo : string) => {
+    const accNoRegex = /^\d{26}$/;
+    return accNoRegex.test(accNo);
+}

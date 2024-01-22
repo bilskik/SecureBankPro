@@ -6,10 +6,12 @@ import { redirect, useNavigate } from 'react-router-dom'
 import { CSRF_PATH, DASHBOARD_PAGE, TRANSFER_MONEY_PATH, USER_DATA } from '../common/url/urlMapper'
 import axios from '../common/axios/axios'
 import { TransferKind, transferReducer } from '../util/reducer/transferReducer'
+import { formAccValidator, formAmountValidator } from '../util/validator/validators'
 
 
 const Transfer = () => {
     const [transferData, dispatch] = useReducer(transferReducer, initTransferData)
+    const [formFieldValidity, setFormFieldValidity] = useState({ isSenderAccNoValid : false, isReceiverAccNoValid : false, isAmountValid : false, isFormValid : true });
     const [validated, setValidated] = useState<boolean>(false);
     const [csrf, setCsrf] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -28,18 +30,40 @@ const Transfer = () => {
               } 
           })
           .catch((res : any) => {
-              console.log(res)
           })
     },[])
 
     const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
       const form = event.currentTarget;
-      const fromAccRegex = /^\d{26}$/;
       event.preventDefault();
-      if (!form.checkValidity() || !fromAccRegex.test(transferData.receiverAccNo) || transferData.amount < 1) {
+
+      const checkIfFormIsValid = () => {
+        let isValid = true;
+        if(!formAccValidator(transferData.receiverAccNo)) {
+          setFormFieldValidity({ ...formFieldValidity , isSenderAccNoValid : false})
+          isValid = false;
+        }
+        if(!formAccValidator(transferData.senderAccNo)) {
+          setFormFieldValidity({ ...formFieldValidity , isReceiverAccNoValid : false })
+          isValid = false;
+        }
+        if(!formAmountValidator(transferData.amount)) {
+          setFormFieldValidity({ ...formFieldValidity, isAmountValid : false })
+          isValid = false;
+        }
+        if(!form.checkValidity()) {
+          console.log(form.checkValidity())
+          isValid = false;
+        }
+        return isValid;
+      }
+      const isValid = checkIfFormIsValid();
+      if(!isValid) {
+        setFormFieldValidity({ ...formFieldValidity, isFormValid : false })
         event.stopPropagation();
         setValidated(true);
       } else {
+        setFormFieldValidity({ ...formFieldValidity, isFormValid : true })
         submitTransfer()
       }
     };
@@ -53,7 +77,6 @@ const Transfer = () => {
               })
               .catch((err : any) => {
                 setIsLoading(false);
-                console.log(err)
               })
     }
 
@@ -75,12 +98,15 @@ const Transfer = () => {
                 className='mb-3'
               >
                   <FormControl
-                    required 
+                    required
                     type='text'
                     placeholder='Sender name'
                     value={transferData.senderName}
                     onChange={(e) => dispatch({ type : TransferKind.SENDER_NAME, payload : e.target.value})}
                   />
+                  <FormControl.Feedback type='invalid' >
+                    Cannot be blank!
+                  </FormControl.Feedback>
               </FloatingLabel>
               <FloatingLabel
                 controlId='from-acc'
@@ -88,12 +114,15 @@ const Transfer = () => {
                 className='mb-3'
               >
                   <FormControl 
-                    required 
+                    isValid={formFieldValidity.isSenderAccNoValid}
                     type='text'
                     placeholder='From account'
                     readOnly
                     value={transferData.senderAccNo}
                   />
+                  <FormControl.Feedback type='invalid'>
+                    Only: 0-9, 26 numbers 
+                  </FormControl.Feedback>
               </FloatingLabel>
               <FloatingLabel
                 controlId='receiver-name'
@@ -107,6 +136,9 @@ const Transfer = () => {
                     value={transferData.receiverName}
                     onChange={(e) => dispatch({ type : TransferKind.RECEIVER_NAME, payload : e.target.value})}
                   />
+                  <FormControl.Feedback type='invalid'>
+                    Cannot be blank!
+                  </FormControl.Feedback>
               </FloatingLabel>
               <FloatingLabel
                 controlId='to-acc'
@@ -114,14 +146,15 @@ const Transfer = () => {
                 className='mb-3'
               >
                   <FormControl 
-                    required 
+                    required
+                    isValid={formFieldValidity.isReceiverAccNoValid} 
                     type='text'
                     placeholder='To account'
                     value={transferData.receiverAccNo}
                     onChange={(e) => dispatch({ type : TransferKind.RECEIVER_ACCNO, payload : e.target.value})}
                   />
                   <FormControl.Feedback type='invalid'>
-                    [0-9][26] 
+                    Only: 0-9, 26 numbers 
                   </FormControl.Feedback>
               </FloatingLabel>
               <FloatingLabel
@@ -130,7 +163,8 @@ const Transfer = () => {
                 className='mb-3'
               >
                   <FormControl 
-                    required 
+                    required
+                    isValid={formFieldValidity.isAmountValid}
                     type='text'
                     placeholder='Transfer amount'
                     value={transferData.amount == 0 ? "" : transferData.amount}
@@ -152,7 +186,11 @@ const Transfer = () => {
                     value={transferData.transferTitle}
                     onChange={(e) => dispatch({ type : TransferKind.TRANSFER_TITLE, payload : e.target.value})}
                   />
+                  <FormControl.Feedback type='invalid'>
+                    Cannot be blank! 
+                  </FormControl.Feedback>
               </FloatingLabel>
+              { !formFieldValidity.isFormValid ? <p style={{ color : "red" }}>Invalid Form!</p> : null}
               <Button type="submit" variant='success'>
                 Send
               </Button> 

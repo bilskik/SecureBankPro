@@ -34,6 +34,9 @@ public class CorsConfig {
         configuration.setAllowedHeaders(Arrays.asList(
                 "Content-Type",
                 "Access-Control-Allow-Credentials",
+                "Access-Control-Allow-Methods",
+                "Access-Control-Allow-Headers",
+                "Access-Control-Max-Age",
                 "X-XSRF-TOKEN"
         ));
         configuration.setAllowCredentials(true);
