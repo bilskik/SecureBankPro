@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { FormControl, FormGroup, FormLabel,Row, Button, Spinner } from 'react-bootstrap'
-import { Form, useNavigate } from 'react-router-dom'
 import axios from '../../common/axios/axios'
 import { AUTH_PATH, LOGIN_PAGE, RESET_PASSWORD_BEGIN_PATH, RESET_PASSWORD_FINISH_PATH } from '../../common/url/urlMapper'
 import { ErrorType } from '../../util/type/types.shared'
+import { resetPasswordValidator, sendEmailValidator } from '../../util/validator/validators'
 
 type ResetPasswordType = {
   handlePasswordResetUnShow : () => void
@@ -31,7 +31,8 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
         isError : false,
         message : ""
       })
-      if(isValidSendEmailData()) {
+
+      if(sendEmailValidator(prepareData)) {
           setIsLoading(true);
           axios.post(AUTH_PATH + RESET_PASSWORD_BEGIN_PATH, prepareData, { headers })
             .then((res : any) => {
@@ -46,24 +47,21 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
                   message : "Bad credentials!"
                 })
             })
+      } else {
+        setErr({
+          isError : true,
+          message : "Username and email cannot be blank!"
+        })
       }
-    }
-
-    const isValidSendEmailData = () => {
-        if(!user.login || !user.email) {
-          setErr({ isError : true, message : "Data cannot be blank!"})
-          return false;
-        }
-        return true;
     }
 
     const handleResetPassword = () => {
       const prepareData = {
           username : user.login,
           email : user.email,
-          password : user.password
+          password : user.password.trim()
       }
-      if(isValidResetPasswordData()) {
+      if(resetPasswordValidator(prepareData)) {
         setIsLoading(true);
         axios.post(AUTH_PATH + RESET_PASSWORD_FINISH_PATH, prepareData, { headers })
           .then((res : any) => {
@@ -86,13 +84,6 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
               setShowPasswordInput(true);
           })
       }
-    }
-
-    const isValidResetPasswordData = () => {
-      if(!isValidSendEmailData() || !user.password) {
-          return false;
-      }
-      return true;
     }
 
     return (
@@ -132,7 +123,8 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
                     value={user.password}
                     onChange={(e) => setUser({ ...user, password : e.target.value })}
                 />
-                <p>Password needs to contain at least: upper, lower character, one digit, one special char, at least 13 characters</p>
+                <p className='mt-1'>Password should contain at least: upper, lower character, one digit, one special char, at least 13 characters. 
+                  Whitespace characters will be removed!</p>
             </FormGroup>
             : null
           }

@@ -12,7 +12,7 @@ type postDataType = {
 }
 
 const getData = async ({ URL, headers } : getDataType) => {
-    const res = await axios.get(URL, headers)
+    const res = await axios.get(URL, { headers : headers })
         .then((res : any) => {
             return res.data
         })
