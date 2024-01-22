@@ -49,8 +49,6 @@ public class AuthenticationFailureCounter implements AccessDeniedHandler {
             HttpServletResponse response,
             AccessDeniedException accessDeniedException
     ) throws IOException, ServletException {
-        log.error(String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
-        log.error(accessDeniedException.getMessage());
         if(request.getMethod().equals(HttpMethod.POST.name()) && request.getServletPath().equals(AUTH_PATH + LOGIN_FINISH_PATH)) {
             try {
                 String username  = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

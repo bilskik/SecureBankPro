@@ -54,9 +54,7 @@ public class CustomAuthProvider implements AuthenticationProvider {
             mitigateAgainstTimingAttack(credentials);
             return authentication;
         } else {
-            System.out.println(credentials);
             boolean isMatch = matchPassword(credentials, loadedUser);
-            System.out.println(isMatch);
             if(isMatch) {
                 updateLoginAttemptsContainer(principal);
                 return new UsernamePasswordAuthenticationToken(principal, null, loadedUser.getAuthorities());
