@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.csrf.*;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -56,7 +57,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.csrfTokenRepository(csrfCookieConfig.cookieCsrfTokenRepository()))
                 .headers(h -> {
                     h
-                        .xssProtection(Customizer.withDefaults())
+                        .xssProtection(xss -> xss.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK))
                         .contentSecurityPolicy(csp -> csp.policyDirectives(buildContentPolicyDirectives()));
                 })
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
@@ -67,8 +68,8 @@ public class SecurityConfig {
                                     LOGIN_BEGIN_URL,
                                     CSRF_URL,
                                     RESET_PASSWORD_BEGIN_URL,
-                                    RESET_PASSWORD_FINISH_URL,
-                                    "/auth/test")
+                                    RESET_PASSWORD_FINISH_URL
+                            )
                             .permitAll()
                             .anyRequest()
                             .hasRole(UserRole.CLIENT.name());

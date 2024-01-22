@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react"
 import axios from "../axios/axios"
-import { redirect, useNavigate } from "react-router-dom"
-import { LOGIN_PAGE } from "../url/urlMapper"
 
 type getDataType = {
     URL : string,
@@ -12,8 +10,9 @@ type postDataType = {
     data : object,
     headers : object | undefined
 }
+
 const getData = async ({ URL, headers } : getDataType) => {
-    const res = await axios.get(URL, headers)
+    const res = await axios.get(URL, { headers : headers })
         .then((res : any) => {
             return res.data
         })

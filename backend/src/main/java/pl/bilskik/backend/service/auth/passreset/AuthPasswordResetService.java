@@ -10,6 +10,7 @@ import pl.bilskik.backend.repository.UserRepository;
 import pl.bilskik.backend.service.auth.creator.PasswordCreator;
 import pl.bilskik.backend.service.auth.validator.Entropy;
 import pl.bilskik.backend.service.auth.validator.PasswordValidator;
+import pl.bilskik.backend.service.exception.EntropyException;
 import pl.bilskik.backend.service.exception.UserException;
 
 import java.util.ArrayList;
@@ -55,7 +56,11 @@ public class AuthPasswordResetService {
                 List<Password> passwordList = passwordCreator.createPasswords(password, user);
                 replacePasswordsInDB(user, password, passwordList);
             } else {
-                return "Entropy: " +  entropy.name();
+                if(entropy == Entropy.REASONABLE) {
+                    throw new EntropyException("Entropy is " + entropy.name() + " ,but still too weak. " +
+                            "Improve your password strength!");
+                }
+                throw new EntropyException("Entropy is " + entropy.name() + " Improve your password strength!");
             }
         }
         return "Password changed!";

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { FormControl, FormGroup, FormLabel,Row, Button } from 'react-bootstrap'
-import { Form, useNavigate } from 'react-router-dom'
+import { FormControl, FormGroup, FormLabel,Row, Button, Spinner } from 'react-bootstrap'
 import axios from '../../common/axios/axios'
 import { AUTH_PATH, LOGIN_PAGE, RESET_PASSWORD_BEGIN_PATH, RESET_PASSWORD_FINISH_PATH } from '../../common/url/urlMapper'
 import { ErrorType } from '../../util/type/types.shared'
+import { resetPasswordValidator, sendEmailValidator } from '../../util/validator/validators'
 
 type ResetPasswordType = {
   handlePasswordResetUnShow : () => void
@@ -19,6 +19,7 @@ type UserResetPasswordType = {
 const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPasswordType ) => {
     const [user, setUser] = useState<UserResetPasswordType>({ login : login, email : "", password : ""});
     const [err, setErr] = useState<ErrorType>({ isError : false, message : "" });
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showPasswordInput, setShowPasswordInput] = useState<boolean>(false);
 
     const handleSendEmail = () => {
@@ -31,59 +32,63 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
         message : ""
       })
 
-      if(isValidSendEmailData()) {
+      if(sendEmailValidator(prepareData)) {
+          setIsLoading(true);
           axios.post(AUTH_PATH + RESET_PASSWORD_BEGIN_PATH, prepareData, { headers })
             .then((res : any) => {
-              console.log(`I've sent email to ${user.email}`)
-              setShowPasswordInput(true);
+                setIsLoading(false);
+                console.log(`I've sent email to ${user.email}`)
+                setShowPasswordInput(true);
             })
             .catch((res : any) => {
+                setIsLoading(false);
                 setErr({
                   isError : true,
                   message : "Bad credentials!"
                 })
             })
+      } else {
+        setErr({
+          isError : true,
+          message : "Username and email cannot be blank!"
+        })
       }
-    }
-
-    const isValidSendEmailData = () => {
-        if(!user.login || !user.email) {
-          setErr({ isError : true, message : "Data cannot be blank!"})
-          return false;
-        }
-        return true;
     }
 
     const handleResetPassword = () => {
       const prepareData = {
           username : user.login,
           email : user.email,
-          password : user.password
+          password : user.password.trim()
       }
-      if(isValidResetPasswordData()) {
+      if(resetPasswordValidator(prepareData)) {
+        setIsLoading(true);
         axios.post(AUTH_PATH + RESET_PASSWORD_FINISH_PATH, prepareData, { headers })
           .then((res : any) => {
-            handlePasswordResetUnShow()
+              setIsLoading(false);
+              handlePasswordResetUnShow()
           })
           .catch((res : any) => {
-              setErr({
-                isError : true,
-                message : "Bad credentials!"
-              })
+              setIsLoading(false);
+              if(res.request.response) {
+                setErr({
+                  isError : true,
+                  message : res.request.response
+                })
+              } else {
+                setErr({
+                  isError : true,
+                  message : "We've got an unexpected error. Try to restart the page!"
+                })
+              }
               setShowPasswordInput(true);
           })
       }
     }
 
-    const isValidResetPasswordData = () => {
-      if(!isValidSendEmailData() || !user.password) {
-          return false;
-      }
-      return true;
-    }
-
     return (
       <>
+          { isLoading ? <Spinner className='spinner'/> : null}
           <FormGroup className='m-3 mt-4'>
               <FormLabel className="ms-1">Username</FormLabel>
               <FormControl 
@@ -118,6 +123,8 @@ const ResetPassword = ({ handlePasswordResetUnShow, headers, login } : ResetPass
                     value={user.password}
                     onChange={(e) => setUser({ ...user, password : e.target.value })}
                 />
+                <p className='mt-1'>Password should contain at least: upper, lower character, one digit, one special char, at least 13 characters. 
+                  Whitespace characters will be removed!</p>
             </FormGroup>
             : null
           }

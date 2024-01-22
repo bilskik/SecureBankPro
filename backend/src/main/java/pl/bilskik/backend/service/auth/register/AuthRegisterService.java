@@ -56,6 +56,7 @@ public class AuthRegisterService {
     private Users mapToUsersObj(UserRegisterRequest userRegisterRequest) {
         Users users = modelMapper.map(userRegisterRequest, Users.class);
         users.setPassword(passwordCreator.encodePassword(userRegisterRequest.getPassword()));
+        users.setBalance(1000);
         users.setAccountNo(RandomStringUtils.random(26, false, true));
         return users;
     }

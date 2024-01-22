@@ -12,19 +12,36 @@ services:
       - "5432"
     networks:
       - sbp-network
+
   redis:
     container_name: redis
     image: redis
+    command: redis-server --requirepass redis-password
     expose:
       - "6379"
     networks:
       - sbp-network
+
   backend:
     container_name: backend
     image: backend
     build:
       context: backend
       dockerfile: Dockerfile
+    environment:
+      - BACKEND_PORT=8080
+      - KEY_STORE_PASSWORD=root
+      - POSTGRE_URL=jdbc:postgresql://postgresdb/bank
+      - POSTGRE_USER=user
+      - POSTGRE_PASSWORD=password
+      - HOST_REDIS_NAME=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis-password
+      - FRONTEND_URL=https://localhost:3000
+      - AES_KEY=2f0ab570590f8294
+      - IV=e5a76d7dadcdf1d7
+      - ALGO_LIST=AES/CBC/PKCS5PADDING
+      - DOMAIN=localhost
     expose:
       - "8080"
     depends_on:
@@ -32,6 +49,7 @@ services:
       - redis
     networks:
       - sbp-network
+
   frontend:
     container_name: frontend
     image: frontend
@@ -44,6 +62,7 @@ services:
       - backend
     networks:
       - sbp-network
+
   nginx:
     container_name: nginx
     build:

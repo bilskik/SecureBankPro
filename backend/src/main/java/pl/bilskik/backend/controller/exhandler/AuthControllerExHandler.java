@@ -26,11 +26,11 @@ public class AuthControllerExHandler  {
 
     @ExceptionHandler({ EntropyException.class } )
     public ResponseEntity<String> handleEntropyCountEx(EntropyException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ UserException.class })
     public ResponseEntity<String> handleUserEx(UserException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

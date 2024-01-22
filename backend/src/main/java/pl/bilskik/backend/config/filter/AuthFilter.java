@@ -33,7 +33,6 @@ public class AuthFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-
         if(request.getMethod().equals(HttpMethod.POST.name()) && request.getServletPath().equals(LOGIN_FINISH_URL)) {
             try {
                 handleAuthDelay();

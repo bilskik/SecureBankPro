@@ -1,3 +1,5 @@
+import { TransferKind } from "../reducer/transferReducer"
+
 export type UserDataType = {
     accountNo : string,
     balance : number
@@ -10,6 +12,11 @@ export type TransferType = {
     receiverAccNo : string,
     amount : number,
 }
+export type TransferActionType = {
+    type: TransferKind,
+    payload : string | number
+  }
+
 export type UserDetailsType = {
     creditCardNo : string,
     pesel : string

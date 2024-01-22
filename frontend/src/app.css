@@ -9,3 +9,9 @@
 .container-dashboard {
     max-width: 65vw;
 }
+.spinner {
+    display: block;
+    position: fixed;
+    top: 20vh;
+    left: 14vw;
+}

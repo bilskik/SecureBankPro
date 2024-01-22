@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import { UserDetailsType } from '../util/type/types.shared';
-import NavComp from '../component/navbar/NavComp';
 import { Button, Container } from 'react-bootstrap';
 import { initDisplayedDetails } from '../util/init/init';
 

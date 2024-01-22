@@ -10,6 +10,7 @@
     "@types/node": "^16.18.68",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.2",
+    "formik": "^2.4.5",
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",

@@ -41,21 +41,6 @@ function App() {
         }
       ]
     }
-
-    // {
-    //   path : DASHBOARD_PAGE,
-    //   loader : dashboardUserLoader,
-    //   element : <Dashboard/>,
-    // },
-    // {
-    //   path : PAYMENT_PAGE,
-    //   element : <Transfer/>
-    // },
-    // {
-    //   path : DETAILS_PAGE,
-    //   loader : userDetailsLoader,
-    //   element : <UserDetails/>
-    // }
   ])
 
   return (

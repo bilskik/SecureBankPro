@@ -4,8 +4,6 @@ import { useState } from 'react'
 import PasswordItem from './PasswordItem'
 import { PASS_INPUT_LEN } from './constant/constant'
 import { ErrorType } from '../../util/type/types.shared'
-import { useNavigate } from 'react-router-dom'
-import { RESET_PASSWORD_PAGE } from '../../common/url/urlMapper'
 
 type PasswordGroupType = {
     ranges : string
