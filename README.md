@@ -2,6 +2,11 @@
 
 SecureBankPro - A security-focused full-stack app developed during a Computer Science Academic Course.
 
+## Run app
+
+To run app:
+``` docker compose up --build ```
+
 ## Tech stack
 
 - JavaScript v16.16.0
@@ -51,6 +56,7 @@ As a algorithm for hashing passwords, I used Argon2 algoritm, beacuse its very s
 - Nginx
 - CSRF
 - CSP, XSS header
+- CORS
 - honeypots
 - data encryption for private data
   
