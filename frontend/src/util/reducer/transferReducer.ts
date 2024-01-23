@@ -34,7 +34,6 @@ export const transferReducer = (state : TransferType, action : TransferActionTyp
               receiverAccNo : payload
             } as TransferType
         case TransferKind.TRANSFER_AMOUNT:
-            console.log(payload);
             return {
               ...state,
               amount : payload
