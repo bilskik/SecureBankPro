@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import axios from '../common/axios/axios';
 import { Button, Container, Form, Row, Spinner } from 'react-bootstrap';
 import { AUTH_PATH, CSRF_PATH, DASHBOARD_PAGE, LOGIN_BEGIN_PATH, LOGIN_FINISH_PATH, REGISTER_PATH } from '../common/url/urlMapper';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ErrorType } from '../util/type/types.shared';
 import ResetPassword from '../component/password/ResetPassword';
 import { loginBeginValidator, loginFinishValidator } from '../util/validator/validators';
+import { AuthContext } from '../util/context/AuthProvider';
 
 const Login = () => {
     const [login, setLogin] = useState<string>("");
@@ -16,13 +17,14 @@ const Login = () => {
     const [err, setErr] = useState<ErrorType>({ isError : false, message : ''})
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isResetPassword, setIsResetPassword] = useState<boolean>(false);
+    const { authData, getCSRFHeader, updateCSRF, ...rest }  = useContext(AuthContext);
     const nav = useNavigate();
-    
+
     useEffect(() => {
         axios.get(CSRF_PATH)
             .then((res : any) => {
                 if(res.data && res.data.token) {
-                    setCsrf(res.data.token)
+                    updateCSRF(res.data.token)
                 } 
             })
             .catch((err : any) => {
@@ -43,7 +45,7 @@ const Login = () => {
         }
         if(loginBeginValidator(login)) {
             setIsLoading(true);
-            axios.post(AUTH_PATH + LOGIN_BEGIN_PATH, prepareData, { headers : getHeaders() })
+            axios.post(AUTH_PATH + LOGIN_BEGIN_PATH, prepareData, { headers : getCSRFHeader() })
                 .then((res : any) => {
                     setIsLoading(false);
                     if(res.data?.range) {
@@ -76,7 +78,7 @@ const Login = () => {
         }))
         if(loginFinishValidator(prepareData)) {
             setIsLoading(true);
-            axios.post(AUTH_PATH + LOGIN_FINISH_PATH, prepareData, { headers : getHeaders() })
+            axios.post(AUTH_PATH + LOGIN_FINISH_PATH, prepareData, { headers : getCSRFHeader() })
             .then((res : any) => {
                 setIsLoading(false);
                 setErr(prev => ({
@@ -103,12 +105,6 @@ const Login = () => {
        
     }
 
-    const getHeaders = () => {
-        return {
-            'X-XSRF-TOKEN' : csrf
-        }
-    }
-
     return (
         <Container className='container-login' fluid>
             { isLoading ? <Spinner className='spinner' /> : null }
@@ -121,7 +117,7 @@ const Login = () => {
                     isResetPassword ? 
                     <ResetPassword 
                         handlePasswordResetUnShow={() => { setIsResetPassword(false); setRange(''); } }
-                        headers={getHeaders()} 
+                        headers={getCSRFHeader()} 
                         login={login}
                     />
                     :

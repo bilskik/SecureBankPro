@@ -4,6 +4,10 @@ export type UserDataType = {
     accountNo : string,
     balance : number
 }
+export type AuthDataType = {
+    isAuthenticated : boolean,
+    csrf : string
+}
 export type TransferType = {
     transferTitle : string,
     senderName : string,

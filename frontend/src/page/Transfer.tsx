@@ -52,7 +52,6 @@ const Transfer = () => {
           isValid = false;
         }
         if(!form.checkValidity()) {
-          console.log(form.checkValidity())
           isValid = false;
         }
         return isValid;

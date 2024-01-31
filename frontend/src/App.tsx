@@ -12,6 +12,7 @@ import { transferLoader } from "./util/loader/transferLoader";
 import { navLoader } from "./util/loader/navLoader";
 import { getData } from "./common/api/apiCall";
 import ResetPassword from "./component/password/ResetPassword";
+import AuthProvider, { AuthContext } from "./util/context/AuthProvider";
 
 function App() {
 
@@ -44,7 +45,9 @@ function App() {
   ])
 
   return (
+    <AuthProvider>
       <RouterProvider router={routes} />
+    </AuthProvider>
   );
 }
 
