@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import axios from "../axios/axios"
+import axios from "./axios"
 
 type getDataType = {
     URL : string,

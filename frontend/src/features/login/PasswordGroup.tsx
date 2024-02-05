@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { Button, Form, Stack, Row } from 'react-bootstrap'
 import { useState } from 'react'
 import PasswordItem from './PasswordItem'
-import { PASS_INPUT_LEN } from './constant/constant'
 import { ErrorType } from '../../util/type/types.shared'
 
 type PasswordGroupType = {
@@ -17,7 +16,7 @@ type PasswordStoreType = {
 }
 const PasswordGroup = ({ ranges, onHandleSubmit, err, handleResetPasswordShow } :  PasswordGroupType) => {
     const [passArr, setPassArr] = useState<PasswordStoreType[]>([{ value : "-1", index : "-1" }]);
-    const arrayLengthPass = Array.from({ length : PASS_INPUT_LEN }, (_, i) => String(i))
+    const arrayLengthPass = Array.from({ length : 20 }, (_, i) => String(i))
 
     useEffect(() => {
         if(ranges) {

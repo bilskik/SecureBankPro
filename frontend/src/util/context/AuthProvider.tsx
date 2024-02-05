@@ -10,7 +10,7 @@ type AuthContextType = {
     updateCSRF : (csrf : string) => void
     updateAuthentication : () => void
     invalidAuthentication : () => void
-    invalidAuthData : () => void
+    resetAuthData : () => void
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -19,7 +19,7 @@ export const AuthContext = createContext<AuthContextType>({
     updateCSRF : () => undefined,
     updateAuthentication : () => undefined,
     invalidAuthentication : () => undefined,
-    invalidAuthData : () => undefined
+    resetAuthData : () => undefined
 });
 
 const AuthProvider = ( { children } : { children : ReactNode}) => {
@@ -51,12 +51,12 @@ const AuthProvider = ( { children } : { children : ReactNode}) => {
         }))
     }
     
-    const invalidAuthData = () => {
+    const resetAuthData = () => {
         setAuthData(authContextData)
     }
 
     return (
-        <AuthContext.Provider value={{authData, getCSRFHeader, updateCSRF, updateAuthentication, invalidAuthentication, invalidAuthData}}>
+        <AuthContext.Provider value={{authData, getCSRFHeader, updateCSRF, updateAuthentication, invalidAuthentication, resetAuthData}}>
             { children }
         </AuthContext.Provider>
     )

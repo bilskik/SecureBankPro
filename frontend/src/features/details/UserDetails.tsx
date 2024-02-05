@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
-import { UserDetailsType } from '../util/type/types.shared';
+import { UserDetailsType } from '../../util/type/types.shared';
 import { Button, Container } from 'react-bootstrap';
-import { initDisplayedDetails } from '../util/init/init';
+import { initDisplayedDetails } from '../../util/init/init';
 
 const UserDetails = () => {
     const user = useLoaderData() as UserDetailsType;
