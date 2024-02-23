@@ -5,6 +5,7 @@ SecureBankPro - A security-focused full-stack app developed during a Computer Sc
 ## Run app
 
 To run app:
+
 ``` docker compose up --build ```
 
 ## Tech stack
@@ -40,7 +41,7 @@ Explanation
 
 - nginx - proxy server
 - redis - responsible for caching sessions
-- mysql - main storage
+- postgre - main storage
 
 ## Algohritms
 
@@ -59,8 +60,11 @@ As a algorithm for hashing passwords, I used Argon2 algoritm, beacuse its very s
 - CORS
 - honeypots
 - data encryption for private data
+- mitigation against timing attack
   
 ## Features
 - login & logout
 - reset-password
-- transfers
+- money transfers
+- transfers history
+- user account details
