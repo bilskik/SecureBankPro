@@ -34,7 +34,7 @@ function App() {
           element : <UserDetails/>
         }
       ]
-    }
+    }, 
   ])
 
   return (

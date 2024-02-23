@@ -9,15 +9,7 @@ import { UserDataType } from '../../util/type/types.shared';
 const Dashboard = () => {
     const { authData, updateCSRF, updateAuthentication } = useContext(AuthContext);
     const [user, setUser] = useState<UserDataType>({ accountNo : "", balance : -1});
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const nav = useNavigate();
-
-    const checkAuth = () => {
-        console.log(authData);
-        if(!authData.isAuthenticated) {
-            nav(LOGIN_PAGE)
-        }
-    }
 
     useEffect(() => {
         const makeApiCalls = async () => {
@@ -34,7 +26,6 @@ const Dashboard = () => {
             axios.get<UserDataType>(USER_DATA)
                 .then((res) => {
                         updateAuthentication()
-                        setIsLoggedIn(true);
                         setUser(res.data);
                 })
                 .catch(() => {
@@ -44,10 +35,7 @@ const Dashboard = () => {
         makeApiCalls();
     },[])
 
-    checkAuth();
-
   return (
-        // isLoggedIn ? <DashboardLayout user={user}/> : null
         <DashboardLayout user={user}/>
     )
 }

@@ -12,6 +12,12 @@ const NavComp = () => {
   const [cookie, setCookie, removeCookie] = useCookies(['SESSION',"XSRF-TOKEN"])
   const { authData, getCSRFHeader, resetAuthData } = useContext(AuthContext);
 
+  useEffect(() => {
+    if(!authData.isAuthenticated) {
+      nav(LOGIN_PAGE);
+    }
+  },[])
+
   const handleOnLogout = async () => {
     const res = axios.post(LOGOUT_PATH, undefined, { headers : getCSRFHeader() })
         .then(() => {
@@ -26,7 +32,6 @@ const NavComp = () => {
   }
 
   return (
-    authData.isAuthenticated ?  
       <>
         <Navbar className="border ps-5 pe-5">
           <Navbar.Brand onClick={() => nav(DASHBOARD_PAGE)} style={{ cursor : "pointer"}}>Dashboard</Navbar.Brand>
@@ -42,7 +47,6 @@ const NavComp = () => {
         </Navbar>
         <Outlet/>
       </>
-      : null
   )
 }
 
