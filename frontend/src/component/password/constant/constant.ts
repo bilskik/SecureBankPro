@@ -1,1 +1,0 @@
-export const PASS_INPUT_LEN = 20

@@ -1,20 +1,21 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { Button, FloatingLabel, FormControl, FormGroup, Container, Form, Spinner } from 'react-bootstrap'
-import { initTransferData } from '../util/init/init'
-import { getData, usePost } from '../common/api/apiCall'
+import { initTransferData } from '../../util/init/init'
+import { getData, usePost } from '../../config/apiCall'
 import { redirect, useNavigate } from 'react-router-dom'
-import { CSRF_PATH, DASHBOARD_PAGE, TRANSFER_MONEY_PATH, USER_DATA } from '../common/url/urlMapper'
-import axios from '../common/axios/axios'
-import { TransferKind, transferReducer } from '../util/reducer/transferReducer'
-import { formAccValidator, formAmountValidator } from '../util/validator/validators'
+import { CSRF_PATH, DASHBOARD_PAGE, LOGIN_PAGE, TRANSFER_MONEY_PATH, USER_DATA } from '../../config/urlMapper'
+import axios from '../../config/axios'
+import { TransferKind, transferReducer } from '../../util/reducer/transferReducer'
+import { formAccValidator, formAmountValidator } from '../../util/validator/validators'
+import { AuthContext } from '../../util/context/AuthProvider'
 
 
 const Transfer = () => {
     const [transferData, dispatch] = useReducer(transferReducer, initTransferData)
     const [formFieldValidity, setFormFieldValidity] = useState({ isSenderAccNoValid : false, isReceiverAccNoValid : false, isAmountValid : false, isFormValid : true });
     const [validated, setValidated] = useState<boolean>(false);
-    const [csrf, setCsrf] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { authData, getCSRFHeader } = useContext(AuthContext);
     const nav = useNavigate();
 
     useEffect(() => {
@@ -23,14 +24,9 @@ const Transfer = () => {
     },[])
 
     useEffect(() => {
-      axios.get(CSRF_PATH)
-          .then((res : any) => {
-              if(res.data && res.data.token) {
-                  setCsrf(res.data.token)
-              } 
-          })
-          .catch((res : any) => {
-          })
+      if(!authData.isAuthenticated) {
+        nav(LOGIN_PAGE)
+      } 
     },[])
 
     const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
@@ -52,7 +48,6 @@ const Transfer = () => {
           isValid = false;
         }
         if(!form.checkValidity()) {
-          console.log(form.checkValidity())
           isValid = false;
         }
         return isValid;
@@ -70,7 +65,7 @@ const Transfer = () => {
 
     const submitTransfer = async() => {
       setIsLoading(true);
-      await axios.post(TRANSFER_MONEY_PATH, transferData, { headers : getHeaders() })
+      await axios.post(TRANSFER_MONEY_PATH, transferData, { headers : getCSRFHeader() })
               .then((res) => {
                   setIsLoading(false);
                   nav(DASHBOARD_PAGE)
@@ -78,12 +73,6 @@ const Transfer = () => {
               .catch((err : any) => {
                 setIsLoading(false);
               })
-    }
-
-    const getHeaders = () => {
-      return {
-        'X-XSRF-TOKEN' : csrf
-      }
     }
 
     return (

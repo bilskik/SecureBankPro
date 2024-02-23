@@ -1,4 +1,4 @@
-import {  TransferType, UserDataType, UserDetailsType } from "../type/types.shared";
+import {  TransferType, UserDataType, UserDetailsType, AuthDataType } from "../type/types.shared";
 
 export const initTransferData : TransferType = {
     transferTitle : "",
@@ -8,6 +8,12 @@ export const initTransferData : TransferType = {
     receiverAccNo : "",
     amount : 0,
 }
+
+export const authContextData : AuthDataType= {
+    isAuthenticated : false,
+    csrf : ""
+}
+
 export const initDisplayedDetails : UserDetailsType = {
     creditCardNo : "",
     pesel : ""

@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Container, Row, Spinner, Stack, Col } from 'react-bootstrap';
 import { Outlet, useLoaderData, useNavigate } from 'react-router-dom'
-import { getData, useFetch } from '../common/api/apiCall';
-import { PAYMENT_PAGE, TRANSFER_HISTORY_PATH } from '../common/url/urlMapper';
-import { TransferType, UserDataType } from '../util/type/types.shared';
-import TransferHistory from '../component/transfer/TransferHistory';
-import NavComp from '../component/navbar/NavComp';
+import { useFetch } from '../../config/apiCall';
+import { PAYMENT_PAGE, TRANSFER_HISTORY_PATH } from '../../config/urlMapper';
+import { TransferType, UserDataType } from '../../util/type/types.shared';
+import TransferHistory from '../transfer/TransferHistory';
 
-const Dashboard = () => {
+const DashboardLayout = ({ user } : { user : UserDataType }) => {
     const { data, isLoading, err, getData } = useFetch({ URL : TRANSFER_HISTORY_PATH, headers : undefined })
     const [transferHistory, setTransferhistory] = useState<TransferType[] | undefined>(data);
-    const user = useLoaderData() as UserDataType;
     const nav = useNavigate();
 
     useEffect(() => {
@@ -54,4 +52,4 @@ const Dashboard = () => {
     )
     }
 
-export default Dashboard
+export default DashboardLayout

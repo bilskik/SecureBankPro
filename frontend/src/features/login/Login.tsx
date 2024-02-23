@@ -1,28 +1,29 @@
-import { useEffect, useState } from 'react'
-import axios from '../common/axios/axios';
+import { useContext, useEffect, useState } from 'react'
+import axios from '../../config/axios';
 import { Button, Container, Form, Row, Spinner } from 'react-bootstrap';
-import { AUTH_PATH, CSRF_PATH, DASHBOARD_PAGE, LOGIN_BEGIN_PATH, LOGIN_FINISH_PATH, REGISTER_PATH } from '../common/url/urlMapper';
-import PasswordGroup from '../component/password/PasswordGroup';
+import { AUTH_PATH, CSRF_PATH, DASHBOARD_PAGE, LOGIN_BEGIN_PATH, LOGIN_FINISH_PATH, REGISTER_PATH } from '../../config/urlMapper';
+import PasswordGroup from './PasswordGroup';
 import { Person } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { ErrorType } from '../util/type/types.shared';
-import ResetPassword from '../component/password/ResetPassword';
-import { loginBeginValidator, loginFinishValidator } from '../util/validator/validators';
+import { ErrorType } from '../../util/type/types.shared';
+import ResetPassword from './ResetPassword';
+import { loginBeginValidator, loginFinishValidator } from '../../util/validator/validators';
+import { AuthContext } from '../../util/context/AuthProvider';
 
 const Login = () => {
     const [login, setLogin] = useState<string>("");
     const [range, setRange] = useState<string>("");
-    const [csrf, setCsrf] = useState<string>("");
     const [err, setErr] = useState<ErrorType>({ isError : false, message : ''})
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isResetPassword, setIsResetPassword] = useState<boolean>(false);
+    const { getCSRFHeader, updateCSRF, updateAuthentication }  = useContext(AuthContext);
     const nav = useNavigate();
-    
+
     useEffect(() => {
         axios.get(CSRF_PATH)
             .then((res : any) => {
                 if(res.data && res.data.token) {
-                    setCsrf(res.data.token)
+                    updateCSRF(res.data.token)
                 } 
             })
             .catch((err : any) => {
@@ -43,7 +44,7 @@ const Login = () => {
         }
         if(loginBeginValidator(login)) {
             setIsLoading(true);
-            axios.post(AUTH_PATH + LOGIN_BEGIN_PATH, prepareData, { headers : getHeaders() })
+            axios.post(AUTH_PATH + LOGIN_BEGIN_PATH, prepareData, { headers : getCSRFHeader() })
                 .then((res : any) => {
                     setIsLoading(false);
                     if(res.data?.range) {
@@ -76,24 +77,25 @@ const Login = () => {
         }))
         if(loginFinishValidator(prepareData)) {
             setIsLoading(true);
-            axios.post(AUTH_PATH + LOGIN_FINISH_PATH, prepareData, { headers : getHeaders() })
-            .then((res : any) => {
-                setIsLoading(false);
-                setErr(prev => ({
-                    ...prev,
-                    isError : false
-                }))
-                setTimeout(() => {
-                    nav(DASHBOARD_PAGE)
-                },100)
-            })
-            .catch((err : any) => {
-                setIsLoading(false);
-                setErr({
-                    isError : true,
-                    message : "Credentials invalid!"
+            axios.post(AUTH_PATH + LOGIN_FINISH_PATH, prepareData, { headers : getCSRFHeader() })
+                .then((res : any) => {
+                    setIsLoading(false);
+                    setErr(prev => ({
+                        ...prev,
+                        isError : false
+                    }))
+                    setTimeout(() => {
+                        updateAuthentication()
+                        nav(DASHBOARD_PAGE)
+                    },100)
                 })
-            })
+                .catch((err : any) => {
+                    setIsLoading(false);
+                    setErr({
+                        isError : true,
+                        message : "Credentials invalid!"
+                    })
+                })
         } else {
             setErr({
                 isError : true,
@@ -101,12 +103,6 @@ const Login = () => {
             })
         }
        
-    }
-
-    const getHeaders = () => {
-        return {
-            'X-XSRF-TOKEN' : csrf
-        }
     }
 
     return (
@@ -121,7 +117,7 @@ const Login = () => {
                     isResetPassword ? 
                     <ResetPassword 
                         handlePasswordResetUnShow={() => { setIsResetPassword(false); setRange(''); } }
-                        headers={getHeaders()} 
+                        headers={getCSRFHeader()} 
                         login={login}
                     />
                     :

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FormControl, FormGroup, FormLabel,Row, Button, Spinner } from 'react-bootstrap'
-import axios from '../../common/axios/axios'
-import { AUTH_PATH, LOGIN_PAGE, RESET_PASSWORD_BEGIN_PATH, RESET_PASSWORD_FINISH_PATH } from '../../common/url/urlMapper'
+import axios from '../../config/axios'
+import { AUTH_PATH, LOGIN_PAGE, RESET_PASSWORD_BEGIN_PATH, RESET_PASSWORD_FINISH_PATH } from '../../config/urlMapper'
 import { ErrorType } from '../../util/type/types.shared'
 import { resetPasswordValidator, sendEmailValidator } from '../../util/validator/validators'
 
