@@ -1,5 +1,6 @@
 package pl.bilskik.backend.service.auth.register;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
@@ -21,6 +22,7 @@ import java.util.Set;
 import static pl.bilskik.backend.service.auth.validator.Entropy.GOOD;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class AuthRegisterService {
 
@@ -29,18 +31,6 @@ public class AuthRegisterService {
     private final PasswordValidator validator;
     private final PasswordCreator passwordCreator;
 
-    @Autowired
-    public AuthRegisterService(
-                UserRepository userRepository,
-                ModelMapper modelMapper,
-                PasswordValidator validator,
-                PasswordCreator passwordCreator
-        ) {
-        this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
-        this.validator = validator;
-        this.passwordCreator = passwordCreator;
-    }
     public String register(UserRegisterRequest userRegisterRequest) {
         Entropy entropy = validator.countEntropy(userRegisterRequest.getUsername(),
                 userRegisterRequest.getPassword());

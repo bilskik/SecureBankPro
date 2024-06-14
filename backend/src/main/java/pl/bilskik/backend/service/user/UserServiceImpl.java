@@ -1,5 +1,6 @@
 package pl.bilskik.backend.service.user;
 
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,16 +15,11 @@ import pl.bilskik.backend.service.exception.UsernameException;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper mapper;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper mapper) {
-        this.userRepository = userRepository;
-        this.mapper = mapper;
-    }
 
     @Override
     public UserResponse getUser(String username) {

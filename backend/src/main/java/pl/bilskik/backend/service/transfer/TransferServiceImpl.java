@@ -1,6 +1,7 @@
 package pl.bilskik.backend.service.transfer;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,22 +19,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TransferServiceImpl implements TransferService {
 
     private final TransferRepository transferRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    public TransferServiceImpl(
-            TransferRepository transferRepository,
-            ModelMapper modelMapper,
-            UserRepository userRepository
-    ) {
-        this.transferRepository = transferRepository;
-        this.modelMapper = modelMapper;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public List<TransferDTO> getTransferHistory(String username) {

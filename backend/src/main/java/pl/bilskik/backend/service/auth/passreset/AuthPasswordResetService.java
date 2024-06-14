@@ -1,6 +1,7 @@
 package pl.bilskik.backend.service.auth.passreset;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.bilskik.backend.entity.Password;
@@ -18,25 +19,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthPasswordResetService {
 
     private final UserRepository userRepository;
     private final PasswordRepository passwordRepository;
     private final PasswordValidator passwordValidator;
     private final PasswordCreator passwordCreator;
-
-    @Autowired
-    public AuthPasswordResetService(
-        UserRepository userRepository,
-        PasswordRepository passwordRepository,
-        PasswordValidator passwordValidator,
-        PasswordCreator passwordCreator
-    ) {
-        this.userRepository = userRepository;
-        this.passwordRepository = passwordRepository;
-        this.passwordCreator = passwordCreator;
-        this.passwordValidator = passwordValidator;
-    }
 
     public String beginResetPassword(String username, String email) {
         Optional<Users> user = userRepository.findByUsername(username);

@@ -1,5 +1,6 @@
 package pl.bilskik.backend.service.auth.login;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-@Slf4j
+@RequiredArgsConstructor
 public class AuthLoginService {
 
     private final UserRepository userRepository;
@@ -19,16 +20,6 @@ public class AuthLoginService {
     private final PasswordCreator passwordCreator;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthLoginService(UserRepository userRepository,
-                            PasswordCreator passwordCreator,
-                            PasswordRepository passwordRepository,
-                            PasswordEncoder passwordEncoder
-                            ) {
-        this.userRepository = userRepository;
-        this.passwordCreator = passwordCreator;
-        this.passwordRepository = passwordRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
     public String beginLogin(String username) {
         List<String> ranges = userRepository.findPasswordRangeByUsername(username);
         String chosenRange = "";

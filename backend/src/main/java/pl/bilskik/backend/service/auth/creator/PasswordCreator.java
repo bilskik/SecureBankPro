@@ -1,5 +1,6 @@
 package pl.bilskik.backend.service.auth.creator;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,14 +11,10 @@ import pl.bilskik.backend.entity.Users;
 import java.util.*;
 
 @Component
-@Slf4j
+@RequiredArgsConstructor
 public class PasswordCreator {
-    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public PasswordCreator(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     public List<Password> createPasswords(String password, Users users) { //create partial passwords, each returned PasswordObj store user
         List<Password> passwordList = createPasswords(password);

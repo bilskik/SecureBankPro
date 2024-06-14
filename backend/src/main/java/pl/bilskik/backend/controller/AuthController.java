@@ -1,6 +1,7 @@
 package pl.bilskik.backend.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +20,11 @@ import static pl.bilskik.backend.controller.mapping.UrlMapping.*;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = AUTH_PATH)
 public class AuthController {
 
-    private AuthService authService;
-
-    @Autowired
-    public AuthController(AuthServiceImpl authService) {
-        this.authService = authService;
-    }
+    private final AuthService authService;
 
     @PostMapping(value = REGISTER_PATH)
     public ResponseEntity<ResponseMessage> register(
