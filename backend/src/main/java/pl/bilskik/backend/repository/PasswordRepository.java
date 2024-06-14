@@ -9,7 +9,6 @@ import pl.bilskik.backend.entity.Password;
 import pl.bilskik.backend.entity.Users;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface PasswordRepository extends JpaRepository<Password, Integer> {

@@ -2,12 +2,11 @@ package pl.bilskik.backend.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.bilskik.backend.data.response.UserResponse;
 import pl.bilskik.backend.data.response.UserDetailsResponse;
+import pl.bilskik.backend.data.response.UserResponse;
 import pl.bilskik.backend.service.UserService;
 
 import java.security.Principal;

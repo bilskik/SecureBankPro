@@ -5,16 +5,17 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pl.bilskik.backend.data.request.LoginRequest;
 import pl.bilskik.backend.config.manager.AuthManager;
+import pl.bilskik.backend.data.request.LoginRequest;
+
 import java.io.IOException;
+
 import static pl.bilskik.backend.controller.mapping.UrlMapping.LOGIN_FINISH_URL;
 
 @Component

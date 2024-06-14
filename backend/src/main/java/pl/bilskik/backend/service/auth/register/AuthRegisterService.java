@@ -10,11 +10,13 @@ import pl.bilskik.backend.entity.Password;
 import pl.bilskik.backend.entity.Users;
 import pl.bilskik.backend.repository.UserRepository;
 import pl.bilskik.backend.service.auth.creator.PasswordCreator;
-import pl.bilskik.backend.service.exception.EntropyException;
 import pl.bilskik.backend.service.auth.validator.Entropy;
 import pl.bilskik.backend.service.auth.validator.PasswordValidator;
+import pl.bilskik.backend.service.exception.EntropyException;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static pl.bilskik.backend.service.auth.validator.Entropy.GOOD;
 

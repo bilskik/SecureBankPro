@@ -7,7 +7,8 @@ import pl.bilskik.backend.repository.PasswordRepository;
 import pl.bilskik.backend.repository.UserRepository;
 import pl.bilskik.backend.service.auth.creator.PasswordCreator;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
 @Service
 @Slf4j
