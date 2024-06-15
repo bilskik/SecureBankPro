@@ -61,6 +61,7 @@ As a algorithm for hashing passwords, I used Argon2 algoritm, beacuse its very s
 - honeypots
 - data encryption for private data
 - mitigation against timing attack
+- https communication
   
 ## Features
 - login & logout
@@ -68,3 +69,18 @@ As a algorithm for hashing passwords, I used Argon2 algoritm, beacuse its very s
 - money transfers
 - transfers history
 - user account details
+
+## Screenshots
+
+<img src="documentation/Login.png"/>
+
+<img src="documentation/Login2.png"/>
+
+<img src="documentation/PasswordReset.png"/>
+
+<img src="documentation/Dashboard.png"/>
+
+<img src="documentation/Payment.png"/>
+
+<img src="documentation/Reset.png"/>
+
