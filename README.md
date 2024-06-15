@@ -82,5 +82,5 @@ As a algorithm for hashing passwords, I used Argon2 algoritm, beacuse its very s
 
 <img src="documentation/Payment.png"/>
 
-<img src="documentation/Reset.png"/>
+<img src="documentation/Details.png"/>
 
