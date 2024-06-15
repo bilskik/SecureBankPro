@@ -1,37 +1,28 @@
 package pl.bilskik.backend.controller;
 
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import pl.bilskik.backend.data.request.BeginResetPasswordRequest;
 import pl.bilskik.backend.data.request.FinishResetPasswordRequest;
-import pl.bilskik.backend.data.request.UserRegisterRequest;
 import pl.bilskik.backend.data.request.FirstLoginRequest;
+import pl.bilskik.backend.data.request.UserRegisterRequest;
 import pl.bilskik.backend.data.response.FirstLoginResponse;
 import pl.bilskik.backend.data.response.ResponseMessage;
-import pl.bilskik.backend.data.response.UserResponse;
 import pl.bilskik.backend.service.AuthService;
-import pl.bilskik.backend.service.auth.AuthServiceImpl;
-
-import java.security.Principal;
 
 import static pl.bilskik.backend.controller.mapping.UrlMapping.*;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = AUTH_PATH)
 public class AuthController {
 
-    private AuthService authService;
-
-    @Autowired
-    public AuthController(AuthServiceImpl authService) {
-        this.authService = authService;
-    }
+    private final AuthService authService;
 
     @PostMapping(value = REGISTER_PATH)
     public ResponseEntity<ResponseMessage> register(
@@ -51,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping(value = LOGIN_FINISH_PATH)
-    public ResponseEntity<ResponseMessage> finishLogin() {
+    public ResponseEntity<ResponseMessage> finishLogin() {  //filters handles login finish
         return ResponseEntity.ok(new ResponseMessage("Authenticated!"));
     }
 

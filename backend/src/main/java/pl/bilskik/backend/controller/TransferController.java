@@ -1,6 +1,7 @@
 package pl.bilskik.backend.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +17,10 @@ import static pl.bilskik.backend.controller.mapping.UrlMapping.TRANSFER_PATH;
 
 @RestController
 @RequestMapping(value = TRANSFER_PATH)
+@RequiredArgsConstructor
 public class TransferController {
 
     private final TransferService transferService;
-
-    public TransferController(TransferService transferService) {
-        this.transferService = transferService;
-    }
 
     @GetMapping
     public ResponseEntity<List<TransferDTO>> getTransferHistory(Principal principal) {

@@ -18,23 +18,14 @@ public class PasswordValidator {
     }
 
     private Entropy getEntropy(int result) {
-        if(result == 4) {
-            return Entropy.GOOD;
-        }
-        else if(result == 3) {
-            return Entropy.REASONABLE;
-        } else if(result == 2) {
-            return Entropy.POOR;
-        }
-        else if(result == 1){
-            return Entropy.WEAK;
-        }
-        else if(result == 0) {
-            return Entropy.TERRIBLE;
-        } else {
-            throw new EntropyException("Cannot count Entropy!");
-        }
-
+        return switch (result) {
+            case 4 -> Entropy.GOOD;
+            case 3 -> Entropy.REASONABLE;
+            case 2 -> Entropy.POOR;
+            case 1 -> Entropy.WEAK;
+            case 0 -> Entropy.TERRIBLE;
+            default -> throw new EntropyException("Cannot count Entropy!");
+        };
     }
 
     private Configuration configuration(List<String> excludedWords) {

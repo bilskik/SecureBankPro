@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.bilskik.backend.config.failure.AuthenticationFailureCounter;
 import pl.bilskik.backend.config.failure.LoginAttemptsContainer;
 import pl.bilskik.backend.config.userconfig.DetailsService;
 import pl.bilskik.backend.config.userconfig.SecurityUser;

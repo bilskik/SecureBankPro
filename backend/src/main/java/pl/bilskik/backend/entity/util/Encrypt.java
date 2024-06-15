@@ -4,7 +4,7 @@ import jakarta.persistence.AttributeConverter;
 
 public class Encrypt implements AttributeConverter<String, String> {
 
-    private EncryptionUtil encryptionUtil;
+    private final EncryptionUtil encryptionUtil;
 
     public Encrypt(EncryptionUtil encryptionUtil) {
         this.encryptionUtil = encryptionUtil;
