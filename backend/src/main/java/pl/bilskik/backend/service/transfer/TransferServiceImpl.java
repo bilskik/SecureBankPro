@@ -3,7 +3,6 @@ package pl.bilskik.backend.service.transfer;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.bilskik.backend.data.dto.TransferDTO;
 import pl.bilskik.backend.entity.Transfer;

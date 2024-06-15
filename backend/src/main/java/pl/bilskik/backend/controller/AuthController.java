@@ -2,7 +2,6 @@ package pl.bilskik.backend.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -14,7 +13,6 @@ import pl.bilskik.backend.data.request.UserRegisterRequest;
 import pl.bilskik.backend.data.response.FirstLoginResponse;
 import pl.bilskik.backend.data.response.ResponseMessage;
 import pl.bilskik.backend.service.AuthService;
-import pl.bilskik.backend.service.auth.AuthServiceImpl;
 
 import static pl.bilskik.backend.controller.mapping.UrlMapping.*;
 
@@ -44,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping(value = LOGIN_FINISH_PATH)
-    public ResponseEntity<ResponseMessage> finishLogin() {
+    public ResponseEntity<ResponseMessage> finishLogin() {  //filters handles login finish
         return ResponseEntity.ok(new ResponseMessage("Authenticated!"));
     }
 

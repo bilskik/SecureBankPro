@@ -1,8 +1,6 @@
 package pl.bilskik.backend.service.auth;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.bilskik.backend.data.request.UserRegisterRequest;
 import pl.bilskik.backend.service.AuthService;

@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.bilskik.backend.data.request.UserRegisterRequest;
 import pl.bilskik.backend.entity.Password;
 import pl.bilskik.backend.entity.Users;
 import pl.bilskik.backend.repository.UserRepository;
-import pl.bilskik.backend.service.auth.creator.PasswordCreator;
+import pl.bilskik.backend.service.auth.password.PasswordCreator;
 import pl.bilskik.backend.service.auth.validator.Entropy;
 import pl.bilskik.backend.service.auth.validator.PasswordValidator;
 import pl.bilskik.backend.service.exception.EntropyException;
@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static pl.bilskik.backend.config.userconfig.UserRole.CLIENT;
 import static pl.bilskik.backend.service.auth.validator.Entropy.GOOD;
 
 @Service
@@ -30,36 +31,41 @@ public class AuthRegisterService {
     private final ModelMapper modelMapper;
     private final PasswordValidator validator;
     private final PasswordCreator passwordCreator;
+    private final PasswordEncoder passwordEncoder;
 
     public String register(UserRegisterRequest userRegisterRequest) {
         Entropy entropy = validator.countEntropy(userRegisterRequest.getUsername(),
                 userRegisterRequest.getPassword());
+
         if(entropy == GOOD) {
-            Users user = mapToUsersObj(userRegisterRequest);
-            List<Password> passwordList = passwordCreator.createPasswords(userRegisterRequest.getPassword(), user);
-            Users buildedUser = buildUser(user, passwordList);
-            userRepository.save(buildedUser);
+            List<Password> passwordList = passwordCreator.createPartialPasswords(userRegisterRequest.getPassword());
+            Users user = convertUserRegisterRequestToUser(userRegisterRequest, passwordList);
+            userRepository.save(user);
         } else {
            throw new EntropyException("Entropy value: " + entropy + "is too weak!");
         }
+
         return "Account created!";
     }
 
-    private Users mapToUsersObj(UserRegisterRequest userRegisterRequest) {
-        Users users = modelMapper.map(userRegisterRequest, Users.class);
-        users.setPassword(passwordCreator.encodePassword(userRegisterRequest.getPassword()));
-        users.setBalance(1000);
-        users.setAccountNo(RandomStringUtils.random(26, false, true));
-        return users;
-    }
+    private Users convertUserRegisterRequestToUser(
+            UserRegisterRequest userRegisterRequest,
+            List<Password> passwordList
+    ) {
+        Users user = modelMapper.map(userRegisterRequest, Users.class);
+        user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
+        user.setBalance(1000); //default balance (testing purposes)
+        user.setAccountNo(RandomStringUtils.random(26, false, true));
 
-
-    private Users buildUser(Users user, List<Password> passwordList) {
+        for(var p : passwordList) {
+            p.setUser(user);
+        }
         user.setPasswordList(passwordList);
+
         Set<String> roles = new HashSet<>();
-        roles.add("CLIENT");
+        roles.add(CLIENT.name());
         user.setRoles(roles);
+
         return user;
     }
-
 }

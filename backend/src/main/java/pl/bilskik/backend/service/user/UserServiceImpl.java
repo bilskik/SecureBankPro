@@ -2,7 +2,6 @@ package pl.bilskik.backend.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.bilskik.backend.data.response.UserDetailsResponse;
 import pl.bilskik.backend.data.response.UserResponse;
